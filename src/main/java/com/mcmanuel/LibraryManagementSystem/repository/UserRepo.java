@@ -1,4 +1,12 @@
 package com.mcmanuel.LibraryManagementSystem.repository;
 
-public interface UserRepo implements JpaRepository<>{
+import com.mcmanuel.LibraryManagementSystem.entities.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+import java.util.UUID;
+
+public interface UserRepo extends JpaRepository<User, UUID> {
+
+    Optional<User> findByEmail(String username);
 }
