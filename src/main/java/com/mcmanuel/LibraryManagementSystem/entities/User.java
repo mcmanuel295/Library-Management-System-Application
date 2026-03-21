@@ -1,9 +1,11 @@
 package com.mcmanuel.LibraryManagementSystem.entities;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.mcmanuel.LibraryManagementSystem.pojo.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -15,11 +17,14 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
+@Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID userId;
-    @NonNull
+
+    @Column(nullable = false)
     @NotBlank(message = "this field cannot be blank")
     private String lastname;
 
@@ -40,9 +45,10 @@ public class User {
 
     @Column(nullable = false,updatable = false,insertable = false)
     private LocalDateTime createdDate;
-//    private LocalDateTime ;
 
-    private List<Role> role;
+    //    private LocalDateTime ;
+
+    private List<Role> roles;
     public void setFullName(){
         this.fullName =this.lastname+" "+this.firstname;
     }
