@@ -3,7 +3,8 @@ spring:
 
   datasource:
     password: Oea75357@
-    url: jdbc:mysql:localhost:8080/LibraryManagementSystemApplication
+    url: jdbc:mysql://mysql-db:3306/LibraryManagementSystemApplication
+
     username: root
 
   jpa:
