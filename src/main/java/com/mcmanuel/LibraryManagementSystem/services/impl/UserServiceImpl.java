@@ -65,4 +65,9 @@ public class UserServiceImpl implements UserService {
         userRepo.deleteById(user.getUserId());
         return "deleted";
     }
+
+    @Override
+    public String login(String email, String password) {
+        return "";
+    }
 }
