@@ -19,4 +19,5 @@ public interface UserService {
 
     String deleteUser(UUID userId);
 
+    String login(String email, String password);
 }
