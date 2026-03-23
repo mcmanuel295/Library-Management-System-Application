@@ -3,7 +3,7 @@ package com.mcmanuel.LibraryManagementSystem.config;
 import com.mcmanuel.LibraryManagementSystem.services.MyUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -17,10 +17,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+@Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private MyUserDetailsService userDetailsService;
-    private JwtConfiguration jwtConfiguration;
+    private final MyUserDetailsService userDetailsService;
+    private final JwtConfiguration jwtConfiguration;
 
     @Bean
     public SecurityFilterChain configuration(HttpSecurity http){
@@ -28,7 +29,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         request -> request.requestMatchers("/api/v1/login","/api/v1/users/").permitAll().anyRequest().authenticated()
                 )
-                .cors(AbstractHttpConfigurer::disable)
+                .cors(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtConfiguration, UsernamePasswordAuthenticationFilter.class)

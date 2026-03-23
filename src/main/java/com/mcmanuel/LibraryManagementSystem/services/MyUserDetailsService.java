@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+@Service
 @RequiredArgsConstructor
 public class MyUserDetailsService implements UserDetailsService {
     private final UserRepository userRepo;
@@ -17,6 +20,6 @@ public class MyUserDetailsService implements UserDetailsService {
 
         User user = userRepo.findByEmail(username)
                 .orElseThrow(() -> new RuntimeException("User " + username + " doesn't exist"));
-        return new MyUserDetails(user);
+        return  new MyUserDetails(user);
     }
 }

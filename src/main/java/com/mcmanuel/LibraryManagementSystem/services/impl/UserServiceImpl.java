@@ -7,15 +7,19 @@ import com.mcmanuel.LibraryManagementSystem.pojo.Role;
 import com.mcmanuel.LibraryManagementSystem.pojo.UserRequest;
 import com.mcmanuel.LibraryManagementSystem.repository.UserRepository;
 import com.mcmanuel.LibraryManagementSystem.services.intf.UserService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
+@Service
+@Transactional(rollbackOn = Exception.class)
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepo;

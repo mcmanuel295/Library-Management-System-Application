@@ -18,14 +18,19 @@ import java.util.function.Function;
 @Service
 public class JwtService {
     String secretString;
-    public JwtService() throws NoSuchAlgorithmException {
-        KeyGenerator keyGen = KeyGenerator.getInstance("Hmac Sha256");
+    public JwtService(){
+        KeyGenerator keyGen = null;
+        try {
+            keyGen = KeyGenerator.getInstance("HmacSHA256");
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Error initializing JWT KeyGenerator", e);
+        }
         SecretKey secretKey = keyGen.generateKey();
         secretString =Base64.getEncoder().encodeToString(secretKey.getEncoded());
     }
 
     public SecretKey key(){
-        byte[] bytes = secretString.getBytes(StandardCharsets.UTF_8);
+        byte[] bytes = Base64.getDecoder().decode(this.secretString);
         return Keys.hmacShaKeyFor(bytes);
     }
 
@@ -46,11 +51,16 @@ public class JwtService {
 
     }
 
-    public boolean validate(String token, UserDetails userDetails) {
-        return (userDetails.getUsername().equals(extractUsername(token)) && extractDate(token).after(new Date(System.currentTimeMillis())));
+    public boolean validateToken(String token, UserDetails userDetails) {
+        final String username = extractUsername(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
-    private Date extractDate(String token){
-        return extractClaim(token,Claims::getExpiration);
+    private boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+
+    private Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
     }
 }

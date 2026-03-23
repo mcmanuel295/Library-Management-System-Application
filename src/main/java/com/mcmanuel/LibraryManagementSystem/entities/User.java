@@ -5,10 +5,7 @@ import com.mcmanuel.LibraryManagementSystem.pojo.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,6 +16,8 @@ import java.util.UUID;
 @Setter
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -34,7 +33,7 @@ public class User {
 
     @Column(nullable = false)
     @NotBlank(message = "this field cannot be blank")
-    private String fullName =getFullName();
+    private String fullName ;
 
     @Column(unique = true,nullable = false)
     @Email
