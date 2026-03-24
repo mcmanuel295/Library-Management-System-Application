@@ -4,6 +4,7 @@ import com.mcmanuel.LibraryManagementSystem.services.MyUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -27,7 +28,10 @@ public class SecurityConfig {
     public SecurityFilterChain configuration(HttpSecurity http){
         return http
                 .authorizeHttpRequests(
-                        request -> request.requestMatchers("/api/v1/login","/api/v1/users/").permitAll().anyRequest().authenticated()
+                        request -> request
+                                .requestMatchers("/api/v1/users/login").permitAll()
+                                .requestMatchers(HttpMethod.POST,"/api/v1/users/").permitAll()
+                                .anyRequest().authenticated()
                 )
                 .cors(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
