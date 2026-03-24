@@ -9,10 +9,13 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Builder
 @Data
 public class UserDTO {
+    private UUID userId;
+
     @NotBlank(message = "this field cannot be blank")
     private String lastname;
 

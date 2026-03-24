@@ -6,6 +6,7 @@ public class DTOMapper {
 
     public static UserDTO ToDTO(User user){
         return UserDTO.builder()
+                .userId(user.getUserId())
                 .lastname(user.getLastname())
                 .firstname(user.getFirstname())
                 .email(user.getEmail())
@@ -17,6 +18,7 @@ public class DTOMapper {
     public static User ToUser(UserDTO dto){
 
        return User.builder()
+               .userId(dto.getUserId())
                .firstname(dto.getFirstname())
                .lastname(dto.getLastname())
                .email(dto.getEmail())
