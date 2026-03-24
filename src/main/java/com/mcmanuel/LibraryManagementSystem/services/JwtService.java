@@ -1,18 +1,22 @@
 package com.mcmanuel.LibraryManagementSystem.services;
 
+import com.mcmanuel.LibraryManagementSystem.entities.User;
+import com.mcmanuel.LibraryManagementSystem.pojo.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
-import java.util.Date;
+import java.util.*;
 import java.util.function.Function;
+
+import static java.util.stream.Collectors.toList;
 
 
 @Service
@@ -32,6 +36,24 @@ public class JwtService {
     public SecretKey key(){
         byte[] bytes = Base64.getDecoder().decode(this.secretString);
         return Keys.hmacShaKeyFor(bytes);
+    }
+
+    public String generateToken(User user){
+        Map<String,Object> claims = new HashMap<>();
+
+        List<Role> roles = user.getRoles();
+        claims.put("roles",roles);
+
+        return Jwts.builder()
+                .claims()
+                .add(claims)
+                .add("authorities", List.of(user.getRoles()))
+                .and()
+                .subject(user.getEmail())
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis()+(5*60*1000)))
+                .signWith(key())
+                .compact();
     }
 
     public String extractUsername(String token) {
