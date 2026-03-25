@@ -42,12 +42,13 @@ public class User {
     @NotBlank(message = "this field cannot be blank")
     private String password;
 
-    @Column(nullable = false,updatable = false,insertable = false)
+    @Column(nullable = false,updatable = false)
     private LocalDateTime createdDate;
 
     //    private LocalDateTime ;
 
     private List<Role> roles;
+
     public void setFullName(){
         this.fullName =this.lastname+" "+this.firstname;
     }

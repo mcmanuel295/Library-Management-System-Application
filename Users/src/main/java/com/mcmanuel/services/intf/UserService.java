@@ -3,7 +3,9 @@ package com.mcmanuel.LibraryManagementSystem.services.intf;
 import com.mcmanuel.LibraryManagementSystem.DTO.UserDTO;
 import com.mcmanuel.LibraryManagementSystem.entities.User;
 import com.mcmanuel.LibraryManagementSystem.pojo.UserRequest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.UUID;
 
@@ -13,7 +15,7 @@ public interface UserService {
 
     UserDTO getUser(UUID userId);
 
-    Pageable getAllUser(int pageNo, int size, String sort);
+    Page<UserDTO> getAllUser(int pageNo, int size);
 
     UserDTO updateUser(UUID userId, User user);
 

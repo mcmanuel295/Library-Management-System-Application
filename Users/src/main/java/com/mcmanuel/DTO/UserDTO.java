@@ -16,14 +16,14 @@ import java.util.UUID;
 public class UserDTO {
     private UUID userId;
 
-    @NotBlank(message = "this field cannot be blank")
-    private String lastname;
+//    @NotBlank(message = "this field cannot be blank")
+//    private String lastname;
+//
+//    @NotBlank(message = "this field cannot be blank")
+//    private String firstname;
 
     @NotBlank(message = "this field cannot be blank")
-    private String firstname;
-
-    @NotBlank(message = "this field cannot be blank")
-    private String fullName =getFullName();
+    private String fullName;
 
     @Column(unique = true,nullable = false)
     @Email

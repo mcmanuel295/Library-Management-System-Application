@@ -2,10 +2,13 @@ package com.mcmanuel.LibraryManagementSystem.controller;
 
 import com.mcmanuel.LibraryManagementSystem.DTO.UserDTO;
 import com.mcmanuel.LibraryManagementSystem.entities.User;
+import com.mcmanuel.LibraryManagementSystem.pojo.LoginRequest;
 import com.mcmanuel.LibraryManagementSystem.pojo.UserRequest;
 import com.mcmanuel.LibraryManagementSystem.services.intf.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,8 +36,9 @@ public class UserController {
     }
 
     @GetMapping("/")
-    Pageable getAllUser(@RequestParam(required = false,defaultValue = "0") int pageNo, @RequestParam(required = false,defaultValue = "10") int size, String sort){
-        return userService.getAllUser(pageNo,size,sort);
+    ResponseEntity<Page<UserDTO>> getAllUser(
+            @RequestParam(required = false,defaultValue = "0") int pageNo, @RequestParam(required = false,defaultValue = "10") int size) {
+        return ResponseEntity.ok(userService.getAllUser(pageNo,size));
     }
 
     @PutMapping("/{userId}")
@@ -55,5 +59,13 @@ public class UserController {
         return new ResponseEntity<>(savedUser,HttpStatus.OK);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest){
+        String login =userService.login(loginRequest.getEmail(),loginRequest.getPassword());
+        if (login == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(login,HttpStatus.OK);
+    }
 
 }

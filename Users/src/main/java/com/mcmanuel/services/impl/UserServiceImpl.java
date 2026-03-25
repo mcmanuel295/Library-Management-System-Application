@@ -11,6 +11,7 @@ import com.mcmanuel.LibraryManagementSystem.services.intf.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -57,9 +59,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Pageable getAllUser(int pageNo, int size, String sortBy) {
-        return sortBy.equals("asc")? PageRequest.of(pageNo,size,Sort.by(Sort.Direction.ASC,"userId"))
-                :PageRequest.of(pageNo,size, Sort.Direction.DESC,"userId");
+    public Page<UserDTO> getAllUser(int pageNo, int size) {
+        Pageable pageable = PageRequest.of(pageNo,size);
+        return userRepo.findAll(pageable).map(DTOMapper::ToDTO);
+
     }
 
     @Override
