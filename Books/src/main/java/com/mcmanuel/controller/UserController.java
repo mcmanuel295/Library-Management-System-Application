@@ -37,26 +37,26 @@ public class BookController {
     @GetMapping("/")
     ResponseEntity<Page<Books>> getAllBooks(
             @RequestParam(required = false,defaultValue = "0") int pageNo, @RequestParam(required = false,defaultValue = "10") int size) {
-        return ResponseEntity.ok(bookService.getAllUser(pageNo,size));
+        return ResponseEntity.ok(bookService.getAllBook(pageNo,size));
     }
 
     @PutMapping("/{userId}")
     ResponseEntity<Books> updateUser(@PathVariable UUID bookId, @RequestBody Books updatedBook){
-        Books savedUser = bookService.updateBook(bookId,updatedBook);
-        if (savedUser == null) {
+        Books savedUBook = bookService.updateBook(bookId,updatedBook);
+        if (savedBook == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(savedUser,HttpStatus.OK);
+        return new ResponseEntity<>(savedBook,HttpStatus.OK);
     }
 
-    @DeleteMapping("/{userId}")
+    @DeleteMapping("/{bookId}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    ResponseEntity<String> deleteUser(@PathVariable UUID bookId){
-        String savedUser = bookService.deleteBook(bookId);
-        if (savedUser == null) {
+    ResponseEntity<String> deleteBook(@PathVariable UUID bookId){
+        String savedBook = bookService.deleteBook(bookId);
+        if (savedBook == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(savedUser,HttpStatus.OK);
+        return new ResponseEntity<>(savedBook,HttpStatus.OK);
     }
 
 
