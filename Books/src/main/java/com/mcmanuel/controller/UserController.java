@@ -41,8 +41,8 @@ public class BookController {
     }
 
     @PutMapping("/{userId}")
-    ResponseEntity<UserDTO> updateUser(@PathVariable UUID userId, @RequestBody Books updatedBook){
-        UserDTO savedUser = bookService.updateUser(userId,updatedBook);
+    ResponseEntity<Books> updateUser(@PathVariable UUID bookId, @RequestBody Books updatedBook){
+        Books savedUser = bookService.updateBook(bookId,updatedBook);
         if (savedUser == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -51,8 +51,8 @@ public class BookController {
 
     @DeleteMapping("/{userId}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    ResponseEntity<String> deleteUser(@PathVariable UUID userId){
-        String savedUser = bookService.deleteUser(userId);
+    ResponseEntity<String> deleteUser(@PathVariable UUID bookId){
+        String savedUser = bookService.deleteBook(bookId);
         if (savedUser == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
