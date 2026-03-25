@@ -41,7 +41,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Books getBook(UUID bookId) {
-        return bookRepo.findById(bookId).orElseThrow(()->new RuntimeException("Book with bookId"+bookId+" not found")));
+        return bookRepo.findById(bookId).orElseThrow(()->new RuntimeException("Book with bookId"+bookId+" not found"));
     }
 
     @Override
