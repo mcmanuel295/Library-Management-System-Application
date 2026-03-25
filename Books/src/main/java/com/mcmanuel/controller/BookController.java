@@ -40,9 +40,9 @@ public class BookController {
         return ResponseEntity.ok(bookService.getAllBook(pageNo,size));
     }
 
-    @PutMapping("/{userId}")
-    ResponseEntity<Books> updateUser(@PathVariable UUID bookId, @RequestBody Books updatedBook){
-        Books savedUBook = bookService.updateBook(bookId,updatedBook);
+    @PutMapping("/{bookId}")
+    ResponseEntity<Books> updateBook(@PathVariable UUID bookId, @RequestBody Books updatedBook){
+        Books savedBook = bookService.updateBook(bookId,updatedBook);
         if (savedBook == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
