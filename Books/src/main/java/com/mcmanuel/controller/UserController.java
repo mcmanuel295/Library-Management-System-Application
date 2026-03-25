@@ -1,6 +1,5 @@
 package com.mcmanuel.controller;
 
-import com.mcmanuel.DTO.UserDTO;
 import com.mcmanuel.LibraryManagementSystem.pojo.BookRequest;
 import com.mcmanuel.entities.Books;
 import com.mcmanuel.services.intf.BookService;
@@ -15,28 +14,28 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1/books")
 public class BookController {
     private final BookService bookService;
 
     @PostMapping("/")
-    public ResponseEntity<UserDTO> createUser(@RequestBody BookRequest request){
-        return new ResponseEntity<>(bookService.createUser(request),HttpStatus.CREATED);
+    public ResponseEntity<Books> createBook(@RequestBody BookRequest request){
+        return new ResponseEntity<>(bookService.createBook(request),HttpStatus.CREATED);
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/{bookId}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<UserDTO> getUser(@PathVariable UUID userId){
-        UserDTO dto =bookService.getBook(userId);
-        if (dto == null) {
+    public ResponseEntity<Books> getBook(@PathVariable UUID bookId){
+        Books book =bookService.getBook(bookId);
+        if (book == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(dto,HttpStatus.OK);
+        return new ResponseEntity<>(book,HttpStatus.OK);
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/")
-    ResponseEntity<Page<UserDTO>> getAllUser(
+    ResponseEntity<Page<Books>> getAllBooks(
             @RequestParam(required = false,defaultValue = "0") int pageNo, @RequestParam(required = false,defaultValue = "10") int size) {
         return ResponseEntity.ok(bookService.getAllUser(pageNo,size));
     }
