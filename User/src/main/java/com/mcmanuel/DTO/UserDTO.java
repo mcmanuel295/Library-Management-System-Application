@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.UUID;
 
 @Builder
@@ -28,7 +28,7 @@ public class UserDTO {
     @Column(unique = true,nullable = false)
     @Email
     private String email;
-    private List<Role> roles;
+    private ArrayList<Role> roles;
     @Column(nullable = false,updatable = false,insertable = false)
     private LocalDateTime createdDate;
 

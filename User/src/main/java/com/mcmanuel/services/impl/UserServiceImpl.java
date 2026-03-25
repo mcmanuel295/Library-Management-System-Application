@@ -79,12 +79,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String login(String email, String password) {
+        System.out.println("enter");
         Authentication auth = manager.authenticate(new UsernamePasswordAuthenticationToken(email,password));
+        System.out.println(auth.isAuthenticated());
        if(auth.isAuthenticated()){
            User user= userRepo.findByEmail(email).orElseThrow();
            log.info( "Authenticated");
-           return jwtService.generateToken(user);
+       return jwtService.generateToken(user);
        }
         throw new UsernameNotFoundException("invalid user login");
+    }
+
+    @Override
+    public UserDTO updateRole(UUID userId,Role role) {
+        User user =userRepo.findById(userId).orElseThrow();
+
+        user.getRoles().add(role);
+        return DTOMapper.ToDTO(userRepo.save(user));
     }
 }

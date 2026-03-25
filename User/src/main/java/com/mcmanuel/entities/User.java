@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,7 +48,7 @@ public class User {
 
     //    private LocalDateTime ;
 
-    private List<Role> roles;
+    private ArrayList<Role> roles;
 
     public void setFullName(){
         this.fullName =this.lastname+" "+this.firstname;

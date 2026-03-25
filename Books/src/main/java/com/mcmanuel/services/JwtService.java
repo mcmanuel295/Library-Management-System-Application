@@ -1,7 +1,6 @@
 package com.mcmanuel.services;
 
 import com.mcmanuel.entities.User;
-import com.mcmanuel.pojo.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
