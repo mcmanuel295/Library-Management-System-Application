@@ -1,0 +1,16 @@
+spring:
+  application.name: LibraryManagementSystem
+
+  datasource:
+    password: Oea75357@
+    url: jdbc:mysql://localhost:3306/LibraryManagementSystemApplication
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+
