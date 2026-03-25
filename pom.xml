@@ -17,6 +17,7 @@
 	<modules>
 		<module>Library</module>
 		<module>User</module>
+		<module>Books</module>
 	</modules>
 
 	<properties>
