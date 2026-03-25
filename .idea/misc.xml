@@ -12,6 +12,7 @@
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/LibraryManagementSystem/pom.xml" />
+        <option value="$PROJECT_DIR$/UserScrap/pom.xml" />
         <option value="$PROJECT_DIR$/Users/pom.xml" />
       </set>
     </option>
