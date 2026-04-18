@@ -1,6 +1,7 @@
 package com.mcmanuel.services;
 
 import com.mcmanuel.entities.User;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,6 +15,7 @@ public class MyUserDetails implements UserDetails {
     private final User user;
 
     @Override
+    @NonNull
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return user.getRoles().stream().map(role -> new SimpleGrantedAuthority("ROLE_"+role)).toList();
     }
@@ -24,6 +26,7 @@ public class MyUserDetails implements UserDetails {
     }
 
     @Override
+    @NonNull
     public String getUsername() {
         return user.getEmail();
     }
@@ -35,7 +38,7 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return user.isAccountLocked();
     }
 
     @Override
@@ -45,6 +48,6 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return user.isEnabled();
     }
 }

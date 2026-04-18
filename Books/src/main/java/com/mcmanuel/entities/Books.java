@@ -3,6 +3,7 @@ package com.mcmanuel.entities;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
@@ -27,7 +28,13 @@ public class Books {
 
     private boolean available;
 
+    @NotBlank(message = "this field cannot be blank")
+    @Min(value = 0)
+    private int quantity;
+
     @Column(nullable = false,updatable = false)
     private LocalDateTime createdDate;
 
+    public Books(String title) {
+    }
 }

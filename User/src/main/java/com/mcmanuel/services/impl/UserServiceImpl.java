@@ -4,10 +4,14 @@ import com.mcmanuel.DTO.DTOMapper;
 import com.mcmanuel.DTO.UserDTO;
 import com.mcmanuel.entities.User;
 import com.mcmanuel.pojo.Role;
+import com.mcmanuel.pojo.Token;
 import com.mcmanuel.pojo.UserRequest;
+import com.mcmanuel.repository.TokenRepository;
 import com.mcmanuel.repository.UserRepository;
 import com.mcmanuel.services.JwtService;
+import com.mcmanuel.services.intf.EmailService;
 import com.mcmanuel.services.intf.UserService;
+import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,8 +25,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.function.Function;
 
 @Service
 @Slf4j
@@ -33,9 +39,12 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager manager;
     private final JwtService jwtService;
+    private final EmailService emailService;
+    private final TokenRepository tokenRepo;
+
 
     @Override
-    public UserDTO createUser(UserRequest request) {
+    public UserDTO createUser(UserRequest request) throws MessagingException {
         ArrayList<Role> roles =new ArrayList<>();
         roles.add(Role.USER);
         User user = User.builder()
@@ -47,9 +56,39 @@ public class UserServiceImpl implements UserService {
         user.setFirstname(request.getFirstname());
         user.setLastname(request.getLastname());
         user.setCreatedDate(LocalDateTime.now());
+        user.setEnabled(false);
+        user.setAccountLocked(false);
 
+        sendValidationEmail(user);
         return DTOMapper.ToDTO(userRepo.save(user));
     }
+
+    private void sendValidationEmail(User user) throws MessagingException {
+        Token token = generateToken();
+        emailService.sendEmail(user.getEmail(),user.getFullName(),"ACTIVATE-EMAIL",token.getToken(),"Account-activation","Account_Activation");
+    }
+
+    private Token generateToken(){
+        var token = Token
+                .builder()
+                .token(generateToken.apply(6))
+                .createdAt(LocalDateTime.now())
+                .expiresAt(LocalDateTime.now().plusMinutes(5))
+                .build();
+        return tokenRepo.save(token);
+    }
+
+
+    private final Function<Integer,String> generateToken = (length)->{
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        StringBuilder builder = new StringBuilder();
+
+        SecureRandom random = new SecureRandom();
+        for (int i = 0; i < length; i++) {
+            builder.append(chars.charAt(random.nextInt(chars.length())));
+        }
+        return builder.toString();
+    };
 
     @Override
     public UserDTO getUser(UUID userId) {
@@ -96,5 +135,17 @@ public class UserServiceImpl implements UserService {
 
         user.getRoles().add(role);
         return DTOMapper.ToDTO(userRepo.save(user));
+    }
+
+    @Override
+    public boolean activateAccount(String email, String token) {
+        Optional<User> userOpt =userRepo.findByEmail(email);
+        if(userOpt.isEmpty()){
+            throw new UsernameNotFoundException("User not found!!");
+        }
+        User user = userOpt.get();
+        user.setAccountLocked(false);
+        user.setEnabled(true);
+        return false;
     }
 }

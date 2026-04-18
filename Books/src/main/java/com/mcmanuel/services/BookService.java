@@ -1,6 +1,5 @@
-package com.mcmanuel.services.intf;
+package com.mcmanuel.services;
 
-import com.mcmanuel.LibraryManagementSystem.pojo.BookRequest;
 import com.mcmanuel.entities.Books;
 import org.springframework.data.domain.Page;
 
@@ -8,7 +7,7 @@ import java.util.UUID;
 
 public interface BookService {
 
-    Books createBook(BookRequest bookRequest);
+    Books addBook(String title);
 
     Books getBook(UUID bookId);
 
@@ -18,5 +17,5 @@ public interface BookService {
 
     String deleteBook(UUID bookId);
 
-
+    Books search(String word);
 }

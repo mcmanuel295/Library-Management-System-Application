@@ -31,6 +31,7 @@ public class SecurityConfig {
                         request -> request
                                 .requestMatchers("/api/v1/users/login").permitAll()
                                 .requestMatchers(HttpMethod.POST,"/api/v1/users/").permitAll()
+                                .requestMatchers(HttpMethod.GET,"/api/v1/users/").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .cors(Customizer.withDefaults())

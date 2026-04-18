@@ -1,8 +1,7 @@
 package com.mcmanuel.controller;
 
-import com.mcmanuel.LibraryManagementSystem.pojo.BookRequest;
 import com.mcmanuel.entities.Books;
-import com.mcmanuel.services.intf.BookService;
+import com.mcmanuel.services.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -19,8 +18,8 @@ public class BookController {
     private final BookService bookService;
 
     @PostMapping("/")
-    public ResponseEntity<Books> createBook(@RequestBody BookRequest request){
-        return new ResponseEntity<>(bookService.createBook(request),HttpStatus.CREATED);
+    public ResponseEntity<Books> createBook(@RequestBody String title){
+        return new ResponseEntity<>(bookService.addBook(title),HttpStatus.CREATED);
     }
 
     @GetMapping("/{bookId}")

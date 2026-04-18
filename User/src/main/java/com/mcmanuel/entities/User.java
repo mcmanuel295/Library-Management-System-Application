@@ -6,10 +6,11 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -36,15 +37,24 @@ public class User {
     @NotBlank(message = "this field cannot be blank")
     private String fullName ;
 
-    @Column(unique = true,nullable = false)
     @Email
+    @Column(unique = true,nullable = false)
     private String email;
 
     @NotBlank(message = "this field cannot be blank")
     private String password;
 
+    @CreatedDate
     @Column(nullable = false,updatable = false)
     private LocalDateTime createdDate;
+
+    @LastModifiedDate
+    @Column(nullable = false,insertable = false )
+    private LocalDateTime lastModifiedDate;
+
+    private boolean enabled;
+
+    private boolean accountLocked;
 
     //    private LocalDateTime ;
 

@@ -17,9 +17,10 @@ public class MyUserDetailsService implements UserDetailsService {
     @Override
     @NonNull
     public UserDetails loadUserByUsername(@NonNull String username) throws UsernameNotFoundException {
+        System.out.println("in userdatail service: "+username);
 
         User user = userRepo.findByEmail(username)
-                .orElseThrow(() -> new RuntimeException("User " + username + " doesn't exist"));
+                .orElseThrow(() -> new UsernameNotFoundException("User " + username + " doesn't exist"));
         System.out.println("username;"+username);
         return  new MyUserDetails(user);
     }

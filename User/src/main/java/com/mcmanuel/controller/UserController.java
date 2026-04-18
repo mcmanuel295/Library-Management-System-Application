@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,7 +39,7 @@ public class UserController {
         return new ResponseEntity<>(dto,HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/")
     ResponseEntity<Page<UserDTO>> getAllUser(
             @RequestParam(required = false,defaultValue = "0") int pageNo, @RequestParam(required = false,defaultValue = "10") int size) {
@@ -83,5 +84,12 @@ public class UserController {
         return new ResponseEntity<>(savedUser,HttpStatus.OK);
     }
 
+    @PostMapping("/{email}/{token}")
+    ResponseEntity<String> activateUser(@PathVariable String email,@PathVariable String token){
+        if (!userService.activateAccount(email,token)){
+            return new ResponseEntity<>("Error", HttpStatus.NOT_ACCEPTABLE);
+        }
+        return ResponseEntity.ok("Account activated");
+    }
 
 }

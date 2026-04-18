@@ -1,10 +1,7 @@
-package com.mcmanuel.services.impl;
+package com.mcmanuel.services;
 
-import com.mcmanuel.LibraryManagementSystem.pojo.BookRequest;
 import com.mcmanuel.entities.Books;
 import com.mcmanuel.repository.BookRepository;
-import com.mcmanuel.services.JwtService;
-import com.mcmanuel.services.intf.BookService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,10 +9,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -24,20 +21,25 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepo;
-    private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager manager;
-    private final JwtService jwtService;
 
     @Override
-    public Books createBook(BookRequest request) {
-        Books book = Books.builder()
-                .title(request.getTitle())
-                .build();
+    public Books addBook(String title) {
+        Optional<Books> optionalObj =bookRepo.findBytitle(title);
+        if(optionalObj.isEmpty()){
+            Books book = new Books(title);
+            book.setAvailable(true);
+            book.setQuantity(1);
+            book.setCreatedDate(LocalDateTime.now());
 
-        book.setCreatedDate(LocalDateTime.now());
+            return bookRepo.save(book);
+        }
+        Books book = new Books(title);
+        book.setQuantity(book.getQuantity()+1);
 
         return bookRepo.save(book);
     }
+
 
     @Override
     public Books getBook(UUID bookId) {
@@ -63,6 +65,11 @@ public class BookServiceImpl implements BookService {
         Books book =bookRepo.findById(bookId).orElseThrow(()->new RuntimeException("Book with bookId"+bookId+" not found"));
         bookRepo.deleteById(book.getBookId());
         return "deleted";
+    }
+
+    @Override
+    public Books search(String word) {
+        return bookRepo.search(word);
     }
 
 
