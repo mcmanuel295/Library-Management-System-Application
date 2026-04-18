@@ -1,0 +1,49 @@
+name: libraryMicroService pipeLine
+
+on:
+  push:
+    branches:
+      - main
+
+    paths:
+      - .github/workflows/Book-Pipeline.yml
+      - Books/**
+      - Docker/Book/**
+      - "pom/xml"
+      - "docker-compose.yml "
+
+jobs:
+  compile:
+    name: Compile project
+    runs-on: ubuntu:latest
+    steps:
+      - name: checkout code
+        id: checkout_code
+        uses: actions/checkoutCode@v3
+        with:
+          - fetch-level: 0
+
+      - name: setup jdk
+        uses: action/setup_jdk@v3
+        with:
+          - distribution: corretto
+          - version: 21
+
+      - name: compile project
+        run: |
+          cd Books
+          ./mvnw clean compile
+          
+          steps.checkout_code.
+          cd Books
+          ./mvnw clean compile
+          
+          cd Books
+        ./mvnw clean compile
+        cd Books
+        ./mvnw clean compile
+        cd Books
+        ./mvnw clean compile
+
+
+  unit-test:
