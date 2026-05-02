@@ -1,7 +1,7 @@
-package com.mcmanuel.entities;
+package com.mcmanuel.domain.token;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.mcmanuel.pojo.Role;
+import com.mcmanuel.domain.user.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

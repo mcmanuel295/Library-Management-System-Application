@@ -1,4 +1,4 @@
-package com.mcmanuel.DTO;
+package com.mcmanuel.domain.user;
 
 import com.mcmanuel.entities.User;
 

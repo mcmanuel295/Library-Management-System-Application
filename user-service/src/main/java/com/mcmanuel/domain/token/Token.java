@@ -1,4 +1,4 @@
-package com.mcmanuel.pojo;
+package com.mcmanuel.domain.token;
 
 import jakarta.persistence.Entity;
 import lombok.*;

@@ -1,4 +1,4 @@
-package com.mcmanuel.repository;
+package com.mcmanuel.domain.user;
 
 import com.mcmanuel.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;

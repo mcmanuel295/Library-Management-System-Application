@@ -1,13 +1,11 @@
 package com.mcmanuel.services.intf;
 
-import com.mcmanuel.DTO.UserDTO;
+import com.mcmanuel.domain.user.UserDTO;
 import com.mcmanuel.entities.User;
-import com.mcmanuel.pojo.Role;
-import com.mcmanuel.pojo.UserRequest;
+import com.mcmanuel.domain.user.Role;
+import com.mcmanuel.domain.user.UserRequest;
 import jakarta.mail.MessagingException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 import java.util.UUID;
 

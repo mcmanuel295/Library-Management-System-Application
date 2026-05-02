@@ -1,6 +1,5 @@
-package com.mcmanuel.DTO;
+package com.mcmanuel.domain.user;
 
-import com.mcmanuel.pojo.Role;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

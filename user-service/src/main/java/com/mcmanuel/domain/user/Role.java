@@ -1,4 +1,4 @@
-package com.mcmanuel.pojo;
+package com.mcmanuel.domain.user;
 
 public enum Role {
     ADMIN,

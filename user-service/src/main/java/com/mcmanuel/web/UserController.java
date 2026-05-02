@@ -1,16 +1,13 @@
 package com.mcmanuel.web;
 
-import com.mcmanuel.DTO.UserDTO;
+import com.mcmanuel.domain.user.UserDTO;
 import com.mcmanuel.entities.User;
-import com.mcmanuel.pojo.LoginRequest;
-import com.mcmanuel.pojo.Role;
-import com.mcmanuel.pojo.UserRequest;
+import com.mcmanuel.domain.user.LoginRequest;
+import com.mcmanuel.domain.user.Role;
+import com.mcmanuel.domain.user.UserRequest;
 import com.mcmanuel.services.intf.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
