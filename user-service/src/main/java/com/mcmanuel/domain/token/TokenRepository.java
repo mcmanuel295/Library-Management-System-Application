@@ -1,4 +1,4 @@
-package com.mcmanuel.domain.user;
+package com.mcmanuel.domain.token;
 
 import com.mcmanuel.pojo.Token;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,9 +1,5 @@
-package com.mcmanuel.services.intf;
+package com.mcmanuel.domain.user;
 
-import com.mcmanuel.domain.user.UserDTO;
-import com.mcmanuel.entities.User;
-import com.mcmanuel.domain.user.Role;
-import com.mcmanuel.domain.user.UserRequest;
 import jakarta.mail.MessagingException;
 import org.springframework.data.domain.Page;
 

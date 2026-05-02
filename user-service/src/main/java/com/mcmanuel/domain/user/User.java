@@ -1,7 +1,6 @@
-package com.mcmanuel.domain.token;
+package com.mcmanuel.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.mcmanuel.domain.user.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -20,7 +19,7 @@ import java.util.UUID;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID userId;

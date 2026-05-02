@@ -1,16 +1,11 @@
-package com.mcmanuel.services.impl;
+package com.mcmanuel.domain.user;
 
-import com.mcmanuel.domain.user.DTOMapper;
-import com.mcmanuel.domain.user.UserDTO;
 import com.mcmanuel.entities.User;
-import com.mcmanuel.domain.user.Role;
 import com.mcmanuel.pojo.Token;
-import com.mcmanuel.domain.user.UserRequest;
 import com.mcmanuel.repository.TokenRepository;
 import com.mcmanuel.repository.UserRepository;
 import com.mcmanuel.services.JwtService;
 import com.mcmanuel.services.intf.EmailService;
-import com.mcmanuel.services.intf.UserService;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

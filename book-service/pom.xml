@@ -10,7 +10,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>Books</artifactId>
+    <artifactId>book-service</artifactId>
 
     <properties>
         <maven.compiler.source>22</maven.compiler.source>

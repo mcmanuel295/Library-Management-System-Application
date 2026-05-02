@@ -5,7 +5,7 @@ import com.mcmanuel.entities.User;
 import com.mcmanuel.domain.user.LoginRequest;
 import com.mcmanuel.domain.user.Role;
 import com.mcmanuel.domain.user.UserRequest;
-import com.mcmanuel.services.intf.UserService;
+import com.mcmanuel.domain.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
