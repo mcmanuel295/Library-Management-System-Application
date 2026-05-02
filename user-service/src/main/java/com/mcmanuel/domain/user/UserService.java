@@ -13,7 +13,7 @@ public interface UserService {
 
     Page<UserDTO> getAllUser(int pageNo, int size);
 
-    UserDTO updateUser(UUID userId, User user);
+    UserDTO updateUser(UUID userId, UserDTO user);
 
     String deleteUser(UUID userId);
 
