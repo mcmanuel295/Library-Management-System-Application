@@ -1,6 +1,5 @@
 package com.mcmanuel.domain.user;
 
-import com.mcmanuel.entities.User;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;

@@ -1,5 +1,6 @@
 package com.mcmanuel.domain.user;
 
+import com.mcmanuel.domain.email.EmailService;
 import com.mcmanuel.domain.token.TokenDto;
 import com.mcmanuel.domain.token.TokenService;
 import jakarta.mail.MessagingException;

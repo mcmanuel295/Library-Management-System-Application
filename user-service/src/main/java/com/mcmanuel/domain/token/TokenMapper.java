@@ -1,6 +1,6 @@
 package com.mcmanuel.domain.token;
 
-public class TokenDtoMapper {
+class TokenMapper {
 
     public static Token toToken(TokenDto dto){
         return Token.builder()

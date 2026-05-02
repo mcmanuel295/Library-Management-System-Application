@@ -1,6 +1,5 @@
 package com.mcmanuel.domain.user;
 
-import com.mcmanuel.entities.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;

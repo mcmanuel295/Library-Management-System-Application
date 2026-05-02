@@ -1,8 +1,7 @@
 package com.mcmanuel.domain.user;
 
-import com.mcmanuel.entities.User;
 
-public class DTOMapper {
+public class UserMapper {
 
     public static UserDTO ToDTO(User user){
         return UserDTO.builder()
