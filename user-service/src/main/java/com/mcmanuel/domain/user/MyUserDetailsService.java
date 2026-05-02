@@ -1,7 +1,5 @@
-package com.mcmanuel.services;
+package com.mcmanuel.domain.user;
 
-import com.mcmanuel.entities.User;
-import com.mcmanuel.repository.UserRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

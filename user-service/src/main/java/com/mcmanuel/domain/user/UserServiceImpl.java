@@ -1,11 +1,7 @@
 package com.mcmanuel.domain.user;
 
-import com.mcmanuel.entities.User;
-import com.mcmanuel.pojo.Token;
-import com.mcmanuel.repository.TokenRepository;
-import com.mcmanuel.repository.UserRepository;
-import com.mcmanuel.services.JwtService;
-import com.mcmanuel.services.intf.EmailService;
+import com.mcmanuel.domain.token.TokenDto;
+import com.mcmanuel.domain.token.TokenService;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +31,7 @@ public class UserServiceImpl implements UserService {
     private final AuthenticationManager manager;
     private final JwtService jwtService;
     private final EmailService emailService;
-    private final TokenRepository tokenRepo;
+    private final TokenService tokenRepo;
 
 
     @Override
@@ -59,18 +55,18 @@ public class UserServiceImpl implements UserService {
     }
 
     private void sendValidationEmail(User user) throws MessagingException {
-        Token token = generateToken();
-        emailService.sendEmail(user.getEmail(),user.getFullName(),"ACTIVATE-EMAIL",token.getToken(),"Account-activation","Account_Activation");
+        TokenDto token = generateToken();
+        emailService.sendEmail(user.getEmail(),user.getFullName(),"ACTIVATE-EMAIL",token.token(),"Account-activation","Account_Activation");
     }
 
-    private Token generateToken(){
-        var token = Token
+    private TokenDto generateToken(){
+        var token = TokenDto
                 .builder()
                 .token(generateToken.apply(6))
                 .createdAt(LocalDateTime.now())
                 .expiresAt(LocalDateTime.now().plusMinutes(5))
                 .build();
-        return tokenRepo.save(token);
+        return tokenRepo.saveToken(token);
     }
 
 

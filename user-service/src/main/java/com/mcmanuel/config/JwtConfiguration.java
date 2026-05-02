@@ -1,7 +1,7 @@
 package com.mcmanuel.config;
 
-import com.mcmanuel.services.JwtService;
-import com.mcmanuel.services.MyUserDetailsService;
+import com.mcmanuel.domain.user.JwtService;
+import com.mcmanuel.domain.user.MyUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

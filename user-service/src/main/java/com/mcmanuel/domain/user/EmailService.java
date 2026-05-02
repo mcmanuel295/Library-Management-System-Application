@@ -1,4 +1,4 @@
-package com.mcmanuel.services.intf;
+package com.mcmanuel.domain.user;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;

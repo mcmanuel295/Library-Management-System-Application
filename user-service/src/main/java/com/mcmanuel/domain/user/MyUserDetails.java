@@ -1,4 +1,4 @@
-package com.mcmanuel.services;
+package com.mcmanuel.domain.user;
 
 import com.mcmanuel.entities.User;
 import lombok.NonNull;

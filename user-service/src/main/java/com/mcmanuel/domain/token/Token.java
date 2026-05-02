@@ -11,9 +11,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
-public class Token {
+class Token {
     private Integer tokenId;
-
     private String token;
     private LocalDateTime createdAt;
     private LocalDateTime expiresAt;
