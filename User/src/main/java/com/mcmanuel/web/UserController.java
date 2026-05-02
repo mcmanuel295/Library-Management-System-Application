@@ -1,4 +1,4 @@
-package com.mcmanuel.controller;
+package com.mcmanuel.web;
 
 import com.mcmanuel.DTO.UserDTO;
 import com.mcmanuel.entities.User;
