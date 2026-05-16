@@ -3,6 +3,7 @@ package com.mcmanuel.domain.user;
 import com.mcmanuel.domain.email.EmailService;
 import com.mcmanuel.domain.token.TokenDto;
 import com.mcmanuel.domain.token.TokenService;
+import com.mcmanuel.domain.user.request.UserRequest;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -84,7 +85,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUser(UUID userId) {
-        return DTOMapper.DTO(userRepo.findById(userId).orElseThrow(()->new RuntimeException("User with userId"+userId+" not found")));
+        return UserMapper.ToDTO(userRepo.findById(userId).orElseThrow(()->new RuntimeException("User with userId"+userId+" not found")));
     }
 
     @Override
@@ -114,7 +115,7 @@ public class UserServiceImpl implements UserService {
         Authentication auth = manager.authenticate(new UsernamePasswordAuthenticationToken(email,password));
         System.out.println(auth.isAuthenticated());
        if(auth.isAuthenticated()){
-           User user= userRepo.findByEmail(email).orElseThrow();
+           UserDTO user= UserMapper.ToDTO( userRepo.findByEmail(email).orElseThrow());
            log.info( "Authenticated");
        return jwtService.generateToken(user);
        }

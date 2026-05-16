@@ -1,9 +1,9 @@
 package com.mcmanuel.web;
 
 import com.mcmanuel.domain.user.UserDTO;
-import com.mcmanuel.domain.user.LoginRequest;
+import com.mcmanuel.domain.user.request.LoginRequest;
 import com.mcmanuel.domain.user.Role;
-import com.mcmanuel.domain.user.UserRequest;
+import com.mcmanuel.domain.user.request.UserRequest;
 import com.mcmanuel.domain.user.UserService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;

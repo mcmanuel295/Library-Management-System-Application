@@ -1,4 +1,4 @@
-package com.mcmanuel.domain.user;
+package com.mcmanuel.domain.user.request;
 
 import lombok.Data;
 
