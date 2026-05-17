@@ -1,7 +1,5 @@
-package com.mcmanuel.domain.services;
+package com.mcmanuel.domain;
 
-import com.mcmanuel.domain.book.Books;
-import com.mcmanuel.repository.BookRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,40 +22,45 @@ public class BookServiceImpl implements BookService {
     private final AuthenticationManager manager;
 
     @Override
-    public Books addBook(String title) {
-        Optional<Books> optionalObj =bookRepo.findBytitle(title);
+    public BookDto addBook(String title) {
+        Optional<Book> optionalObj =bookRepo.findBytitle(title);
         if(optionalObj.isEmpty()){
-            Books book = new Books(title);
+            Book book = new Book();
             book.setAvailable(true);
             book.setQuantity(1);
             book.setCreatedDate(LocalDateTime.now());
 
-            return bookRepo.save(book);
+            return DtoMapper.Dto(bookRepo.save(book));
         }
-        Books book = new Books(title);
+        Book book =optionalObj.get();
         book.setQuantity(book.getQuantity()+1);
-
-        return bookRepo.save(book);
+        return DtoMapper.Dto(bookRepo.save(book));
     }
 
 
     @Override
-    public Books getBook(UUID bookId) {
-        return bookRepo.findById(bookId).orElseThrow(()->new RuntimeException("Book with bookId"+bookId+" not found"));
+    public BookDto getBook(UUID bookId) {
+        return DtoMapper.Dto(
+                bookRepo.findById(bookId).orElseThrow(
+                ()->new RuntimeException("Book with bookId"+bookId+" not found")
+                )
+        );
     }
 
     @Override
-    public Page<Books> getAllBook(int pageNo, int size) {
+    public Page<BookDto> getAllBook(int pageNo, int size) {
         Pageable pageable = PageRequest.of(pageNo,size);
-        return bookRepo.findAll(pageable);
+        return bookRepo.findAll(pageable).map(
+                DtoMapper::Dto
+        );
 
     }
 
     @Override
-    public Books updateBook(UUID bookId, Books updatedBook) {
-        Books book =bookRepo.findById(bookId).orElseThrow(()->new RuntimeException("Book with bookId"+bookId+" not found"));
-        updatedBook.setBookId(book.getBookId());
-        return bookRepo.save(updatedBook);
+    public BookDto updateBook(UUID bookId, BookDto updatedBook) {
+        Book book =bookRepo.findById(bookId).orElseThrow(()->new RuntimeException("Book with bookId"+bookId+" not found"));
+        updatedBook.bookId(book.getBookId());
+        return DtoMapper.Dto(bookRepo.save(updatedBook);
     }
 
     @Override

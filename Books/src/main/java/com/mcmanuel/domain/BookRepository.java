@@ -1,17 +1,16 @@
-package com.mcmanuel.domain.repository;
+package com.mcmanuel.domain;
 
-import com.mcmanuel.domain.book.Books;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 import java.util.UUID;
 
-public interface BookRepository extends JpaRepository<Books, UUID> {
+interface BookRepository extends JpaRepository<Book, UUID> {
 
 
-    Optional<Books> findBytitle(String title);
+    Optional<Book> findBytitle(String title);
 
     @Query("Select b from Books b where b.title like %:word%")
-    Books search(String word);
+    Book search(String word);
 }

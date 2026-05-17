@@ -1,7 +1,7 @@
 package com.mcmanuel.controller;
 
-import com.mcmanuel.entities.Books;
-import com.mcmanuel.services.BookService;
+import com.mcmanuel.domain.BookDto;
+import com.mcmanuel.domain.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -18,14 +18,14 @@ public class BookController {
     private final BookService bookService;
 
     @PostMapping("/")
-    public ResponseEntity<Books> createBook(@RequestBody String title){
+    public ResponseEntity<BookDto> createBook(@RequestBody String title){
         return new ResponseEntity<>(bookService.addBook(title),HttpStatus.CREATED);
     }
 
     @GetMapping("/{bookId}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<Books> getBook(@PathVariable UUID bookId){
-        Books book =bookService.getBook(bookId);
+    public ResponseEntity<BookDto> getBook(@PathVariable UUID bookId){
+        BookDto book =bookService.getBook(bookId);
         if (book == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -34,14 +34,14 @@ public class BookController {
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/")
-    ResponseEntity<Page<Books>> getAllBooks(
+    ResponseEntity<Page<BookDto>> getAllBooks(
             @RequestParam(required = false,defaultValue = "0") int pageNo, @RequestParam(required = false,defaultValue = "10") int size) {
         return ResponseEntity.ok(bookService.getAllBook(pageNo,size));
     }
 
     @PutMapping("/{bookId}")
-    ResponseEntity<Books> updateBook(@PathVariable UUID bookId, @RequestBody Books updatedBook){
-        Books savedBook = bookService.updateBook(bookId,updatedBook);
+    ResponseEntity<BookDto> updateBook(@PathVariable UUID bookId, @RequestBody Books updatedBook){
+        BookDto savedBook = bookService.updateBook(bookId,updatedBook);
         if (savedBook == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

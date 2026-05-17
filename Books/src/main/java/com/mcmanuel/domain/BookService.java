@@ -1,21 +1,20 @@
-package com.mcmanuel.domain.services;
+package com.mcmanuel.domain;
 
-import com.mcmanuel.domain.book.Books;
 import org.springframework.data.domain.Page;
 
 import java.util.UUID;
 
 public interface BookService {
 
-    Books addBook(String title);
+    BookDto addBook(String title);
 
-    Books getBook(UUID bookId);
+    BookDto getBook(UUID bookId);
 
-    Page<Books> getAllBook(int pageNo, int size);
+    Page<BookDto> getAllBook(int pageNo, int size);
 
-    Books updateBook(UUID bookId, Books book);
+    BookDto updateBook(UUID bookId, BookDto book);
 
     String deleteBook(UUID bookId);
 
-    Books search(String word);
+    BookDto search(String word);
 }

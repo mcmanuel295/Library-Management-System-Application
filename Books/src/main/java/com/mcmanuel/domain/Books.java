@@ -1,4 +1,4 @@
-package com.mcmanuel.domain.book;
+package com.mcmanuel.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
@@ -16,7 +16,7 @@ import java.util.UUID;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @NoArgsConstructor
 @AllArgsConstructor
-public class Books {
+class Book{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID bookId;
