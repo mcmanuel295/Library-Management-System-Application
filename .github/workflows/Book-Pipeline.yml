@@ -21,7 +21,7 @@ jobs:
         id: checkout_code
         uses: actions/checkoutCode@v3
         with:
-          - fetch-level: 0
+          fetch-level: 0
 
       - name: setup jdk
         uses: action/setup_jdk@v3
