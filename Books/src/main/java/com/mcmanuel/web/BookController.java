@@ -2,43 +2,81 @@ package com.mcmanuel.web;
 
 import com.mcmanuel.domain.BookDto;
 import com.mcmanuel.domain.BookService;
+import com.mcmanuel.exception.BookNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/")
+@RequestMapping("api/v1")
 public class BookController {
     private final BookService bookService;
 
     @PostMapping("/")
-    ResponseEntity<BookDto> addBook(String title){
-        return new ResponseEntity<>(bookService.addBook(title), HttpStatus.CREATED);
+    ResponseEntity<BookDto> addBook(@Valid String title){
+        return new ResponseEntity<>(bookService.addBook(title),HttpStatus.CREATED);
     }
 
-    ResponseEntity<BookDto> getBook(UUID bookId){
+    @GetMapping("/{bookId}")
+    ResponseEntity<BookDto> getBook(@Valid @PathVariable UUID bookId){
+        try {
+            return new ResponseEntity<>(bookService.getBook(bookId),HttpStatus.OK);
+        }
+        catch (BookNotFoundException ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
-    Page<BookDto> getAllBook(int pageNo, int size, String sort){
-
+    @GetMapping("/")
+    Page<BookDto> getAllBook(@Valid @RequestParam(defaultValue ="0" ) int pageNo,@Valid @RequestParam(defaultValue = "10") int size,@Valid @RequestParam(required = false,defaultValue = "title")  String sort){
+        return bookService.getAllBook(pageNo,size,sort);
     }
 
-    ResponseEntity<BookDto> updateBook(UUID bookId, BookDto book){
-
+    @PutMapping("/{bookId}")
+    ResponseEntity<BookDto> updateBook(@Valid @PathVariable UUID bookId, @RequestBody @Valid BookDto book){
+        try {
+            return new ResponseEntity<>(bookService.updateBook(bookId,book),HttpStatus.OK);
+        }
+        catch (BookNotFoundException ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
-    String deleteBook(UUID bookId){
-
+    @DeleteMapping("/{bookId}")
+    ResponseEntity<String> deleteBook(@Valid @PathVariable UUID bookId) throws BookNotFoundException{
+        try {
+            return new ResponseEntity<>( bookService.deleteBook(bookId), HttpStatus.OK);
+        }
+        catch (BookNotFoundException ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
-    ResponseEntity<BookDto> search(String word){
-
+    @GetMapping("/{word}")
+    ResponseEntity<BookDto> search(@PathVariable @Valid String word){
+        try {
+            return new ResponseEntity<>( bookService.search(word), HttpStatus.OK);
+        }
+        catch (BookNotFoundException ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }

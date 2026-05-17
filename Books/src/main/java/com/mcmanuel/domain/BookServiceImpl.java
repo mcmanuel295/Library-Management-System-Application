@@ -1,11 +1,13 @@
 package com.mcmanuel.domain;
 
+import com.mcmanuel.exception.BookNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,7 +22,7 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepo;
 
     @Override
-    public BookDto addBook(String title) {
+    public BookDto addBook(String title){
         Optional<Book> optionalObj =bookRepo.findByTitle(title);
         if(optionalObj.isEmpty()){
             Book book = new Book();
@@ -37,17 +39,18 @@ public class BookServiceImpl implements BookService {
 
 
     @Override
-    public BookDto getBook(UUID bookId) {
+    public BookDto getBook(UUID bookId) throws BookNotFoundException {
         return DtoMapper.toDto(
                 bookRepo.findById(bookId).orElseThrow(
-                ()->new RuntimeException("Book with bookId"+bookId+" not found")
+                ()->new BookNotFoundException("Book with bookId"+bookId+" not found")
                 )
         );
     }
 
     @Override
-    public Page<BookDto> getAllBook(int pageNo, int size) {
-        Pageable pageable = PageRequest.of(pageNo,size);
+    public Page<BookDto> getAllBook(int pageNo, int size,String sort) {
+        Sort sortBy =Sort.by(sort).ascending();
+        Pageable pageable = PageRequest.of(pageNo,size,sortBy);
         return bookRepo.findAll(pageable).map(
                 DtoMapper::toDto
         );
@@ -55,8 +58,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookDto updateBook(UUID bookId, BookDto updatedBook) {
-        Book book =bookRepo.findById(bookId).orElseThrow(()->new RuntimeException("Book with bookId"+bookId+" not found"));
+    public BookDto updateBook(UUID bookId, BookDto updatedBook)throws BookNotFoundException  {
+        Book book =bookRepo.findById(bookId).orElseThrow(()->new BookNotFoundException("Book with bookId"+bookId+" not found"));
         updatedBook = updatedBook.withBookId(book.getBookId());
         return DtoMapper.toDto(
                 bookRepo.save(DtoMapper.toBook(updatedBook))
@@ -65,15 +68,17 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public String deleteBook(UUID bookId) {
-        Book book =bookRepo.findById(bookId).orElseThrow(()->new RuntimeException("Book with bookId"+bookId+" not found"));
+        Book book =bookRepo.findById(bookId).orElseThrow(()->new BookNotFoundException("Book with bookId"+bookId+" not found"));
         bookRepo.deleteById(book.getBookId());
         return "deleted";
     }
 
     @Override
     public BookDto search(String word) {
-        return DtoMapper.toDto(bookRepo.search(word));
+        Optional<Book> optBook =bookRepo.search(word);
+        if (optBook.isPresent()){
+            return DtoMapper.toDto(optBook.get());
+        }
+        throw new BookNotFoundException("Book with word"+word+" not found");
     }
-
-
 }

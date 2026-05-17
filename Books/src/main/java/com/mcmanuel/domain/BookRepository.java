@@ -10,5 +10,5 @@ interface BookRepository extends JpaRepository<Book, UUID> {
     Optional<Book> findByTitle(String title);
 
     @Query("Select b from Book b where b.title like %:title%")
-    Book search(String word);
+    Optional<Book> search(String word);
 }
