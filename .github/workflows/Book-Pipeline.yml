@@ -38,12 +38,7 @@ jobs:
           cd Books
           ./mvnw clean compile
           
-          cd Books
-          ./mvnw clean compile
-          cd Books
-         ./mvnw clean compile
-          cd Books
-          ./mvnw clean compile
+  
 
 
   

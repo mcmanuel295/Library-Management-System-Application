@@ -39,11 +39,10 @@ jobs:
           ./mvnw clean compile
           
           cd Books
-        ./mvnw clean compile
-        cd Books
-        ./mvnw clean compile
-        cd Books
-        ./mvnw clean compile
+          ./mvnw clean compile
+          cd Books
+          ./mvnw clean compile
+          cd Books
+          ./mvnw clean compile
 
 
-  unit-test:
