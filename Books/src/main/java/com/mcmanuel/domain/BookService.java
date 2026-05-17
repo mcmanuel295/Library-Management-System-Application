@@ -10,7 +10,7 @@ public interface BookService {
 
     BookDto getBook(UUID bookId);
 
-    Page<BookDto> getAllBook(int pageNo, int size);
+    Page<BookDto> getAllBook(int pageNo, int size,String sort);
 
     BookDto updateBook(UUID bookId, BookDto book);
 
