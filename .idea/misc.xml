@@ -7,10 +7,13 @@
         <option value="$PROJECT_DIR$/Users/pom.xml" />
         <option value="$PROJECT_DIR$/LibraryManagementSystem/pom.xml" />
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/Books/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
       <set>
+        <option value="$PROJECT_DIR$/Books/pom.xml" />
+        <option value="$PROJECT_DIR$/Library/pom.xml" />
         <option value="$PROJECT_DIR$/LibraryManagementSystem/pom.xml" />
         <option value="$PROJECT_DIR$/UserScrap/pom.xml" />
         <option value="$PROJECT_DIR$/Users/pom.xml" />
