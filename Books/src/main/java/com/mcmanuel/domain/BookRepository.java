@@ -7,10 +7,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 interface BookRepository extends JpaRepository<Book, UUID> {
-
-
     Optional<Book> findByTitle(String title);
 
-    @Query("Select b from Books b where b.title like %:word%")
+    @Query("Select b from Book b where b.title like %:title%")
     Book search(String word);
 }
