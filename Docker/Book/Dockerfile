@@ -1,4 +1,4 @@
-/FROM ubuntu:latest as build
+FROM ubuntu:latest as build
 WORKDIR /build
 COPY pom.xml .
 CMD mvn dependency:go-offline

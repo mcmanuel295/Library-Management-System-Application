@@ -9,15 +9,19 @@ on:
       - .github/workflows/Book-Pipeline.yml
       - Books/src/**
       - Docker/Book/**
-      - Book/pom.xml
       - "docker-compose.yml "
       - Books/pom.xml
-      - "docker-compose.yml"
 
 jobs:
   compile:
     name: Compile project
     runs-on: ubuntu:latest
+    env:
+      working-directory: ./book-service
+    defaults:
+      runs:
+        working-directory: ${{env.working-directory}}
+
     steps:
       - name: checkout code
         id: checkout_code
@@ -38,7 +42,10 @@ jobs:
           
           steps.checkout_code.
           cd Books
-          ./mvnw clean compile
+          ./mvnw clean compile -DskipTests
+
+      - name:
+
           
           cd Books
           ./mvnw clean compile
