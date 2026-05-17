@@ -7,9 +7,9 @@ on:
 
     paths:
       - .github/workflows/Book-Pipeline.yml
-      - Books/**
+      - Books/src/**
       - Docker/Book/**
-      - "pom/xml"
+      - Books/pom.xml
       - "docker-compose.yml "
 
 jobs:
