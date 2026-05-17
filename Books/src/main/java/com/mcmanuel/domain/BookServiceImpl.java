@@ -21,6 +21,7 @@ import java.util.UUID;
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepo;
 
+
     @Override
     public BookDto addBook(String title){
         Optional<Book> optionalObj =bookRepo.findByTitle(title);
@@ -50,6 +51,8 @@ public class BookServiceImpl implements BookService {
     @Override
     public Page<BookDto> getAllBook(int pageNo, int size,String sort) {
         Sort sortBy =Sort.by(sort).ascending();
+        pageNo = pageNo <= 1 ?0: pageNo-1;
+
         Pageable pageable = PageRequest.of(pageNo,size,sortBy);
         return bookRepo.findAll(pageable).map(
                 DtoMapper::toDto
@@ -67,7 +70,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public String deleteBook(UUID bookId) {
+    public String deleteBook(UUID bookId)throws BookNotFoundException {
         Book book =bookRepo.findById(bookId).orElseThrow(()->new BookNotFoundException("Book with bookId"+bookId+" not found"));
         bookRepo.deleteById(book.getBookId());
         return "deleted";

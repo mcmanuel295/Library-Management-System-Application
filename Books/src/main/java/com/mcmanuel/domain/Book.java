@@ -26,6 +26,7 @@ class Book{
     private String title;
 
     private boolean available;
+    private boolean shareable;
 
     @NotBlank(message = "this field cannot be blank")
     @Min(value = 0)

@@ -9,6 +9,7 @@ public record BookDto(
         @With UUID bookId,
         @With String title,
         @With boolean available,
+        @With boolean shareable,
         @With int quantity,
         LocalDateTime createdDate
 ){}

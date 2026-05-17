@@ -1,5 +1,6 @@
 package com.mcmanuel.web;
 
+import com.mcmanuel.configuration.ApplicationConfiguration;
 import com.mcmanuel.domain.BookDto;
 import com.mcmanuel.domain.BookService;
 import com.mcmanuel.exception.BookNotFoundException;
@@ -17,6 +18,8 @@ import java.util.UUID;
 @RequestMapping("api/v1")
 public class BookController {
     private final BookService bookService;
+    private final ApplicationConfiguration applicationConfig;
+
 
     @PostMapping("/")
     ResponseEntity<BookDto> addBook(@Valid String title){

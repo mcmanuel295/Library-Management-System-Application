@@ -11,6 +11,7 @@ class DtoMapper {
                 book.getBookId(),
                 book.getTitle(),
                 book.isAvailable(),
+                book.isShareable(),
                 book.getQuantity(),
                 book.getCreatedDate()
         );
@@ -21,6 +22,7 @@ class DtoMapper {
                 updatedBook.bookId(),
                 updatedBook.title(),
                 updatedBook.available(),
+                updatedBook.shareable(),
                 updatedBook.quantity(),
                 updatedBook.createdDate()
         );

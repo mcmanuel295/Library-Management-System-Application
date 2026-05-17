@@ -15,7 +15,7 @@ public interface BookService {
 
     BookDto updateBook(UUID bookId, BookDto book)throws BookNotFoundException;
 
-    String deleteBook(UUID bookId);
+    String deleteBook(UUID bookId) throws BookNotFoundException;
 
     BookDto search(String word);
 }
