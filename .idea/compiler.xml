@@ -13,6 +13,8 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="book-service" target="21" />
+      <module name="user-service" target="21" />
       <module name="Users" target="21" />
     </bytecodeTargetLevel>
   </component>

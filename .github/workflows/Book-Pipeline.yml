@@ -10,7 +10,7 @@ on:
       - Books/src/**
       - Docker/Book/**
       - Books/pom.xml
-      - "docker-compose.yml "
+      - "docker-compose.yml"
 
 jobs:
   compile:
@@ -39,11 +39,11 @@ jobs:
           ./mvnw clean compile
           
           cd Books
-        ./mvnw clean compile
-        cd Books
-        ./mvnw clean compile
-        cd Books
-        ./mvnw clean compile
+          ./mvnw clean compile
+          cd Books
+         ./mvnw clean compile
+          cd Books
+          ./mvnw clean compile
 
 
-  unit-test:
+  
