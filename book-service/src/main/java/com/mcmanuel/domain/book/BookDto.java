@@ -10,6 +10,5 @@ public record BookDto(
         String isbn,
         boolean available,
         LocalDateTime createdAt
-
 ) {
 }

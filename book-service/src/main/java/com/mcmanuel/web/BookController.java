@@ -1,7 +1,12 @@
 package com.mcmanuel.web;
 
+<<<<<<< HEAD:Books/src/main/java/com/mcmanuel/controller/BookController.java
+import com.mcmanuel.domain.BookDto;
+import com.mcmanuel.domain.BookService;
+=======
 import com.mcmanuel.domain.book.BookService;
 import com.mcmanuel.domain.book.BookDto;
+>>>>>>> 4fb9e04ca33d33b29260d1197bb11b33e38969e6:book-service/src/main/java/com/mcmanuel/web/BookController.java
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;

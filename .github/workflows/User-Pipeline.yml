@@ -1,4 +1,4 @@
-name: BookService pipeLine
+name: UserService pipeLine
 
 on:
   push:
@@ -7,12 +7,10 @@ on:
 
     paths:
       - .github/workflows/Book-Pipeline.yml
-      - Books/src/**
+      - Books/**
       - Docker/Book/**
-      - Book/pom.xml
+      - "pom/xml"
       - "docker-compose.yml "
-      - Books/pom.xml
-      - "docker-compose.yml"
 
 jobs:
   compile:
@@ -40,14 +38,10 @@ jobs:
           cd Books
           ./mvnw clean compile
           
-          cd Books
-          ./mvnw clean compile
+          cd Book
           cd Books
           ./mvnw clean compile
           cd Books
           ./mvnw clean compile
 
-  
 
-
-  
