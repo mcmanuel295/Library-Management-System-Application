@@ -3,6 +3,7 @@ package com.mcmanuel.domain.user;
 import com.mcmanuel.domain.email.EmailService;
 import com.mcmanuel.domain.token.TokenDto;
 import com.mcmanuel.domain.token.TokenService;
+import com.mcmanuel.domain.user.request.UserRequest;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +53,7 @@ public class UserServiceImpl implements UserService {
         user.setAccountLocked(false);
 
         sendValidationEmail(user);
-        return DTOMapper.ToDTO(userRepo.save(user));
+        return UserMapper.ToDTO(userRepo.save(user));
     }
 
     private void sendValidationEmail(User user) throws MessagingException {
@@ -84,21 +85,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUser(UUID userId) {
-        return DTOMapper.ToDTO(userRepo.findById(userId).orElseThrow(()->new RuntimeException("User with userId"+userId+" not found")));
+        return UserMapper.ToDTO(userRepo.findById(userId).orElseThrow(()->new RuntimeException("User with userId"+userId+" not found")));
     }
 
     @Override
     public Page<UserDTO> getAllUser(int pageNo, int size) {
         Pageable pageable = PageRequest.of(pageNo,size);
-        return userRepo.findAll(pageable).map(DTOMapper::ToDTO);
+        return userRepo.findAll(pageable).map(UserMapper::ToDTO);
 
     }
 
     @Override
-    public UserDTO updateUser(UUID userId, User updatedUser) {
+    public UserDTO updateUser(UUID userId, UserDTO updatedUser) {
         User user =userRepo.findById(userId).orElseThrow(()->new RuntimeException("User with userId"+userId+" not found"));
         updatedUser.setUserId(user.getUserId());
-        return DTOMapper.ToDTO(userRepo.save(updatedUser));
+        return UserMapper.ToDTO(userRepo.save(UserMapper.ToUser(updatedUser)));
     }
 
     @Override
@@ -114,7 +115,7 @@ public class UserServiceImpl implements UserService {
         Authentication auth = manager.authenticate(new UsernamePasswordAuthenticationToken(email,password));
         System.out.println(auth.isAuthenticated());
        if(auth.isAuthenticated()){
-           User user= userRepo.findByEmail(email).orElseThrow();
+           UserDTO user= UserMapper.ToDTO( userRepo.findByEmail(email).orElseThrow());
            log.info( "Authenticated");
        return jwtService.generateToken(user);
        }
@@ -126,7 +127,7 @@ public class UserServiceImpl implements UserService {
         User user =userRepo.findById(userId).orElseThrow();
 
         user.getRoles().add(role);
-        return DTOMapper.ToDTO(userRepo.save(user));
+        return UserMapper.ToDTO(userRepo.save(user));
     }
 
     @Override

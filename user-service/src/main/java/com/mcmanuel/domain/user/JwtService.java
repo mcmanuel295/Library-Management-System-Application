@@ -32,7 +32,7 @@ public class JwtService {
         return Keys.hmacShaKeyFor(bytes);
     }
 
-    public String generateToken(User user){
+    public String generateToken(UserDTO user){
         Map<String,Object> claims = new HashMap<>();
 
         List<Role> roles = user.getRoles();

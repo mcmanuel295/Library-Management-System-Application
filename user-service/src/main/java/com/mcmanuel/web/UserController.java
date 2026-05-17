@@ -1,11 +1,11 @@
 package com.mcmanuel.web;
 
 import com.mcmanuel.domain.user.UserDTO;
-import com.mcmanuel.entities.User;
-import com.mcmanuel.domain.user.LoginRequest;
+import com.mcmanuel.domain.user.request.LoginRequest;
 import com.mcmanuel.domain.user.Role;
-import com.mcmanuel.domain.user.UserRequest;
+import com.mcmanuel.domain.user.request.UserRequest;
 import com.mcmanuel.domain.user.UserService;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -22,7 +22,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/")
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserRequest request){
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserRequest request) throws MessagingException {
         return new ResponseEntity<>(userService.createUser(request),HttpStatus.CREATED);
     }
 
@@ -44,7 +44,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    ResponseEntity<UserDTO> updateUser(@PathVariable UUID userId, @RequestBody User updatedUser){
+    ResponseEntity<UserDTO> updateUser(@PathVariable UUID userId, @RequestBody UserDTO updatedUser){
         UserDTO savedUser = userService.updateUser(userId,updatedUser);
         if (savedUser == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

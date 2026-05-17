@@ -1,5 +1,6 @@
 package com.mcmanuel.domain.user;
 
+import com.mcmanuel.domain.user.request.UserRequest;
 import jakarta.mail.MessagingException;
 import org.springframework.data.domain.Page;
 
@@ -13,7 +14,7 @@ public interface UserService {
 
     Page<UserDTO> getAllUser(int pageNo, int size);
 
-    UserDTO updateUser(UUID userId, User user);
+    UserDTO updateUser(UUID userId, UserDTO user);
 
     String deleteUser(UUID userId);
 
