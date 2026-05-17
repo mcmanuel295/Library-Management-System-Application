@@ -1,4 +1,4 @@
-name: libraryMicroService pipeLine
+name: BookService pipeLine
 
 on:
   push:
@@ -26,8 +26,8 @@ jobs:
       - name: setup jdk
         uses: action/setup_jdk@v3
         with:
-          - distribution: corretto
-          - version: 21
+          distribution: corretto
+          version: 21
 
       - name: compile project
         run: |
