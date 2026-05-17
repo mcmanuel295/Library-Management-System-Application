@@ -40,7 +40,7 @@ public class BookController {
     }
 
     @PutMapping("/{bookId}")
-    ResponseEntity<BookDto> updateBook(@PathVariable UUID bookId, @RequestBody Books updatedBook){
+    ResponseEntity<BookDto> updateBook(@PathVariable UUID bookId, @RequestBody BookDto updatedBook){
         BookDto savedBook = bookService.updateBook(bookId,updatedBook);
         if (savedBook == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

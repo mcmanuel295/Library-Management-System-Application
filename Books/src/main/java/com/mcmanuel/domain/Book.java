@@ -33,7 +33,4 @@ class Book{
 
     @Column(nullable = false,updatable = false)
     private LocalDateTime createdDate;
-
-    public Books(String title) {
-    }
 }

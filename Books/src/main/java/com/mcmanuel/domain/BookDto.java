@@ -1,21 +1,17 @@
 package com.mcmanuel.domain;
 
-import jakarta.persistence.Column;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
+import lombok.Setter;
+import lombok.With;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+
+@Setter
 public record BookDto(
-        UUID bookId,
-        @Column(nullable = false)
-        @NotBlank(message = "this field cannot be blank")
-        String title,
-        boolean available,
-        @NotBlank(message = "this field cannot be blank")
-        @Min(value = 0)
-        int quantity,
-        @Column(nullable = false,updatable = false)
+        @With UUID bookId,
+        @With String title,
+        @With boolean available,
+        @With int quantity,
         LocalDateTime createdDate
 ){}

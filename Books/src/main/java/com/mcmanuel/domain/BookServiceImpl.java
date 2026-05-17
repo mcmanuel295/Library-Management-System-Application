@@ -23,24 +23,24 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto addBook(String title) {
-        Optional<Book> optionalObj =bookRepo.findBytitle(title);
+        Optional<Book> optionalObj =bookRepo.findByTitle(title);
         if(optionalObj.isEmpty()){
             Book book = new Book();
             book.setAvailable(true);
             book.setQuantity(1);
             book.setCreatedDate(LocalDateTime.now());
 
-            return DtoMapper.Dto(bookRepo.save(book));
+            return DtoMapper.toDto(bookRepo.save(book));
         }
         Book book =optionalObj.get();
         book.setQuantity(book.getQuantity()+1);
-        return DtoMapper.Dto(bookRepo.save(book));
+        return DtoMapper.toDto(bookRepo.save(book));
     }
 
 
     @Override
     public BookDto getBook(UUID bookId) {
-        return DtoMapper.Dto(
+        return DtoMapper.toDto(
                 bookRepo.findById(bookId).orElseThrow(
                 ()->new RuntimeException("Book with bookId"+bookId+" not found")
                 )
@@ -51,7 +51,7 @@ public class BookServiceImpl implements BookService {
     public Page<BookDto> getAllBook(int pageNo, int size) {
         Pageable pageable = PageRequest.of(pageNo,size);
         return bookRepo.findAll(pageable).map(
-                DtoMapper::Dto
+                DtoMapper::toDto
         );
 
     }
@@ -59,20 +59,22 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto updateBook(UUID bookId, BookDto updatedBook) {
         Book book =bookRepo.findById(bookId).orElseThrow(()->new RuntimeException("Book with bookId"+bookId+" not found"));
-        updatedBook.bookId(book.getBookId());
-        return DtoMapper.Dto(bookRepo.save(updatedBook);
+        updatedBook = updatedBook.withBookId(book.getBookId());
+        return DtoMapper.toDto(
+                bookRepo.save(DtoMapper.toBook(updatedBook))
+        );
     }
 
     @Override
     public String deleteBook(UUID bookId) {
-        Books book =bookRepo.findById(bookId).orElseThrow(()->new RuntimeException("Book with bookId"+bookId+" not found"));
+        Book book =bookRepo.findById(bookId).orElseThrow(()->new RuntimeException("Book with bookId"+bookId+" not found"));
         bookRepo.deleteById(book.getBookId());
         return "deleted";
     }
 
     @Override
-    public Books search(String word) {
-        return bookRepo.search(word);
+    public BookDto search(String word) {
+        return DtoMapper.toDto(bookRepo.search(word));
     }
 
 
