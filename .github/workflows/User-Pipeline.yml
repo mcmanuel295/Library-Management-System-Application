@@ -1,4 +1,4 @@
-name: libraryMicroService pipeLine
+name: UserService pipeLine
 
 on:
   push:
