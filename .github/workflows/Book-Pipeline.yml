@@ -14,7 +14,7 @@ on:
 
 jobs:
   compile:
-    name: Compile the project
+    name: COMPILE PROJECT
     runs-on: ubuntu:latest
     env:
       working-directory: ./book-service
@@ -23,29 +23,24 @@ jobs:
         working-directory: ${{env.working-directory}}
 
     steps:
-      - name: checkout code
+      - name: CHECKOUT CODE
         id: checkout_code
         uses: actions/checkoutCode@v3
         with:
           fetch-level: 0
 
-      - name: setup jdk
+      - name: SETUP JDK
         uses: action/setup_jdk@v3
         with:
           distribution: corretto
           version: 21
 
-      - name: compile project
-        run: |
-          cd Books
-          ./mvnw clean compile
-
-      - name: Make mvnw executable
+      - name: MAKE MVNW EXECUTABLE
         run: chmod +x ./mvnw
-          
-      - name: compile the code
+
+      - name: COMPILE PROJECT
         run: |
-          cd Books
+          cd library-service
           ./mvnw clean compile -DskipTests
      
         
