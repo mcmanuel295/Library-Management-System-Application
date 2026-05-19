@@ -32,6 +32,9 @@ services:
     networks:
       -library_network
 
+  library-service:
+    image:
+    container_name:
 
 volumes:
   library_network:
