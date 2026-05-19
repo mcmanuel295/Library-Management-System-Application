@@ -83,6 +83,6 @@ jobs:
           context: .
           push: true
           platform: linux/amd64
-          tag: ${{secrets.DOCKER_USERNAME}}/bsn:${{steps.extract.outputs.VERSION}} ,
-            ${{secrets.DOCKER_USERNAME}}/bsn:latest
+          tag: ${{secrets.DOCKER_USERNAME}}/bsi:${{steps.extract.outputs.VERSION}} ,
+            ${{secrets.DOCKER_USERNAME}}/bsi:latest
 
