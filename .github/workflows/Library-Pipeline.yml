@@ -6,30 +6,38 @@ on:
       - main
 
     paths:
-      - .github/workflows/Book-Pipeline.yml
-      - Books/**
+      - .github/workflows/Library-Pipeline.yml
+      - library-service/**
       - Docker/Book/**
-      - "pom/xml"
-      - "docker-compose.yml "
+      - library-service/pom.xml
+      - "docker-compose.yml"
+
 
 jobs:
   compile:
     name: Compile project
+
+    env:
+        working-directory: ./library-service
+    defaults:
+      runs:
+        working-directory: ./library-service
+
     runs-on: ubuntu:latest
     steps:
-      - name: checkout code
+      - name: CHECKOUT CODE
         id: checkout_code
         uses: actions/checkoutCode@v3
         with:
           fetch-level: 0
 
-      - name: setup jdk
+      - name: SETUP JDK
         uses: action/setup_jdk@v3
         with:
           distribution: corretto
           version: 21
 
-      - name: compile project
+      - name: COMPILE PROJECT
         run: |
           cd Books
           ./mvnw clean compile
