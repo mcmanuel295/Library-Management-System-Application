@@ -9,7 +9,7 @@ on:
       - .github/workflows/Book-Pipeline.yml
       - Books/src/**
       - Docker/Book/**
-      - "docker-compose.yml "
+      - "docker-compose.yml"
       - Books/pom.xml
 
 jobs:
