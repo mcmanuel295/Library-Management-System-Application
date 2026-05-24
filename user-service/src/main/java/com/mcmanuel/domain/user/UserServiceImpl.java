@@ -6,6 +6,7 @@ import com.mcmanuel.domain.token.TokenDto;
 import com.mcmanuel.domain.token.TokenService;
 import com.mcmanuel.domain.user.request.UserRequest;
 import com.mcmanuel.exception.BookNotFoundException;
+import com.mcmanuel.exception.BookNotShareableOrAvailableException;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -157,9 +158,12 @@ public class UserServiceImpl implements UserService {
         if (book == null){
             throw new BookNotFoundException("Book not found");
         }
-        if (book.isShareable() ==false) {
-            throw new BookNotShareableOrAvailbleException("Book not shareable or available");
-
+        if (book.isShareable() || book.isAvailable() ) {
+            throw new BookNotShareableOrAvailableException("Book not shareable or available");
         }
+
+
+//        todo
+//        notification
     }
 }
