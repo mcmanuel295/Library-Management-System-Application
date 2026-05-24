@@ -1,9 +1,11 @@
 package com.mcmanuel.domain.user;
 
+import com.mcmanuel.domain.Book;
 import com.mcmanuel.domain.email.EmailService;
 import com.mcmanuel.domain.token.TokenDto;
 import com.mcmanuel.domain.token.TokenService;
 import com.mcmanuel.domain.user.request.UserRequest;
+import com.mcmanuel.exception.BookNotFoundException;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
@@ -34,6 +37,7 @@ public class UserServiceImpl implements UserService {
     private final JwtService jwtService;
     private final EmailService emailService;
     private final TokenService tokenRepo;
+    private final RestClient client;
 
 
     @Override
@@ -140,5 +144,22 @@ public class UserServiceImpl implements UserService {
         user.setAccountLocked(false);
         user.setEnabled(true);
         return false;
+    }
+
+    @Override
+    public Book borrowBook(UUID bookId) {
+        Book book = client
+                .get()
+                .uri("http://books/{bookId}")
+                .retrieve()
+                .body(Book.class);
+
+        if (book == null){
+            throw new BookNotFoundException("Book not found");
+        }
+        if (book.isShareable() ==false) {
+            throw new BookNotShareableOrAvailbleException("Book not shareable or available");
+
+        }
     }
 }

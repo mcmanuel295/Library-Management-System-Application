@@ -1,5 +1,6 @@
 package com.mcmanuel.domain.user;
 
+import com.mcmanuel.domain.Book;
 import com.mcmanuel.domain.user.request.UserRequest;
 import jakarta.mail.MessagingException;
 import org.springframework.data.domain.Page;
@@ -23,4 +24,6 @@ public interface UserService {
     UserDTO updateRole(UUID userId, Role role);
 
     boolean activateAccount(String email, String token);
+
+    Book borrowBook(UUID bookId);
 }
