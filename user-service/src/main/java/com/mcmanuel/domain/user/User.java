@@ -55,8 +55,6 @@ class User {
 
     private boolean accountLocked;
 
-    //    private LocalDateTime ;
-
     private ArrayList<Role> roles;
 
     public void setFullName(){
