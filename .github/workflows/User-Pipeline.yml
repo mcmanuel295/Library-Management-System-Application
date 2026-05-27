@@ -3,7 +3,7 @@ name: UserService pipeLine
 on:
   push:
     branches:
-      - main
+      - master
 
     paths:
       - .github/workflows/Book-Pipeline.yml
