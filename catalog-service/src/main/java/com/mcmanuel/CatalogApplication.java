@@ -10,8 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @EnableMethodSecurity
 @ConfigurationPropertiesScan
 @SpringBootApplication
-public class CatalogService {
+public class CatalogApplication {
     public static void main(String[] args) {
-        SpringApplication.run(CatalogService.class,args);
+        SpringApplication.run(CatalogApplication.class,args);
     }
 }

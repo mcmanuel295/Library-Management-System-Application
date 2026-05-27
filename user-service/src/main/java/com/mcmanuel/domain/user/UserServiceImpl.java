@@ -11,6 +11,7 @@ import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -178,6 +179,7 @@ public class UserServiceImpl implements UserService {
                 .uri("https://api/v1/books/")
                 .retrieve()
                 .body(ArrayList.class);
-        return null;
+
+        return allAvailableBookBook;
     }
 }

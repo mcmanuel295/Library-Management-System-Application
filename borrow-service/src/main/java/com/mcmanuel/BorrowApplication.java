@@ -10,8 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @EnableWebSecurity
 @EnableMethodSecurity
 @ConfigurationPropertiesScan
-public class BorrowService {
+public class BorrowApplication {
     public static void main(String[] args) {
-        SpringApplication.run(BorrowService.class,args);
+        SpringApplication.run(BorrowApplication.class,args);
     }
 }
