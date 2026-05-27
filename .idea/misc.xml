@@ -8,6 +8,7 @@
         <option value="$PROJECT_DIR$/LibraryManagementSystem/pom.xml" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/Books/pom.xml" />
+        <option value="$PROJECT_DIR$/borrow-service/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
