@@ -6,4 +6,4 @@ Spring:
 borrow:
   exchange-name: borrow-exchange
   borrow-queue: borrow-queue
-  return-queue: return queue
+  return-queue: return-queue
