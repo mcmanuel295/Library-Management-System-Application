@@ -166,4 +166,10 @@ public class UserServiceImpl implements UserService {
 //        todo
 //        notification
     }
+
+    @Override
+    public ArrayList<Book> getAllBook() {
+        ArrayList<Book> allAvailableBookBook
+        return null;
+    }
 }

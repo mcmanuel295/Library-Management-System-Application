@@ -18,24 +18,27 @@ public class BookOperationController {
     private final UserService userService;
 
     @PostMapping("/")
-    public ResponseEntity<String> borrowBook(@PathVariable UUID bookId){
+    public ResponseEntity<String> borrowBook(@PathVariable UUID bookId) {
         Book borrowedBook = userService.borrowBook(bookId);
-        if ( borrowedBook != null) {
-            return new ResponseEntity<>("Book "+bookId+" borrowed", HttpStatus.BAD_REQUEST);
+        if (borrowedBook != null) {
+            return new ResponseEntity<>("Book " + bookId + " borrowed", HttpStatus.BAD_REQUEST);
 
-            }
-         return new ResponseEntity<>("Book "+bookId+" not found", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("Book " + bookId + " not found", HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/books/")
-    public String getAllBook(){
-    ArrayList<Book> borrowedBook = userService.getAllBook();
-    return new ResponseEntity<>("Book "+bookId+" not found", HttpStatus.BAD_REQUEST);
-    
-}
+    public ResponseEntity<ArrayList<Book>> getAllBook() {
+        return new ResponseEntity<>(userService.getAllBook(), HttpStatus.BAD_REQUEST);
+
+    }
+
     @PutMapping()
-    public String returnBook(){return null;}
+    public String returnBook() {
+        return null;
+    }
 }
+
 
 
 

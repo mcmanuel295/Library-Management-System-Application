@@ -7,9 +7,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="library-service" />
-        <module name="user-service" />
         <module name="book-service" />
+        <module name="notification-service" />
+        <module name="user-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -24,7 +24,7 @@
       <module name="User" options="-parameters" />
       <module name="Users" options="-parameters" />
       <module name="book-service" options="-parameters" />
-      <module name="library-service" options="-parameters" />
+      <module name="notification-service" options="-parameters" />
       <module name="user-service" options="-parameters" />
     </option>
   </component>
