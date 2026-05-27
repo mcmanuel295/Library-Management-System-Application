@@ -1,0 +1,6 @@
+Spring:
+  application:
+    name: catalog-service
+
+catalog:
+  page-size: 10

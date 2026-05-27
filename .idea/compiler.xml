@@ -10,6 +10,7 @@
         <module name="user-service" />
         <module name="notification-service" />
         <module name="catalog-service" />
+        <module name="borrow-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -25,6 +26,7 @@
       <module name="User" options="-parameters" />
       <module name="Users" options="-parameters" />
       <module name="book-service" options="" />
+      <module name="borrow-service" options="-parameters" />
       <module name="catalog-service" options="-parameters" />
       <module name="notification-service" options="-parameters" />
       <module name="user-service" options="-parameters" />

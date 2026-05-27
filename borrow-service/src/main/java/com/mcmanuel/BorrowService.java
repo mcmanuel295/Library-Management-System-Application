@@ -6,12 +6,12 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
+@SpringBootApplication
 @EnableWebSecurity
 @EnableMethodSecurity
 @ConfigurationPropertiesScan
-@SpringBootApplication
-public class CatalogService {
+public class BorrowService {
     public static void main(String[] args) {
-        SpringApplication.run(CatalogService.class,args);
+        SpringApplication.run(BorrowService.class,args);
     }
 }
