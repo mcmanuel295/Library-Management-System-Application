@@ -24,18 +24,22 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto addBook(String title){
-        Optional<Book> optionalObj =bookRepo.findByTitle(title);
-        if(optionalObj.isEmpty()){
+        Optional<Book> optionalObj = bookRepo.findByTitle(title.trim());
+        if (optionalObj.isEmpty()) {
+
             Book book = new Book();
+            book.setTitle(title);
             book.setAvailable(true);
+            book.setShareable(true);
             book.setQuantity(1);
             book.setCreatedDate(LocalDateTime.now());
 
             return DtoMapper.toDto(bookRepo.save(book));
         }
-        Book book =optionalObj.get();
-        book.setQuantity(book.getQuantity()+1);
-        return DtoMapper.toDto(bookRepo.save(book));
+
+        Book book = optionalObj.get();
+        book.setQuantity(book.getQuantity() + 1);
+        return DtoMapper.toDto(book);
     }
 
 

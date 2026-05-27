@@ -16,9 +16,11 @@ import java.util.UUID;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 class Book{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "book_id", updatable = false, nullable = false)
     private UUID bookId;
 
     @Column(nullable = false)
@@ -28,8 +30,7 @@ class Book{
     private boolean available;
     private boolean shareable;
 
-    @NotBlank(message = "this field cannot be blank")
-    @Min(value = 0)
+    @Min(value = 0,message = "this field cannot be blank")
     private int quantity;
 
     private UUID user;

@@ -22,7 +22,7 @@ public class BookController {
 
 
     @PostMapping("/")
-    ResponseEntity<BookDto> addBook(@RequestBody @Valid  String title){
+    ResponseEntity<BookDto> addBook(@RequestParam @Valid  String title){
         return new ResponseEntity<>(bookService.addBook(title),HttpStatus.CREATED);
     }
 
@@ -70,7 +70,7 @@ public class BookController {
         }
     }
 
-    @GetMapping("/{word}")
+    @GetMapping("/search/{word}")
     ResponseEntity<BookDto> search(@PathVariable @Valid String word){
         try {
             return new ResponseEntity<>( bookService.search(word), HttpStatus.OK);
