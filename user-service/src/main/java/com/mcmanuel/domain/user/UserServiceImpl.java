@@ -148,7 +148,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Book borrowBook(UUID bookId) {
+    public Book borrowBook(UUID userId,UUID bookId) {
         Book book = client
                 .get()
                 .uri("http://books/{bookId}")
@@ -162,14 +162,22 @@ public class UserServiceImpl implements UserService {
             throw new BookNotShareableOrAvailableException("Book not shareable or available");
         }
 
+        book.setAvailable(false);
+        book.setShareable(false);
+        book.setUser(userId);
 
 //        todo
 //        notification
+
+        return book;
     }
 
     @Override
     public ArrayList<Book> getAllBook() {
-        ArrayList<Book> allAvailableBookBook
+        ArrayList<Book> allAvailableBookBook = client.get()
+                .uri("https://api/v1/books/")
+                .retrieve()
+                .body(ArrayList.class);
         return null;
     }
 }

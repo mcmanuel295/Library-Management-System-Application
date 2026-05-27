@@ -7,12 +7,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="book-service" />
-        <module name="notification-service" />
         <module name="user-service" />
+        <module name="notification-service" />
+        <module name="catalog-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="book-service" target="22" />
       <module name="book-service (1)" target="22" />
       <module name="User" target="21" />
       <module name="Users" target="21" />
@@ -23,7 +24,8 @@
       <module name="LibraryManagementSystem" options="" />
       <module name="User" options="-parameters" />
       <module name="Users" options="-parameters" />
-      <module name="book-service" options="-parameters" />
+      <module name="book-service" options="" />
+      <module name="catalog-service" options="-parameters" />
       <module name="notification-service" options="-parameters" />
       <module name="user-service" options="-parameters" />
     </option>

@@ -17,7 +17,8 @@
 	<modules>
 		<module>notification-service</module>
 		<module>user-service</module>
-		<module>book-service</module>
+		<module>catalog-service</module>
+		<module>catalog-service</module>
 	</modules>
 
 	<properties>

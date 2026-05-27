@@ -26,7 +26,7 @@ public interface UserService {
 
     boolean activateAccount(String email, String token);
 
-    Book borrowBook(UUID bookId);
+    Book borrowBook(UUID userIs,UUID bookId);
 
     ArrayList<Book> getAllBook();
 }

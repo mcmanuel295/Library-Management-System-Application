@@ -18,8 +18,8 @@ public class BookOperationController {
     private final UserService userService;
 
     @PostMapping("/")
-    public ResponseEntity<String> borrowBook(@PathVariable UUID bookId) {
-        Book borrowedBook = userService.borrowBook(bookId);
+    public ResponseEntity<String> borrowBook(@PathVariable UUID userId,@PathVariable @Valid UUID bookId) {
+        Book borrowedBook = userService.borrowBook(userId,bookId);
         if (borrowedBook != null) {
             return new ResponseEntity<>("Book " + bookId + " borrowed", HttpStatus.BAD_REQUEST);
 
