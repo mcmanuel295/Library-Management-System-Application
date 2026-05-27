@@ -9,6 +9,6 @@ import java.util.UUID;
 interface BookRepository extends JpaRepository<Book, UUID> {
     Optional<Book> findByTitle(String title);
 
-    @Query("Select b from Book b where b.title like %:title%")
-    Optional<Book> search(String word);
+//    @Query("SELECT b FROM Book b WHERE b.title LIKE CONCAT('%', :title, '%')")
+    Optional<Book> findByTitleContaining(String title);
 }

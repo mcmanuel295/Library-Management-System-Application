@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
-     private ProblemDetail UnhandledExceptoin(Exception ex){
+     private ProblemDetail UnhandledException(Exception ex){
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
 
         problemDetail.setTitle("internal error");

@@ -82,8 +82,11 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto search(String word) {
-        Optional<Book> optBook =bookRepo.search(word);
+        System.out.println("word received "+word);
+        Optional<Book> optBook =bookRepo.findByTitleContaining(word);
+
         if (optBook.isPresent()){
+            System.out.println("Book received "+optBook.get());
             return DtoMapper.toDto(optBook.get());
         }
         throw new BookNotFoundException("Book with word"+word+" not found");
