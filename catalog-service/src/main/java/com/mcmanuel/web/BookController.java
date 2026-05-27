@@ -15,14 +15,14 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/books")
+@RequestMapping("/api/v1/books")
 public class BookController {
     private final BookService bookService;
     private final ApplicationConfiguration applicationConfig;
 
 
     @PostMapping("/")
-    ResponseEntity<BookDto> addBook(@Valid String title){
+    ResponseEntity<BookDto> addBook(@RequestBody @Valid  String title){
         return new ResponseEntity<>(bookService.addBook(title),HttpStatus.CREATED);
     }
 

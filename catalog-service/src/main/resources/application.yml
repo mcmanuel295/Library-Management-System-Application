@@ -1,6 +1,25 @@
-Spring:
+spring:
   application:
     name: catalog-service
+  datasource:
+    username: root
+    password: Oea75357@
+    url: jdbc:mysql://localhost:3306/catalog?createDatabaseIfNotExist=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+
+    show-sql: true
+
+
 
 catalog:
   page-size: 10
+
+
+server:
+  port: 8081
+  shutdown: GRACEFUL
