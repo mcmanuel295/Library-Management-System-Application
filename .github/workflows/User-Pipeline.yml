@@ -6,7 +6,7 @@ on:
       - master
 
     paths:
-      - .github/workflows/Book-Pipeline.yml
+      - .github/workflows/catalog-pipeline.yml
       - Books/**
       - Docker/Book/**
       - "pom/xml"

@@ -1,4 +1,4 @@
-name: BookService pipeLine
+name: CatalogService pipeLine
 
 on:
   push:
@@ -6,18 +6,18 @@ on:
       - master
 
     paths:
-      - .github/workflows/Book-Pipeline.yml
-      - Books/src/**
-      - Docker/Book/**
+      - .github/workflows/Catalog-Pipeline.yml
+      - book-service/src/**
+      - Docker/catalog/**
       - "docker-compose.yml"
-      - Books/pom.xml
+      - catalog-service/pom.xml
 
 jobs:
   compile:
     name: COMPILE PROJECT
     runs-on: ubuntu:latest
     env:
-      working-directory: ./book-service
+      working-directory: ./catalog-service
     defaults:
       run:
         working-directory: ${{env.working-directory}}
@@ -34,6 +34,7 @@ jobs:
         with:
           distribution: corretto
           version: 21
+          cache: 'maven'
 
       - name: MAKE MVNW EXECUTABLE
         run: chmod +x ./mvnw

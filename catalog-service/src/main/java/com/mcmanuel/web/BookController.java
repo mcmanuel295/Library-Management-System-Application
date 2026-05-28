@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Book;
 import java.util.UUID;
 
 @RestController
@@ -70,8 +71,8 @@ public class BookController {
         }
     }
 
-    @GetMapping("/search/{word}")
-    ResponseEntity<BookDto> search(@PathVariable @Valid String word){
+    @GetMapping("/search")
+    ResponseEntity<BookDto> search(@RequestParam @Valid String word){
         try {
             return new ResponseEntity<>( bookService.search(word), HttpStatus.OK);
         }
@@ -81,5 +82,29 @@ public class BookController {
         catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+
+    @PostMapping("/")
+    public ResponseEntity<String> borrowBook(@PathVariable UUID userId, @PathVariable @Valid UUID bookId) {
+        BookDto borrowedBook = bookService.borrowBook(userId,bookId);
+        if (borrowedBook != null) {
+            return new ResponseEntity<>("Book " + bookId + " borrowed by user "+userId, HttpStatus.OK);
+
+        }
+        return new ResponseEntity<>("Book " + bookId + " not found", HttpStatus.BAD_REQUEST);
+    }
+
+
+    @PutMapping()
+    public ResponseEntity<String> returnBook(@RequestParam UUID userId,@RequestParam UUID bookId) {
+        Book borrowedBook = bookService.returnBook( userId,bookId);
+
+        if (borrowedBook != null) {
+            return new ResponseEntity<>("Book " + bookId + " returned", HttpStatus.OK);
+
+        }
+        return new ResponseEntity<>("Book " + bookId + " not found", HttpStatus.BAD_REQUEST);
+
     }
 }

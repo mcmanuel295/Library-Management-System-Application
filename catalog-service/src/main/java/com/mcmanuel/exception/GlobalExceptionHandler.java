@@ -27,7 +27,17 @@ public class GlobalExceptionHandler {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
 
         problemDetail.setTitle("Book not found");
-        problemDetail.setProperty("category", "book service");
+        problemDetail.setProperty("category", "catalog service");
+        problemDetail.setProperty("TimeStamp", Instant.now());
+        return problemDetail;
+    }
+
+    @ExceptionHandler(BookNotAvailableException.class)
+    private ProblemDetail BookNotAvailableExceptionHandler(BookNotAvailableException ex){
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+
+        problemDetail.setTitle("Book not Available");
+        problemDetail.setProperty("category", "catalog service");
         problemDetail.setProperty("TimeStamp", Instant.now());
         return problemDetail;
     }

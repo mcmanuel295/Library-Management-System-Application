@@ -18,7 +18,6 @@
 		<module>notification-service</module>
 		<module>user-service</module>
 		<module>catalog-service</module>
-		<module>borrow-service</module>
 	</modules>
 
 	<properties>

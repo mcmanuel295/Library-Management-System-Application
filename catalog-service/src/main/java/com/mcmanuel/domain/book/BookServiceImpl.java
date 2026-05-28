@@ -1,5 +1,6 @@
 package com.mcmanuel.domain.book;
 
+import com.mcmanuel.exception.BookNotAvailableException;
 import com.mcmanuel.exception.BookNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -82,13 +83,26 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto search(String word) {
-        System.out.println("word received "+word);
         Optional<Book> optBook =bookRepo.findByTitleContaining(word);
 
         if (optBook.isPresent()){
-            System.out.println("Book received "+optBook.get());
             return DtoMapper.toDto(optBook.get());
         }
-        throw new BookNotFoundException("Book with word"+word+" not found");
+        throw new BookNotFoundException("Book with word "+word+" not found");
+    }
+
+    @Override
+    public BookDto borrowBook(UUID userId, UUID bookId) {
+       Book book = DtoMapper.toBook(getBook(bookId));
+        if (!book.isAvailable() || !book.isShareable()|| book.getQuantity()==0) {
+            throw new BookNotAvailableException("Book not available");
+        }
+
+        return null;
+    }
+
+    @Override
+    public java.awt.print.Book returnBook(UUID userId, UUID bookId) {
+        return null;
     }
 }

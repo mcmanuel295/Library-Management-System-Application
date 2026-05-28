@@ -1,6 +1,5 @@
 package com.mcmanuel.web;
 
-import com.mcmanuel.configuration.ApplicationConfiguration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.web.bind.annotation.PostMapping;

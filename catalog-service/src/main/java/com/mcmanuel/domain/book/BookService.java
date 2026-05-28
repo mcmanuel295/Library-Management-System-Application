@@ -3,6 +3,7 @@ package com.mcmanuel.domain.book;
 import com.mcmanuel.exception.BookNotFoundException;
 import org.springframework.data.domain.Page;
 
+import java.awt.print.Book;
 import java.util.UUID;
 
 public interface BookService {
@@ -18,4 +19,8 @@ public interface BookService {
     String deleteBook(UUID bookId) throws BookNotFoundException;
 
     BookDto search(String word);
+
+    BookDto borrowBook(UUID userId, UUID bookId);
+
+    Book returnBook(UUID userId, UUID bookId);
 }

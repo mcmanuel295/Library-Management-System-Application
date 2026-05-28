@@ -17,6 +17,7 @@
         <option value="$PROJECT_DIR$/UserScrap/pom.xml" />
         <option value="$PROJECT_DIR$/Users/pom.xml" />
         <option value="$PROJECT_DIR$/book-service/pom.xml" />
+        <option value="$PROJECT_DIR$/borrow-service/pom.xml" />
       </set>
     </option>
   </component>
