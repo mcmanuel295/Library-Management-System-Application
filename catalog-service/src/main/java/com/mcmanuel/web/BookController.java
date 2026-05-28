@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Book;
 import java.util.UUID;
 
 @RestController
@@ -86,7 +85,7 @@ public class BookController {
 
 
     @PostMapping("/")
-    public ResponseEntity<String> borrowBook(@PathVariable UUID userId, @PathVariable @Valid UUID bookId) {
+    public ResponseEntity<String> borrowBook(@RequestParam UUID userId, @RequestParam @Valid UUID bookId) {
         BookDto borrowedBook = bookService.borrowBook(userId,bookId);
         if (borrowedBook != null) {
             return new ResponseEntity<>("Book " + bookId + " borrowed by user "+userId, HttpStatus.OK);
@@ -98,7 +97,7 @@ public class BookController {
 
     @PutMapping()
     public ResponseEntity<String> returnBook(@RequestParam UUID userId,@RequestParam UUID bookId) {
-        Book borrowedBook = bookService.returnBook( userId,bookId);
+        BookDto borrowedBook = bookService.returnBook( userId,bookId);
 
         if (borrowedBook != null) {
             return new ResponseEntity<>("Book " + bookId + " returned", HttpStatus.OK);

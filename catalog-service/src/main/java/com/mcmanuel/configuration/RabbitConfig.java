@@ -20,7 +20,7 @@ public class RabbitConfig {
 
     @Bean
     Queue borrowBookQueue(){
-        return QueueBuilder.durable(appConfig.borrowQueue()).build() ;
+        return QueueBuilder.durable(appConfig.borrowBookQueue()).build() ;
     }
 
     @Bean
@@ -28,7 +28,7 @@ public class RabbitConfig {
         return BindingBuilder
                 .bind(borrowBookQueue())
                 .to(exchange())
-                .with(appConfig.borrowQueue());
+                .with(appConfig.borrowBookQueue());
     }
 
 

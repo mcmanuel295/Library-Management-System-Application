@@ -1,6 +1,6 @@
 package com.mcmanuel.domain.user;
 
-import com.mcmanuel.domain.Book;
+import com.mcmanuel.book.Book;
 import com.mcmanuel.domain.email.EmailService;
 import com.mcmanuel.domain.token.TokenDto;
 import com.mcmanuel.domain.token.TokenService;
@@ -11,7 +11,6 @@ import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -151,8 +150,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public Book borrowBook(UUID userId,UUID bookId) {
         Book book = client
-                .get()
-                .uri("http://books/{bookId}")
+                .post()
+                .uri("http://localhost:8081/api/v1/books/{bookId}")
                 .retrieve()
                 .body(Book.class);
 

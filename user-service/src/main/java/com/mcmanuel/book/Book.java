@@ -1,6 +1,5 @@
-package com.mcmanuel.domain;
+package com.mcmanuel.book;
 
-import com.mcmanuel.domain.user.UserDTO;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

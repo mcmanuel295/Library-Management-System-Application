@@ -1,10 +1,12 @@
 package com.mcmanuel.domain.book;
 
+import com.mcmanuel.configuration.ApplicationConfiguration;
 import com.mcmanuel.exception.BookNotAvailableException;
 import com.mcmanuel.exception.BookNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +23,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepo;
+    private final RabbitTemplate rabbitTemplate;
+    private final ApplicationConfiguration config;
 
 
     @Override
@@ -95,14 +99,27 @@ public class BookServiceImpl implements BookService {
     public BookDto borrowBook(UUID userId, UUID bookId) {
        Book book = DtoMapper.toBook(getBook(bookId));
         if (!book.isAvailable() || !book.isShareable()|| book.getQuantity()==0) {
-            throw new BookNotAvailableException("Book not available");
+            throw new BookNotAvailableException("Book "+bookId+" not available");
         }
 
-        return null;
+        rabbitTemplate.convertAndSend(config.exchangeName(),config.borrowBookQueue(),"Book borrow request");
+        System.out.println("book borrow request by user "+userId);
+
+        book.setUser(userId);
+        return DtoMapper.toDto(bookRepo.save(book));
     }
 
     @Override
-    public java.awt.print.Book returnBook(UUID userId, UUID bookId) {
-        return null;
+    public BookDto returnBook(UUID userId, UUID bookId) {
+        Book book = DtoMapper.toBook(getBook(bookId));
+        if (!book.isAvailable() || !book.isShareable()|| book.getQuantity()==0) {
+            throw new BookNotAvailableException("Book "+bookId+" not available");
+        }
+
+        rabbitTemplate.convertAndSend(config.exchangeName(),config.borrowBookQueue(),"Book return request");
+        System.out.println("book return request by user "+userId);
+
+        book.setUser(null);
+        return DtoMapper.toDto(bookRepo.save(book));
     }
 }

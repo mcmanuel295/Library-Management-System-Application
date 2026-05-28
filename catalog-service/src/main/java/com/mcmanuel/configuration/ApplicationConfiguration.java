@@ -8,6 +8,10 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
 public record ApplicationConfiguration(
         @DefaultValue("10")
         @Min(1)
-        int pageSize
+        int pageSize,
+        String exchangeName,
+        String borrowBookQueue,
+        String returnedBookQueue
+
 ){
 }

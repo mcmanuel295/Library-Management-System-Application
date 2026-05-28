@@ -19,6 +19,10 @@ spring:
 catalog:
   page-size: 10
 
+  exchange-name: exchange-name
+  borrow-book-queue: borrowed-book-queue
+  returned-book-queue : returned-book-queue
+
 
 server:
   port: 8081
