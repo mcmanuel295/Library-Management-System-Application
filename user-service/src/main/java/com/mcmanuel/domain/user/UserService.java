@@ -1,11 +1,10 @@
 package com.mcmanuel.domain.user;
 
-import com.mcmanuel.book.Book;
+import com.mcmanuel.book.BookDto;
 import com.mcmanuel.domain.user.request.UserRequest;
 import jakarta.mail.MessagingException;
 import org.springframework.data.domain.Page;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 public interface UserService {
@@ -26,7 +25,9 @@ public interface UserService {
 
     boolean activateAccount(String email, String token);
 
-    Book borrowBook(UUID userIs,UUID bookId);
+    String borrowBook(UUID userId, UUID bookId);
 
-    ArrayList<Book> getAllBook();
+    String returnBook(UUID userId, UUID bookId);
+
+    Page<BookDto> getAllBook();
 }

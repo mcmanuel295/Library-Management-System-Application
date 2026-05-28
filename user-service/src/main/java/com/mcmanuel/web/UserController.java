@@ -1,5 +1,6 @@
 package com.mcmanuel.web;
 
+import com.mcmanuel.book.BookDto;
 import com.mcmanuel.domain.user.UserDTO;
 import com.mcmanuel.domain.user.request.LoginRequest;
 import com.mcmanuel.domain.user.Role;
@@ -88,5 +89,33 @@ public class UserController {
         }
         return ResponseEntity.ok("Account activated");
     }
+
+    @GetMapping("/all-books")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<Page<BookDto>> getAllBook(){
+        Page<BookDto> books =userService.getAllBook();
+
+        return new ResponseEntity<>(books,HttpStatus.OK);
+    }
+
+
+    @PostMapping("/{userId}/borrow")
+    public ResponseEntity<String> borrowBook(@RequestParam UUID userId,@RequestParam UUID bookId){
+        String borrowBook =userService.borrowBook(userId,bookId);
+        if (borrowBook == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(borrowBook,HttpStatus.OK);
+    }
+
+    @PostMapping("/{userId}/return")
+    public ResponseEntity<String> returnBook(@RequestParam UUID userId,@RequestParam UUID bookId){
+        String borrowBook =userService.returnBook(userId,bookId);
+        if (borrowBook == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(borrowBook,HttpStatus.OK);
+    }
+
 
 }

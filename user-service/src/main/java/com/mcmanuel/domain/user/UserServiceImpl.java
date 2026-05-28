@@ -1,6 +1,8 @@
 package com.mcmanuel.domain.user;
 
-import com.mcmanuel.book.Book;
+import com.mcmanuel.book.BookClient;
+import com.mcmanuel.book.BookDto;
+import com.mcmanuel.config.ApplicationConfiguration;
 import com.mcmanuel.domain.email.EmailService;
 import com.mcmanuel.domain.token.TokenDto;
 import com.mcmanuel.domain.token.TokenService;
@@ -20,7 +22,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClient;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
@@ -38,7 +39,8 @@ public class UserServiceImpl implements UserService {
     private final JwtService jwtService;
     private final EmailService emailService;
     private final TokenService tokenRepo;
-    private final RestClient client;
+    private final BookClient client;
+    private final ApplicationConfiguration config;
 
 
     @Override
@@ -148,37 +150,37 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Book borrowBook(UUID userId,UUID bookId) {
-        Book book = client
-                .post()
-                .uri("http://localhost:8081/api/v1/books/{bookId}")
-                .retrieve()
-                .body(Book.class);
-
-        if (book == null){
-            throw new BookNotFoundException("Book not found");
+    public String borrowBook(UUID userId,UUID bookId) {
+        try {
+            return client.borrowBook(userId,bookId);
         }
-        if (book.isShareable() || book.isAvailable() ) {
-            throw new BookNotShareableOrAvailableException("Book not shareable or available");
+        catch (BookNotFoundException ex){
+            throw new BookNotFoundException("Book Not Found");
         }
-
-        book.setAvailable(false);
-        book.setShareable(false);
-        book.setUser(userId);
-
-//        todo
-//        notification
-
-        return book;
+        catch (BookNotShareableOrAvailableException ex) {
+            throw new BookNotShareableOrAvailableException("Book Not Shareable Or Available");
+        }
     }
 
-    @Override
-    public ArrayList<Book> getAllBook() {
-        ArrayList<Book> allAvailableBookBook = client.get()
-                .uri("https://api/v1/books/")
-                .retrieve()
-                .body(ArrayList.class);
 
-        return allAvailableBookBook;
+
+    @Override
+    public String returnBook(UUID userId, UUID bookId) {
+        try {
+            return client.returnBook(userId,bookId);
+        }
+        catch (BookNotFoundException ex){
+            throw new BookNotFoundException("Book Not Found");
+        }
+    }
+
+
+    @Override
+    public Page<BookDto> getAllBook() {
+        int pageNo =config.pageNo();
+        int size= config.size();
+        String sort = config.sort();
+
+        return client.getAllBook(pageNo,size,sort);
     }
 }

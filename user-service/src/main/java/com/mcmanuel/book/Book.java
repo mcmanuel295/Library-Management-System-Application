@@ -14,8 +14,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Book {
-
+class Book {
     private UUID bookId;
 
     @Column(nullable = false)
@@ -29,9 +28,11 @@ public class Book {
     @Min(value = 0)
     private int quantity;
 
+    private UUID user;
+
     @Column(nullable = false,updatable = false)
     private LocalDateTime createdDate;
 
-    private UUID user;
+    private LocalDateTime borrowedDate;
 
 }

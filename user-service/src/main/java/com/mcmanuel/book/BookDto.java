@@ -1,4 +1,4 @@
-package com.mcmanuel.domain.book;
+package com.mcmanuel.book;
 
 import lombok.With;
 

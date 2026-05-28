@@ -15,7 +15,7 @@ public class RabbitConfig {
 
     @Bean
     DirectExchange exchange(){
-        return new DirectExchange(appConfig.ExchangeName());
+        return new DirectExchange(appConfig.exchangeName());
     }
 
     @Bean
@@ -35,7 +35,7 @@ public class RabbitConfig {
 
     @Bean
     Queue returnBookQueue(){
-        return QueueBuilder.durable(appConfig.returnQueue()).build();
+        return QueueBuilder.durable(appConfig.returnedBookQueue()).build();
     }
 
     @Bean
@@ -43,7 +43,7 @@ public class RabbitConfig {
         return BindingBuilder
                 .bind(returnBookQueue())
                 .to(exchange())
-                .with(appConfig.returnQueue());
+                .with(appConfig.returnedBookQueue());
     }
 
 

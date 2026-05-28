@@ -40,7 +40,9 @@ public class BookController {
     }
 
     @GetMapping("/")
-    Page<BookDto> getAllBook(@Valid @RequestParam(defaultValue ="0" ) int pageNo,@Valid @RequestParam(defaultValue = "10") int size,@Valid @RequestParam(required = false,defaultValue = "title")  String sort){
+    Page<BookDto> getAllBook(@Valid @RequestParam(defaultValue ="0",required = false ) int pageNo,
+                             @Valid @RequestParam(defaultValue = "10",required = false) int size,
+                             @Valid @RequestParam(required = false,defaultValue = "title")  String sort){
         return bookService.getAllBook(pageNo,size,sort);
     }
 
