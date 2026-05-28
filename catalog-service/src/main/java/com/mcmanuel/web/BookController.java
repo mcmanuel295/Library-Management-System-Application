@@ -86,7 +86,7 @@ public class BookController {
     }
 
 
-    @PostMapping("/")
+    @PostMapping("/borrow")
     public ResponseEntity<String> borrowBook(@RequestParam UUID userId, @RequestParam @Valid UUID bookId) {
         BookDto borrowedBook = bookService.borrowBook(userId,bookId);
         if (borrowedBook != null) {
@@ -97,7 +97,7 @@ public class BookController {
     }
 
 
-    @PutMapping()
+    @PutMapping("/return")
     public ResponseEntity<String> returnBook(@RequestParam UUID userId,@RequestParam UUID bookId) {
         BookDto borrowedBook = bookService.returnBook( userId,bookId);
 

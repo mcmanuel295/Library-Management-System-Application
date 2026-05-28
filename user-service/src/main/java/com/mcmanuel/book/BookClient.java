@@ -19,9 +19,9 @@ public interface BookClient {
     @GetMapping("/{bookId}")
     BookDto getBook(@Valid @PathVariable UUID bookId);
 
-    @PostMapping("/")
+    @PostMapping("/borrow")
     String borrowBook(@RequestParam UUID userId, @RequestParam @Valid UUID bookId);
 
-    @PostMapping()
+    @PostMapping("/return")
     String returnBook(@RequestParam UUID userId,@RequestParam UUID bookId) ;
     }
