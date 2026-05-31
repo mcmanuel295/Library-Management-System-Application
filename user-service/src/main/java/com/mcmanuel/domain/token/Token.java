@@ -1,9 +1,12 @@
 package com.mcmanuel.domain.token;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Future;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -12,8 +15,17 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 class Token {
-    private Integer tokenId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID tokenId;
+
     private String token;
+
+    @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime createdAt;
+
+    @Future
+    @Column(nullable = false)
     private LocalDateTime expiresAt;
 }

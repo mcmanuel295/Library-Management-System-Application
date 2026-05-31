@@ -1,5 +1,5 @@
 spring:
-  application.name: LibraryManagementSystem
+  application.name: user-service
 
   datasource:
     password: Oea75357@
