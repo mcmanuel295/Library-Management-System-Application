@@ -181,6 +181,8 @@ public class UserServiceImpl implements UserService {
         int size= config.size();
         String sort = config.sort();
 
+        System.out.println("page No"+pageNo+" size "+size+" sort "+sort);
+
         return client.getAllBook(pageNo,size,sort);
     }
 }

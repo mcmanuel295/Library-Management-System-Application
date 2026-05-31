@@ -91,7 +91,7 @@ public class UserController {
     }
 
     @GetMapping("/all-books")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Page<BookDto>> getAllBook(){
         Page<BookDto> books =userService.getAllBook();
 
