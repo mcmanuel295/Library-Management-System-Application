@@ -6,6 +6,8 @@ import org.apache.catalina.filters.CorsFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -63,4 +65,8 @@ public class SecurityConfig {
         return provider;
     }
 
+    @Bean
+    public JavaMailSender mailSender(){
+        return new JavaMailSenderImpl();
+    }
 }
