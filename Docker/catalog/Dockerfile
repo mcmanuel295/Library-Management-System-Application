@@ -1,23 +1,30 @@
-FROM ubuntu:latest as build
+# Stage 1: Build the application using an official Maven image
+FROM maven:3.9-eclipse-temurin-17 AS build
 WORKDIR /build
-COPY pom.xml .
-CMD mvn dependency:go-offline
 
+# Copy pom.xml and download dependencies to utilize Docker caching
+COPY catalog-service/pom.xml ./
+RUN mvn dependency:go-offline
+
+# Copy source code and build the package
 COPY src ./src
-CMD mvn clean package -DskipTests
+RUN mvn clean package -DskipTests
 
-
-FROM ubuntu:latest
+# Stage 2: Runtime image using a lightweight Java JRE
+FROM eclipse-temurin:17-jre
 WORKDIR /app
-COPY --from=build /build/User/target/User-*.jar /app
 
+# Copy the built JAR from the build stage safely using a wildcard destination
+COPY --from=build /build/target/catalog-service-*.jar ./app.jar
 
-EXPOSE 8081
 ARG APP_VERSION=1.0.0
 ARG PROFILE=dev
+EXPOSE 8081
 
-ENV JAR_VERSION = ${APP_VERSION}
-ENV ACTIVE-PROFILE =${PROFILE}
-ENV URl = jdbc:mysql://mysql:3306:db
+# Fixed LegacyKeyValueFormat, spacing, and invalid hyphens in keys
+ENV JAR_VERSION=${APP_VERSION}
+ENV ACTIVE_PROFILE=${PROFILE}
+ENV URL=jdbc:mysql://mysql:3306/db
 
-CMD java -jar -Dspring.profiles.active=${JAR_VERSION} -Dspring.datasource.url= ${URL} -Dspring.profile.active=${ACTIVE-PROFILE} User-.jar
+# Fixed the entrypoint to run the exact copied filename and fixed typo in property name
+ENTRYPOINT ["sh", "-c", "java -jar -Dspring.profiles.active=${ACTIVE_PROFILE} -Dspring.datasource.url=${URL} app.jar"]
