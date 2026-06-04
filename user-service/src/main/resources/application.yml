@@ -10,6 +10,12 @@ spring:
     url: jdbc:mysql://localhost:3308/user?createDatabaseIfNotExist=true
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:admin}
+    password: ${RABBITMQ_PASSWORD:Oea75357@}
+
   jpa:
     generate-ddl: true
     hibernate:
@@ -17,8 +23,8 @@ spring:
     show-sql: true
 
   mail:
-    host: ${MAIL_HOST}
-    port: ${MAIL_POR}
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:465}
     username: ${MAIL_USERNAME}
     password: ${MAIL_PASSWORD}
     properties:

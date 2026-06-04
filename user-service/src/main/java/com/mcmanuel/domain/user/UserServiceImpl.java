@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
         ArrayList<Role> roles = new ArrayList<>();
         roles.add(Role.USER);
 
-        User user = User.Builder()
+        User user = User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .roles(roles)
@@ -56,17 +56,15 @@ public class UserServiceImpl implements UserService {
         user.setFirstname(request.getFirstname());
         user.setLastname(request.getLastname());
         user.setCreatedDate(LocalDateTime.now());
-        user.setEnabled(false);
-        user.setAccountLocked(false);
+        user.setEnabled(true);
+        user.setAccountLocked(true);
 
-        sendValidationEmail(user);
+//        sendValidationEmail(user);
         return UserMapper.ToDTO(userRepo.save(user));
     }
 
     private void sendValidationEmail(User user) throws MessagingException {
         TokenDto token = generateToken();
-
-        System.out.println("Token " + token.toString());
 
         emailService.sendEmail(
                 user.getEmail(),
@@ -75,7 +73,6 @@ public class UserServiceImpl implements UserService {
                 token.token(),
                 "Account-activation",
                 "Account_Activation");
-        System.out.println("end here");
     }
 
     private boolean accountLocked(UUID userId) {

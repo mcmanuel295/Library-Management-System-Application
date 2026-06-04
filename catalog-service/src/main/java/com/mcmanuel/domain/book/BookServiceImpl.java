@@ -36,7 +36,7 @@ public class BookServiceImpl implements BookService {
             book.setShareable(true);
             book.setQuantity(1);
             book.setCreatedDate(LocalDateTime.now());
-
+            rabbitTemplate.convertAndSend(config.newBookQueue(),config.newBookQueue(),"new Book added");
             return DtoMapper.toDto(bookRepo.save(book));
         }
 

@@ -27,7 +27,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<UserDTO> getUser(@PathVariable UUID userId) throws MessagingException {
         UserDTO dto = userService.getUser(userId);
         if (dto == null) {
@@ -54,7 +54,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     ResponseEntity<String> deleteUser(@PathVariable UUID userId) {
         String savedUser = userService.deleteUser(userId);
         if (savedUser == null) {
@@ -73,7 +73,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}/role")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     ResponseEntity<UserDTO> updateUserRole(@PathVariable UUID userId, @RequestBody Role role) {
         UserDTO savedUser = userService.updateRole(userId, role);
         if (savedUser == null) {

@@ -11,6 +11,9 @@ services:
       MYSQL_DATABASE: catalog
     ports:
       - "3307:3306"
+    depends_on:
+      - rabbitmq
+
 
   user-db:
     container_name: user-db
@@ -28,11 +31,36 @@ services:
       resources:
         limits:
           memory: 1G
+
+  rabbitmq:
+    image: rabbitmq:4-management-alpine
+    container_name: rabbitmq
+    restart: unless-stopped
+    networks:
+      - catalog_network
+      - user_network
+    ports:
+      - "5672:5672"   # AMQP protocol port for applications
+      - "15672:15672" # RabbitMQ Management Dashboard web UI
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: Oea75357@
+
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "-q", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+
 volumes:
   catalog_final_data:
     driver: local
   user_final_data:
     driver: local
+  rabbitmq_data:
 
 networks:
   catalog_network:

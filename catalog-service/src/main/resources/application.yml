@@ -14,14 +14,21 @@ spring:
 
     show-sql: true
 
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:admin}
+    password: ${RABBITMQ_PASSWORD:Oea75357@}
 
 
 catalog:
   page-size: 10
 
   exchange-name: exchange-name
+
   borrow-book-queue: borrowed-book-queue
   returned-book-queue : returned-book-queue
+  new-book-queue : new-book-queue
 
 
 server:

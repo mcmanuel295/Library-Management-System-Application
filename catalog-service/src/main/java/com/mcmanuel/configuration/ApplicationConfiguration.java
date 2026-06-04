@@ -9,4 +9,6 @@ public record ApplicationConfiguration(
         @DefaultValue("10") @Min(1) int pageSize,
         String exchangeName,
         String borrowBookQueue,
-        String returnedBookQueue) {}
+        String returnedBookQueue,
+        String newBookQueue
+        ) {}
