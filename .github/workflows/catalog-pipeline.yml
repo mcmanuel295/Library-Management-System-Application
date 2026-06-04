@@ -1,86 +1,86 @@
-name: CatalogService pipeLine
-
-on:
-  push:
-    branches:
-      - master
-
-    paths:
-      - .github/workflows/Catalog-Pipeline.yml
-      - book-service/src/**
-      - Docker/catalog/**
-      - "docker-compose.yml"
-      - catalog-service/pom.xml
-
-jobs:
-  compile:
-    name: COMPILE PROJECT
-    runs-on: ubuntu:latest
-    env:
-      working-directory: ./catalog-service
-    defaults:
-      run:
-        working-directory: ${{env.working-directory}}
-
-    steps:
-      - name: CHECKOUT CODE
-        id: checkout_code
-        uses: actions/checkoutCode@v3
-        with:
-          fetch-level: 0
-
-      - name: SETUP JDK
-        uses: action/setup_jdk@v3
-        with:
-          distribution: corretto
-          version: 21
-          cache: 'maven'
-
-      - name: MAKE MVNW EXECUTABLE
-        run: chmod +x ./mvnw
-
-      - name: COMPILE PROJECT
-        run: |
-          cd library-service
-          ./mvnw clean compile -DskipTests
-     
-        
-  build_jar:
-    name: build the jar file
-    runs-on: ubuntu-latest
-    needs: [compile]
-    steps:
-      - name: build the jar
-        run: |
-          chmod +x ./mvnw
-          ./mvmw clean package -DskipTests
-          
-
-  build_image:
-    name: build the docker image
-    runs-on: ubuntu-latest
-    needs: [build_jar]
-    steps:
-      - name: extract version
-        run: |
-          echo "VERSION =$( ./mvnw -q -Dexec.executable='echo' -Dexec.args='${project.version' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
-
-
-      - if: github.ref == 'refs/heads/main'
-        name: Login to Docker Hub
-        uses: docker/login-action@v4
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-
-      - if: github.ref == 'refs/heads/main'
-        name: build image
-        uses: docker/build-push-action@v7
-        with:
-          context: .
-          push: true
-          platform: linux/amd64
-          tag: ${{secrets.DOCKER_USERNAME}}/bsi:${{steps.extract.outputs.VERSION}} ,
-            ${{secrets.DOCKER_USERNAME}}/bsi:latest
-
+#name: CatalogService pipeLine
+#
+#on:
+#  push:
+#    branches:
+#      - master
+#
+#    paths:
+#      - .github/workflows/Catalog-Pipeline.yml
+#      - book-service/src/**
+#      - Docker/catalog/**
+#      - "docker-compose.yml"
+#      - catalog-service/pom.xml
+#
+#jobs:
+#  compile:
+#    name: COMPILE PROJECT
+#    runs-on: ubuntu:latest
+#    env:
+#      working-directory: ./catalog-service
+#    defaults:
+#      run:
+#        working-directory: ${{env.working-directory}}
+#
+#    steps:
+#      - name: CHECKOUT CODE
+#        id: checkout_code
+#        uses: actions/checkoutCode@v3
+#        with:
+#          fetch-level: 0
+#
+#      - name: SETUP JDK
+#        uses: action/setup_jdk@v3
+#        with:
+#          distribution: corretto
+#          version: 21
+#          cache: 'maven'
+#
+#      - name: MAKE MVNW EXECUTABLE
+#        run: chmod +x ./mvnw
+#
+#      - name: COMPILE PROJECT
+#        run: |
+#          cd library-service
+#          ./mvnw clean compile -DskipTests
+#
+#
+#  build_jar:
+#    name: build the jar file
+#    runs-on: ubuntu-latest
+#    needs: [compile]
+#    steps:
+#      - name: build the jar
+#        run: |
+#          chmod +x ./mvnw
+#          ./mvmw clean package -DskipTests
+#
+#
+#  build_image:
+#    name: build the docker image
+#    runs-on: ubuntu-latest
+#    needs: [build_jar]
+#    steps:
+#      - name: extract version
+#        run: |
+#          echo "VERSION =$( ./mvnw -q -Dexec.executable='echo' -Dexec.args='${project.version' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
+#
+#
+#      - if: github.ref == 'refs/heads/main'
+#        name: Login to Docker Hub
+#        uses: docker/login-action@v4
+#        with:
+#          username: ${{ secrets.DOCKERHUB_USERNAME }}
+#          password: ${{ secrets.DOCKERHUB_TOKEN }}
+#
+#
+#      - if: github.ref == 'refs/heads/main'
+#        name: build image
+#        uses: docker/build-push-action@v7
+#        with:
+#          context: .
+#          push: true
+#          platform: linux/amd64
+#          tag: ${{secrets.DOCKER_USERNAME}}/bsi:${{steps.extract.outputs.VERSION}} ,
+#            ${{secrets.DOCKER_USERNAME}}/bsi:latest
+#
