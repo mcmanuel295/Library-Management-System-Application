@@ -1,6 +1,6 @@
 package com.mcmanuel.domain.user;
 
-public class UserMapper {
+class UserMapper {
 
     public static UserDTO ToDTO(User user) {
         return UserDTO.builder()
@@ -15,11 +15,11 @@ public class UserMapper {
     public static User ToUser(UserDTO dto) {
 
         return User.builder()
-                .userId(dto.getUserId())
-                .fullName(dto.getFullName())
-                .email(dto.getEmail())
-                .roles(dto.getRoles())
-                .createdDate(dto.getCreatedDate())
+                .userId(dto.userId())
+                .fullName(dto.fullName())
+                .email(dto.email())
+                .roles(dto.roles())
+                .createdDate(dto.createdDate())
                 .build();
     }
 }

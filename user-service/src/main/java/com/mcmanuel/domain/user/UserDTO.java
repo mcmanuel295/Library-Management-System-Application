@@ -7,26 +7,16 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.UUID;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
+@Getter
 @Builder
-@Data
-public class UserDTO {
-    private UUID userId;
+public record UserDTO(
+        UUID userId,
+        //    String lastname,
+        //    String firstname,
 
-    //    @NotBlank(message = "this field cannot be blank")
-    //    private String lastname;
-    //
-    //    @NotBlank(message = "this field cannot be blank")
-    //    private String firstname;
-
-    @NotBlank(message = "this field cannot be blank") private String fullName;
-
-    @Column(unique = true, nullable = false)
-    @Email private String email;
-
-    private ArrayList<Role> roles;
-
-    @Column(nullable = false, updatable = false, insertable = false)
-    private LocalDateTime createdDate;
-}
+        @NotBlank(message = "this field cannot be blank") String fullName,
+        @Column(unique = true, nullable = false) @Email String email,
+        ArrayList<Role> roles,
+        @Column(nullable = false, updatable = false, insertable = false) LocalDateTime createdDate) {}
