@@ -21,5 +21,6 @@ ARG PROFILE=dev
 
 ENV JAR_VERSION = ${APP_VERSION}
 ENV ACTIVE-PROFILE =${PROFILE}
+ENV URL=jdbc:mysql://user-db:3306/user
 
-RUN java -jar -Dspring.profiles.active=${JAR_VERSION} -Dspring.profile.active=${ACTIVE-PROFILE} User-.jar
+RUN java -jar -Dspring.profiles.active=${JAR_VERSION} -Dspring.profile.active=${ACTIVE-PROFILE} -Dspring.datasource.url=${URL} User-.jar

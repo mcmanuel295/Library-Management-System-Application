@@ -7,7 +7,6 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="notification-service" />
         <module name="user-service" />
         <module name="catalog-service" />
       </profile>
@@ -16,6 +15,7 @@
       <module name="book-service" target="22" />
       <module name="book-service (1)" target="22" />
       <module name="borrow-service" target="21" />
+      <module name="notification-service" target="21" />
       <module name="User" target="21" />
       <module name="Users" target="21" />
     </bytecodeTargetLevel>

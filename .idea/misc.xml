@@ -19,6 +19,7 @@
         <option value="$PROJECT_DIR$/Users/pom.xml" />
         <option value="$PROJECT_DIR$/book-service/pom.xml" />
         <option value="$PROJECT_DIR$/borrow-service/pom.xml" />
+        <option value="$PROJECT_DIR$/notification-service/pom.xml" />
       </set>
     </option>
   </component>

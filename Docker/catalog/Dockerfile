@@ -20,7 +20,7 @@ EXPOSE 8080
 # Fixed LegacyKeyValueFormat, spacing, and invalid hyphens in keys
 ENV JAR_VERSION=${APP_VERSION}
 ENV ACTIVE_PROFILE=${PROFILE}
-ENV URL=jdbc:mysql://catalog-service:3306/catalog
+ENV URL=jdbc:mysql://catalog-db:3306/catalog
 
 # Fixed the entrypoint to run the exact copied filename and fixed typo in property name
 ENTRYPOINT ["sh", "-c", "java -jar -Dspring.profiles.active=${ACTIVE_PROFILE} -Dspring.datasource.url=${URL} app.jar"]
