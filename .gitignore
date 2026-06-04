@@ -1,3 +1,9 @@
+# Ignore any file with a .env extension anywhere in the project
+*.env
+
+# Or ignore this specific file path
+user-service/src/main/resources/file.env
+
 HELP.md
 target/
 .mvn/wrapper/maven-wrapper.jar

@@ -1,21 +1,26 @@
 package com.mcmanuel.exception;
 
 import java.time.Instant;
+
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     private ProblemDetail UnhandledException(Exception ex) {
+        log.error(ex.getMessage());
         ProblemDetail problemDetail =
                 ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
 
         problemDetail.setTitle("internal error");
-        problemDetail.setProperty("category", "book service");
+        problemDetail.setProperty("category", "user service");
         problemDetail.setProperty("TimeStamp", Instant.now());
         return problemDetail;
     }
