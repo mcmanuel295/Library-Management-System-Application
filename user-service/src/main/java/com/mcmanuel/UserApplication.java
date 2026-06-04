@@ -14,6 +14,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @EnableFeignClients
 public class UserApplication {
     public static void main(String[] args) {
-        SpringApplication.run(UserApplication.class,args);
+        SpringApplication.run(UserApplication.class, args);
     }
 }

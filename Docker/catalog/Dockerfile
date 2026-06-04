@@ -19,12 +19,12 @@ COPY --from=build /build/target/catalog-service-*.jar ./app.jar
 
 ARG APP_VERSION=1.0.0
 ARG PROFILE=dev
-EXPOSE 8081
+EXPOSE 8080
 
 # Fixed LegacyKeyValueFormat, spacing, and invalid hyphens in keys
 ENV JAR_VERSION=${APP_VERSION}
 ENV ACTIVE_PROFILE=${PROFILE}
-ENV URL=jdbc:mysql://mysql:3306/db
+ENV URL=jdbc:mysql://catalog-service:3306/catalog
 
 # Fixed the entrypoint to run the exact copied filename and fixed typo in property name
 ENTRYPOINT ["sh", "-c", "java -jar -Dspring.profiles.active=${ACTIVE_PROFILE} -Dspring.datasource.url=${URL} app.jar"]

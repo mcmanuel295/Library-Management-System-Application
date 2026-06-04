@@ -2,11 +2,10 @@ package com.mcmanuel.domain.token;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Future;
-import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
+import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,7 +24,6 @@ class Token {
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    @Future
-    @Column(nullable = false)
+    @Future @Column(nullable = false)
     private LocalDateTime expiresAt;
 }

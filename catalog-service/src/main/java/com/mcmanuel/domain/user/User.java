@@ -1,10 +1,10 @@
 package com.mcmanuel.domain.user;
 
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -16,7 +16,7 @@ public class User {
 
     private String firstname;
 
-    private String fullName ;
+    private String fullName;
 
     private String email;
 
@@ -29,7 +29,4 @@ public class User {
     private boolean enabled;
 
     private boolean accountLocked;
-
-
-
 }

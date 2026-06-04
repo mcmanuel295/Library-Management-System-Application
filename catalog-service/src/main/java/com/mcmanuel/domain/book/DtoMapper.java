@@ -15,8 +15,7 @@ class DtoMapper {
                 book.getQuantity(),
                 book.getUser(),
                 book.getCreatedDate(),
-                book.getBorrowedDate()
-        );
+                book.getBorrowedDate());
     }
 
     public static Book toBook(BookDto updatedBook) {
@@ -28,7 +27,6 @@ class DtoMapper {
                 updatedBook.quantity(),
                 updatedBook.user(),
                 updatedBook.createdDate(),
-                updatedBook.borrowedDate()
-        );
+                updatedBook.borrowedDate());
     }
 }

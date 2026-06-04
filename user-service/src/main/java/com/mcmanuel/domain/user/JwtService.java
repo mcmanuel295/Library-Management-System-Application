@@ -3,20 +3,19 @@ package com.mcmanuel.domain.user;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
-
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.function.Function;
-
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
 @Service
 public class JwtService {
     String secretString;
-    public JwtService(){
+
+    public JwtService() {
         KeyGenerator keyGen = null;
         try {
             keyGen = KeyGenerator.getInstance("HmacSHA256");
@@ -24,49 +23,44 @@ public class JwtService {
             throw new RuntimeException("Error initializing JWT KeyGenerator", e);
         }
         SecretKey secretKey = keyGen.generateKey();
-        secretString =Base64.getEncoder().encodeToString(secretKey.getEncoded());
+        secretString = Base64.getEncoder().encodeToString(secretKey.getEncoded());
     }
 
-    public SecretKey key(){
+    public SecretKey key() {
         byte[] bytes = Base64.getDecoder().decode(this.secretString);
         return Keys.hmacShaKeyFor(bytes);
     }
 
-    public String generateToken(UserDTO user){
-        Map<String,Object> claims = new HashMap<>();
+    public String generateToken(UserDTO user) {
+        Map<String, Object> claims = new HashMap<>();
 
         List<Role> roles = user.getRoles();
-        claims.put("roles",roles);
+        claims.put("roles", roles);
 
-        String jwt= Jwts.builder()
+        String jwt = Jwts.builder()
                 .claims()
                 .add(claims)
                 .add("authorities", List.of(user.getRoles()))
                 .and()
                 .subject(user.getEmail())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis()+(5*60*1000)))
+                .expiration(new Date(System.currentTimeMillis() + (5 * 60 * 1000)))
                 .signWith(key())
                 .compact();
-        System.out.println("JTW String :"+jwt);
+        System.out.println("JTW String :" + jwt);
         return jwt;
     }
 
     public String extractUsername(String token) {
-        return extractClaim(token,Claims::getSubject);
+        return extractClaim(token, Claims::getSubject);
     }
 
-    public <T> T extractClaim(String token, Function<Claims,T> claimResolver){
+    public <T> T extractClaim(String token, Function<Claims, T> claimResolver) {
         return claimResolver.apply(extractClaims(token));
     }
 
-    public Claims extractClaims(String token){
-        return Jwts.parser()
-                .verifyWith(key())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
-
+    public Claims extractClaims(String token) {
+        return Jwts.parser().verifyWith(key()).build().parseSignedClaims(token).getPayload();
     }
 
     public boolean validateToken(String token, UserDetails userDetails) {

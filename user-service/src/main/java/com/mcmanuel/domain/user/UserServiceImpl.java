@@ -11,6 +11,10 @@ import com.mcmanuel.exception.BookNotFoundException;
 import com.mcmanuel.exception.BookNotShareableOrAvailableException;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
+import java.security.SecureRandom;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -22,11 +26,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.security.SecureRandom;
-import java.time.LocalDateTime;
-import java.util.*;
-import java.util.function.Function;
 
 @Service
 @Slf4j
@@ -42,10 +41,9 @@ public class UserServiceImpl implements UserService {
     private final BookClient client;
     private final ApplicationConfiguration config;
 
-
     @Override
     public UserDTO createUser(UserRequest request) throws MessagingException {
-        ArrayList<Role> roles =new ArrayList<>();
+        ArrayList<Role> roles = new ArrayList<>();
         roles.add(Role.USER);
         User user = User.builder()
                 .email(request.getEmail())
@@ -65,12 +63,17 @@ public class UserServiceImpl implements UserService {
 
     private void sendValidationEmail(User user) throws MessagingException {
         TokenDto token = generateToken();
-        emailService.sendEmail(user.getEmail(),user.getFullName(),"ACTIVATE-EMAIL",token.token(),"Account-activation","Account_Activation");
+        emailService.sendEmail(
+                user.getEmail(),
+                user.getFullName(),
+                "ACTIVATE-EMAIL",
+                token.token(),
+                "Account-activation",
+                "Account_Activation");
     }
 
-    private TokenDto generateToken(){
-        var token = TokenDto
-                .builder()
+    private TokenDto generateToken() {
+        var token = TokenDto.builder()
                 .token(generateToken.apply(6))
                 .createdAt(LocalDateTime.now())
                 .expiresAt(LocalDateTime.now().plusMinutes(5))
@@ -78,8 +81,7 @@ public class UserServiceImpl implements UserService {
         return tokenRepo.saveToken(token);
     }
 
-
-    private final Function<Integer,String> generateToken = (length)->{
+    private final Function<Integer, String> generateToken = (length) -> {
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         StringBuilder builder = new StringBuilder();
 
@@ -92,26 +94,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUser(UUID userId) {
-        return UserMapper.ToDTO(userRepo.findById(userId).orElseThrow(()->new RuntimeException("User with userId"+userId+" not found")));
+        return UserMapper.ToDTO(userRepo.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User with userId" + userId + " not found")));
     }
 
     @Override
     public Page<UserDTO> getAllUser(int pageNo, int size) {
-        Pageable pageable = PageRequest.of(pageNo,size);
+        Pageable pageable = PageRequest.of(pageNo, size);
         return userRepo.findAll(pageable).map(UserMapper::ToDTO);
-
     }
 
     @Override
     public UserDTO updateUser(UUID userId, UserDTO updatedUser) {
-        User user =userRepo.findById(userId).orElseThrow(()->new RuntimeException("User with userId"+userId+" not found"));
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User with userId" + userId + " not found"));
         updatedUser.setUserId(user.getUserId());
         return UserMapper.ToDTO(userRepo.save(UserMapper.ToUser(updatedUser)));
     }
 
     @Override
     public String deleteUser(UUID userId) {
-        User user =userRepo.findById(userId).orElseThrow(()->new RuntimeException("User with userId"+userId+" not found"));
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User with userId" + userId + " not found"));
         userRepo.deleteById(user.getUserId());
         return "deleted";
     }
@@ -119,19 +123,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public String login(String email, String password) {
         System.out.println("enter");
-        Authentication auth = manager.authenticate(new UsernamePasswordAuthenticationToken(email,password));
+        Authentication auth = manager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         System.out.println(auth.isAuthenticated());
-       if(auth.isAuthenticated()){
-           UserDTO user= UserMapper.ToDTO( userRepo.findByEmail(email).orElseThrow());
-           log.info( "Authenticated");
-       return jwtService.generateToken(user);
-       }
+        if (auth.isAuthenticated()) {
+            UserDTO user = UserMapper.ToDTO(userRepo.findByEmail(email).orElseThrow());
+            log.info("Authenticated");
+            return jwtService.generateToken(user);
+        }
         throw new UsernameNotFoundException("invalid user login");
     }
 
     @Override
-    public UserDTO updateRole(UUID userId,Role role) {
-        User user =userRepo.findById(userId).orElseThrow();
+    public UserDTO updateRole(UUID userId, Role role) {
+        User user = userRepo.findById(userId).orElseThrow();
 
         user.getRoles().add(role);
         return UserMapper.ToDTO(userRepo.save(user));
@@ -139,8 +143,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean activateAccount(String email, String token) {
-        Optional<User> userOpt =userRepo.findByEmail(email);
-        if(userOpt.isEmpty()){
+        Optional<User> userOpt = userRepo.findByEmail(email);
+        if (userOpt.isEmpty()) {
             throw new UsernameNotFoundException("User not found!!");
         }
         User user = userOpt.get();
@@ -150,39 +154,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String borrowBook(UUID userId,UUID bookId) {
+    public String borrowBook(UUID userId, UUID bookId) {
         try {
-            return client.borrowBook(userId,bookId);
-        }
-        catch (BookNotFoundException ex){
+            return client.borrowBook(userId, bookId);
+        } catch (BookNotFoundException ex) {
             throw new BookNotFoundException("Book Not Found");
-        }
-        catch (BookNotShareableOrAvailableException ex) {
+        } catch (BookNotShareableOrAvailableException ex) {
             throw new BookNotShareableOrAvailableException("Book Not Shareable Or Available");
         }
     }
 
-
-
     @Override
     public String returnBook(UUID userId, UUID bookId) {
         try {
-            return client.returnBook(userId,bookId);
-        }
-        catch (BookNotFoundException ex){
+            return client.returnBook(userId, bookId);
+        } catch (BookNotFoundException ex) {
             throw new BookNotFoundException("Book Not Found");
         }
     }
 
-
     @Override
     public Page<BookDto> getAllBook() {
-        int pageNo =config.pageNo();
-        int size= config.size();
+        int pageNo = config.pageNo();
+        int size = config.size();
         String sort = config.sort();
 
-        System.out.println("page No"+pageNo+" size "+size+" sort "+sort);
+        System.out.println("page No" + pageNo + " size " + size + " sort " + sort);
 
-        return client.getAllBook(pageNo,size,sort);
+        return client.getAllBook(pageNo, size, sort);
     }
 }

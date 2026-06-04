@@ -3,9 +3,8 @@ package com.mcmanuel.domain.user;
 import com.mcmanuel.book.BookDto;
 import com.mcmanuel.domain.user.request.UserRequest;
 import jakarta.mail.MessagingException;
-import org.springframework.data.domain.Page;
-
 import java.util.UUID;
+import org.springframework.data.domain.Page;
 
 public interface UserService {
 

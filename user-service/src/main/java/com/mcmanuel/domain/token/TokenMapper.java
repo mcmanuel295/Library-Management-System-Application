@@ -2,7 +2,7 @@ package com.mcmanuel.domain.token;
 
 class TokenMapper {
 
-    public static Token toToken(TokenDto dto){
+    public static Token toToken(TokenDto dto) {
         return Token.builder()
                 .tokenId(dto.tokenId())
                 .token(dto.token())
@@ -11,7 +11,7 @@ class TokenMapper {
                 .build();
     }
 
-    public static TokenDto toTokenDto(Token token){
+    public static TokenDto toTokenDto(Token token) {
         return TokenDto.builder()
                 .tokenId(token.getTokenId())
                 .token(token.getToken())

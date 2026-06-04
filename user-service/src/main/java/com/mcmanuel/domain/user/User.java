@@ -4,13 +4,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.UUID;
+import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 @Entity
 @Getter
@@ -25,30 +24,25 @@ class User {
     private UUID userId;
 
     @Column(nullable = false)
-    @NotBlank(message = "this field cannot be blank")
-    private String lastname;
+    @NotBlank(message = "this field cannot be blank") private String lastname;
 
     @Column(nullable = false)
-    @NotBlank(message = "this field cannot be blank")
-    private String firstname;
+    @NotBlank(message = "this field cannot be blank") private String firstname;
 
     @Column(nullable = false)
-    @NotBlank(message = "this field cannot be blank")
-    private String fullName ;
+    @NotBlank(message = "this field cannot be blank") private String fullName;
 
-    @Email
-    @Column(unique = true,nullable = false)
+    @Email @Column(unique = true, nullable = false)
     private String email;
 
-    @NotBlank(message = "this field cannot be blank")
-    private String password;
+    @NotBlank(message = "this field cannot be blank") private String password;
 
     @CreatedDate
-    @Column(nullable = false,updatable = false)
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdDate;
 
     @LastModifiedDate
-    @Column(nullable = false,insertable = false )
+    @Column(nullable = false, insertable = false)
     private LocalDateTime lastModifiedDate;
 
     private boolean enabled;
@@ -57,19 +51,17 @@ class User {
 
     private ArrayList<Role> roles;
 
-    public void setFullName(){
-        this.fullName =this.lastname+" "+this.firstname;
+    public void setFullName() {
+        this.fullName = this.lastname + " " + this.firstname;
     }
 
-    public void setLastname(String lastname){
-        this.lastname =lastname;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
         setFullName();
     }
 
-    public void setFirstname(String firstname){
-        this.firstname =firstname;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
         setFullName();
     }
-
-
 }

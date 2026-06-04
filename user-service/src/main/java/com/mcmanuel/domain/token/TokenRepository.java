@@ -1,9 +1,6 @@
 package com.mcmanuel.domain.token;
 
+import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.UUID;
-
-interface TokenRepository extends JpaRepository<Token, UUID> {
-
-}
+interface TokenRepository extends JpaRepository<Token, UUID> {}

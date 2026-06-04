@@ -14,48 +14,39 @@ public class RabbitConfig {
     private final ApplicationConfiguration appConfig;
 
     @Bean
-    DirectExchange exchange(){
+    DirectExchange exchange() {
         return new DirectExchange(appConfig.exchangeName());
     }
 
     @Bean
-    Queue borrowBookQueue(){
-        return QueueBuilder.durable(appConfig.borrowBookQueue()).build() ;
+    Queue borrowBookQueue() {
+        return QueueBuilder.durable(appConfig.borrowBookQueue()).build();
     }
 
     @Bean
-    Binding borrowBookQueueBinding(){
-        return BindingBuilder
-                .bind(borrowBookQueue())
-                .to(exchange())
-                .with(appConfig.borrowBookQueue());
+    Binding borrowBookQueueBinding() {
+        return BindingBuilder.bind(borrowBookQueue()).to(exchange()).with(appConfig.borrowBookQueue());
     }
 
-
-
     @Bean
-    Queue returnBookQueue(){
+    Queue returnBookQueue() {
         return QueueBuilder.durable(appConfig.returnedBookQueue()).build();
     }
 
     @Bean
-    Binding returnBookQueueBinding(){
-        return BindingBuilder
-                .bind(returnBookQueue())
-                .to(exchange())
-                .with(appConfig.returnedBookQueue());
+    Binding returnBookQueueBinding() {
+        return BindingBuilder.bind(returnBookQueue()).to(exchange()).with(appConfig.returnedBookQueue());
     }
 
-
     @Bean
-    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory){
+    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMessageConverter(jacksonConverter());
         return rabbitTemplate;
     }
 
     @Bean
-    public JacksonJsonMessageConverter jacksonConverter(){
+    public JacksonJsonMessageConverter jacksonConverter() {
         return new JacksonJsonMessageConverter();
     }
 }

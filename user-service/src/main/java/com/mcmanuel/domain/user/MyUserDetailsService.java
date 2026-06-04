@@ -13,13 +13,12 @@ public class MyUserDetailsService implements UserDetailsService {
     private final UserRepository userRepo;
 
     @Override
-    @NonNull
-    public UserDetails loadUserByUsername(@NonNull String username) throws UsernameNotFoundException {
-        System.out.println("in userdatail service: "+username);
+    @NonNull public UserDetails loadUserByUsername(@NonNull String username) throws UsernameNotFoundException {
+        System.out.println("in userdatail service: " + username);
 
         User user = userRepo.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User " + username + " doesn't exist"));
-        System.out.println("username;"+username);
-        return  new MyUserDetails(user);
+        System.out.println("username;" + username);
+        return new MyUserDetails(user);
     }
 }

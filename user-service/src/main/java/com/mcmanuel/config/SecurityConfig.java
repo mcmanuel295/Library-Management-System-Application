@@ -2,7 +2,6 @@ package com.mcmanuel.config;
 
 import com.mcmanuel.domain.user.MyUserDetailsService;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.filters.CorsFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -20,9 +19,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @RequiredArgsConstructor
@@ -31,42 +27,41 @@ public class SecurityConfig {
     private final JwtConfiguration jwtConfiguration;
 
     @Bean
-    public SecurityFilterChain configuration(HttpSecurity http){
-        return http
-                .authorizeHttpRequests(
-                        request -> request
-                                .requestMatchers("/api/v1/users/login").permitAll()
-                                .requestMatchers(HttpMethod.POST,"/api/v1/users/").permitAll()
-                                .requestMatchers(HttpMethod.GET,"/api/v1/users/").permitAll()
-                                .anyRequest().authenticated()
-                )
+    public SecurityFilterChain configuration(HttpSecurity http) {
+        return http.authorizeHttpRequests(request -> request.requestMatchers("/api/v1/users/login")
+                        .permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/users/")
+                        .permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/users/")
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated())
                 .cors(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtConfiguration, UsernamePasswordAuthenticationFilter.class)
                 .build();
-
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12);
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration){
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(){
+    public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
 
     @Bean
-    public JavaMailSender mailSender(){
+    public JavaMailSender mailSender() {
         return new JavaMailSenderImpl();
     }
 }
