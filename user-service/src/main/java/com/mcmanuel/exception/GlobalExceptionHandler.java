@@ -1,8 +1,6 @@
 package com.mcmanuel.exception;
 
 import java.time.Instant;
-
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -24,7 +22,6 @@ public class GlobalExceptionHandler {
         problemDetail.setProperty("TimeStamp", Instant.now());
         return problemDetail;
     }
-
 
     @ExceptionHandler(AccountLockedException.class)
     private ProblemDetail AccountLockedExceptionHandler(AccountLockedException ex) {

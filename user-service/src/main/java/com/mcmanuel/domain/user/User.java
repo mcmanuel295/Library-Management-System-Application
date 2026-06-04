@@ -8,16 +8,16 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.UUID;
 import lombok.*;
+import lombok.Builder;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 @Entity
 @Getter
 @Setter
-@Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -41,10 +41,6 @@ class User {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdDate;
 
-    @LastModifiedDate
-    @Column(nullable = false, insertable = false)
-    private LocalDateTime lastModifiedDate;
-
     private boolean enabled;
 
     private boolean accountLocked;
@@ -54,6 +50,7 @@ class User {
     public void setFullName() {
         this.fullName = this.lastname + " " + this.firstname;
     }
+
 
     public void setLastname(String lastname) {
         this.lastname = lastname;

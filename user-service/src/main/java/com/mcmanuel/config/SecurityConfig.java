@@ -30,9 +30,9 @@ public class SecurityConfig {
     public SecurityFilterChain configuration(HttpSecurity http) {
         return http.authorizeHttpRequests(request -> request.requestMatchers("/api/v1/users/login")
                         .permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/v1/users/")
+                        .requestMatchers(HttpMethod.POST, "/api/v1/users", "/api/v1/users/**")
                         .permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v1/users/")
+                        .requestMatchers(HttpMethod.GET, "/api/v1/users/", "/api/v1/users/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated())
@@ -60,8 +60,9 @@ public class SecurityConfig {
         return provider;
     }
 
-    @Bean
-    public JavaMailSender mailSender() {
-        return new JavaMailSenderImpl();
-    }
+//    @Bean
+//    public JavaMailSender mailSender() {
+//        JavaMailSender sender = new JavaMailSenderImpl();
+//        return new JavaMailSenderImpl();
+//    }
 }

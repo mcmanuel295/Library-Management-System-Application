@@ -8,6 +8,7 @@ import java.util.HashMap;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -18,28 +19,34 @@ public class EmailService {
     private final JavaMailSender mailSender;
     private final TemplateEngine engine;
 
+    @Async
     public void sendEmail(String email, String name, String templateName, String code, String subject, String url)
             throws MessagingException {
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED, UTF_8.name());
+        try{
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED, UTF_8.name());
 
-        Context context = new Context();
+            Context context = new Context();
 
-        HashMap<String, Object> properties = new HashMap<>();
-        properties.put("username", name);
-        properties.put("code", code);
-        properties.put("url", url);
+            HashMap<String, Object> properties = new HashMap<>();
+            properties.put("username", name);
+            properties.put("code", code);
+            properties.put("url", url);
 
-        context.setVariables(properties);
+            context.setVariables(properties);
 
-        helper.setFrom("mcmanuel755@gmail,com");
-        helper.setTo(email);
-        helper.setSubject(subject);
+            helper.setFrom("mcmanuel755@gmail.com");
+            helper.setTo(email);
+            helper.setSubject(subject);
 
-        String template = engine.process(templateName, context);
+            String template = engine.process(templateName, context);
 
-        helper.setText(template, true);
+            helper.setText(template, true);
 
-        mailSender.send(message);
+            mailSender.send(message);
+        }
+        catch (MessagingException ex){
+            throw new MessagingException(ex.getMessage());
+        }
     }
 }

@@ -6,7 +6,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "catalog-service", url = "http;//localhost:8081/api/v1")
+@FeignClient(name = "catalog-service", url = "${CATALOG_SERVICE_URL:http://localhost:8081/api/v1/books}")
 public interface BookClient {
 
     @GetMapping("/")

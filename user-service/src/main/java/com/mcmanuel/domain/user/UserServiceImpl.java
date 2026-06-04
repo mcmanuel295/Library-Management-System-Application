@@ -28,7 +28,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
 @Service
 @Slf4j
 @Transactional(rollbackOn = Exception.class)
@@ -47,7 +46,8 @@ public class UserServiceImpl implements UserService {
     public UserDTO createUser(UserRequest request) throws MessagingException {
         ArrayList<Role> roles = new ArrayList<>();
         roles.add(Role.USER);
-        User user = User.builder()
+
+        User user = User.Builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .roles(roles)
@@ -65,17 +65,21 @@ public class UserServiceImpl implements UserService {
 
     private void sendValidationEmail(User user) throws MessagingException {
         TokenDto token = generateToken();
+
+        System.out.println("Token " + token.toString());
+
         emailService.sendEmail(
                 user.getEmail(),
                 user.getFullName(),
-                "ACTIVATE-EMAIL",
+                "activate-email",
                 token.token(),
                 "Account-activation",
                 "Account_Activation");
+        System.out.println("end here");
     }
 
-    private boolean accountLocked(UUID userId){
-        User user =userRepo.findById(userId).orElseThrow(()-> new UsernameNotFoundException("User Not Found"));
+    private boolean accountLocked(UUID userId) {
+        User user = userRepo.findById(userId).orElseThrow(() -> new UsernameNotFoundException("User Not Found"));
         return user.isAccountLocked() && user.isEnabled();
     }
 
@@ -87,7 +91,6 @@ public class UserServiceImpl implements UserService {
                 .build();
         return tokenRepo.saveToken(token);
     }
-
 
     private final Function<Integer, String> generateToken = (length) -> {
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -102,8 +105,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUser(UUID userId) {
-        if (accountLocked(userId))
-            throw new AccountLockedException("Account Is Not Unlocked");
+        if (accountLocked(userId)) throw new AccountLockedException("Account Is Not Unlocked");
         return UserMapper.ToDTO(userRepo.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User with userId" + userId + " not found")));
     }
@@ -116,19 +118,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO updateUser(UUID userId, UserDTO updatedUser) {
-        if (accountLocked(userId))
-            throw new AccountLockedException("Account Is Not Unlocked");
+        if (accountLocked(userId)) throw new AccountLockedException("Account Is Not Unlocked");
 
-       UserMapper.ToDTO(userRepo.findById(userId)
+        UserMapper.ToDTO(userRepo.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User with userId" + userId + " not found")));
 
         updatedUser = new UserDTO(
-          userId,
-          updatedUser.fullName(),
-          updatedUser.email(),
-          updatedUser.roles(),
-          updatedUser.createdDate()
-        );
+                userId, updatedUser.fullName(), updatedUser.email(), updatedUser.roles(), updatedUser.createdDate());
         return UserMapper.ToDTO(userRepo.save(UserMapper.ToUser(updatedUser)));
     }
 
@@ -155,8 +151,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO updateRole(UUID userId, Role role) {
-        if (accountLocked(userId))
-            throw new AccountLockedException("Account Is Not Unlocked");
+        if (accountLocked(userId)) throw new AccountLockedException("Account Is Not Unlocked");
         User user = userRepo.findById(userId).orElseThrow();
 
         user.getRoles().add(role);

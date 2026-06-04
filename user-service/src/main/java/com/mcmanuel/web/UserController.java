@@ -28,7 +28,7 @@ public class UserController {
 
     @GetMapping("/{userId}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<UserDTO> getUser(@PathVariable UUID userId) {
+    public ResponseEntity<UserDTO> getUser(@PathVariable UUID userId) throws MessagingException {
         UserDTO dto = userService.getUser(userId);
         if (dto == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

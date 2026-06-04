@@ -13,6 +13,7 @@ import org.springframework.data.annotation.CreatedDate;
 @Getter
 @Setter
 @Builder
+@ToString
 class Token {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

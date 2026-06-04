@@ -1,11 +1,14 @@
 spring:
-  application.name: user-service
+  config:
+    import: optional:file:.env[.properties]
+  application:
+    name: user-service
 
   datasource:
+    username: root
     password: Oea75357@
     url: jdbc:mysql://localhost:3308/user?createDatabaseIfNotExist=true
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
 
   jpa:
     generate-ddl: true
@@ -14,23 +17,21 @@ spring:
     show-sql: true
 
   mail:
-    host: ${GMAIL_HOST}
-    port: ${GMAIL_PORT}
-    username: ${GMAIL_USERNAME}
-    password: ${GMAIL_PASSWORD}
+    host: ${MAIL_HOST}
+    port: ${MAIL_POR}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
     properties:
       mail:
         smtp:
           auth: true
           starttls:
             enable: true
-
-
+            required: true
 
 server:
   port: 8082
-  shutdown: GRACEFUL
-
+  shutdown: graceful
 
 user:
   page-no: 0
