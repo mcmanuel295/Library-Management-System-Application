@@ -1,15 +1,18 @@
-FROM ubuntu:latest as build
+# USER DOCKERFILE
+FROM maven:3.9-eclipse-temurin-17  as build
 WORKDIR /build
 COPY pom.xml .
-CMD mvn offline-download
+COPY user-service/pom.xml ./
+RUN mvn dependency:go-offline
 
-COPY src /app/src
-CMD mvn clean compile
+COPY src ./src
+RUN mvn clean package -DskipTests
 
 
-FROM ubuntu:latest
+FROM eclipse-temurin:17-jre
 WORKDIR /app
-COPY /User/target/User-*.jar /app
+
+COPY --from=build /build/target/user-service-*.jar ./app.jar
 
 
 EXPOSE 8081
@@ -19,4 +22,4 @@ ARG PROFILE=dev
 ENV JAR_VERSION = ${APP_VERSION}
 ENV ACTIVE-PROFILE =${PROFILE}
 
-CMD java -jar -Dspring.profiles.active=${JAR_VERSION} -Dspring.profile.active=${ACTIVE-PROFILE} User-.jar
+RUN java -jar -Dspring.profiles.active=${JAR_VERSION} -Dspring.profile.active=${ACTIVE-PROFILE} User-.jar
