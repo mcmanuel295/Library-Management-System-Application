@@ -34,15 +34,15 @@ public class JwtService {
     public String generateToken(UserDTO user) {
         Map<String, Object> claims = new HashMap<>();
 
-        List<Role> roles = user.getRoles();
+        List<Role> roles = user.roles();
         claims.put("roles", roles);
 
         String jwt = Jwts.builder()
                 .claims()
                 .add(claims)
-                .add("authorities", List.of(user.getRoles()))
+                .add("authorities", List.of(user.roles()))
                 .and()
-                .subject(user.getEmail())
+                .subject(user.email())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + (5 * 60 * 1000)))
                 .signWith(key())
