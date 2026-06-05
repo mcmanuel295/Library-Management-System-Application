@@ -37,10 +37,10 @@ public class BookController {
         }
     }
 
-    @GetMapping("/code/{bookId}")
-    ResponseEntity<BookDto> getBookByCode(@Valid @PathVariable String bookId) {
+    @GetMapping("/code/{code}")
+    ResponseEntity<BookDto> getBookByCode(@Valid @PathVariable String code){
         try {
-            return new ResponseEntity<>(bookService.getBookByCode(bookId), HttpStatus.OK);
+            return new ResponseEntity<>(bookService.getBookByCode(code), HttpStatus.OK);
         } catch (BookNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
@@ -49,11 +49,11 @@ public class BookController {
     }
 
     @GetMapping("/")
-    Page<BookDto> getAllBook(
+    ResponseEntity<Page<BookDto>> getAllBook(
             @Valid @RequestParam(defaultValue = "0", required = false) int pageNo,
             @Valid @RequestParam(defaultValue = "10", required = false) int size,
             @Valid @RequestParam(required = false, defaultValue = "title") String sort) {
-        return bookService.getAllBook(pageNo, size, sort);
+        return new ResponseEntity<>(bookService.getAllBook(pageNo, size, sort),HttpStatus.OK);
     }
 
     @PutMapping("/{bookId}")
@@ -108,7 +108,7 @@ public class BookController {
         return new ResponseEntity<>("Book " + bookId + " not found", HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping()
+    @GetMapping("/all-codes")
     public ResponseEntity<List<String>> getAllCode(){
         return new ResponseEntity<>(bookService.getAllCode(),HttpStatus.OK);
     }

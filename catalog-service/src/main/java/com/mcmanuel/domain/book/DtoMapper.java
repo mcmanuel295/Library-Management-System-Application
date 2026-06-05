@@ -10,6 +10,7 @@ class DtoMapper {
         return new BookDto(
                 book.getBookId(),
                 book.getTitle(),
+                book.getCode(),
                 book.isAvailable(),
                 book.isShareable(),
                 book.getQuantity(),
@@ -22,6 +23,7 @@ class DtoMapper {
         return new Book(
                 updatedBook.bookId(),
                 updatedBook.title(),
+                updatedBook.code(),
                 updatedBook.available(),
                 updatedBook.shareable(),
                 updatedBook.quantity(),

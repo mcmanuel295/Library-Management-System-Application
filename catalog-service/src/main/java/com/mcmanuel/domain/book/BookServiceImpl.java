@@ -45,6 +45,7 @@ public class BookServiceImpl implements BookService {
             while( getAllCode().contains(code)){
                 code=bookCodeGenerator();
             }
+            book.setCode(code);
 
             rabbitTemplate.convertAndSend(config.newBookQueue(),config.newBookQueue(),"new Book added");
             return DtoMapper.toDto(bookRepo.save(book));
@@ -59,10 +60,8 @@ public class BookServiceImpl implements BookService {
         String charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
         StringBuilder builder = new StringBuilder();
-        Random random = new Random(charset.length());
         for (int i = 0; i < 6; i++) {
-            builder.append(
-                    charset.charAt(random.nextInt()));
+            builder.append(charset.charAt((int) (Math.random()*charset.length())));
         }
         return builder.toString();
     }

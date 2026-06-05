@@ -7,6 +7,7 @@ import lombok.With;
 public record BookDto(
         @With UUID bookId,
         @With String title,
+        @With String code,
         @With boolean available,
         @With boolean shareable,
         @With int quantity,
