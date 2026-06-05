@@ -10,6 +10,7 @@ import com.mcmanuel.domain.user.request.UserRequest;
 import com.mcmanuel.exception.AccountLockedException;
 import com.mcmanuel.exception.BookNotFoundException;
 import com.mcmanuel.exception.BookNotShareableOrAvailableException;
+import com.mcmanuel.exception.UserNotFoundException;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import java.security.SecureRandom;
@@ -115,10 +116,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO updateUser(UUID userId, UserDTO updatedUser) {
-        if (accountLocked(userId)) throw new AccountLockedException("Account Is Not Unlocked");
-
         UserMapper.ToDTO(userRepo.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User with userId" + userId + " not found")));
+
+        if (accountLocked(userId)) throw new AccountLockedException("Account Is Not Unlocked");
 
         updatedUser = new UserDTO(
                 userId, updatedUser.fullName(), updatedUser.email(), updatedUser.roles(), updatedUser.createdDate());
@@ -128,16 +129,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public String deleteUser(UUID userId) {
         User user = userRepo.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User with userId" + userId + " not found"));
+                .orElseThrow(() -> new UserNotFoundException("User with userId" + userId + " not found"));
         userRepo.deleteById(user.getUserId());
         return "deleted";
     }
 
     @Override
     public String login(String email, String password) {
-        System.out.println("enter");
         Authentication auth = manager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-        System.out.println(auth.isAuthenticated());
+
         if (auth.isAuthenticated()) {
             UserDTO user = UserMapper.ToDTO(userRepo.findByEmail(email).orElseThrow());
             log.info("Authenticated");
@@ -148,6 +148,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO updateRole(UUID userId, Role role) {
+        userRepo.findById(userId).orElseThrow(()-> new UserNotFoundException("User Npt Found"));
+
         if (accountLocked(userId)) throw new AccountLockedException("Account Is Not Unlocked");
         User user = userRepo.findById(userId).orElseThrow();
 
@@ -169,6 +171,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String borrowBook(UUID userId, UUID bookId) {
+        userRepo.findById(userId).orElseThrow(()-> new UserNotFoundException("User Npt Found"));
         try {
             return client.borrowBook(userId, bookId);
         } catch (BookNotFoundException ex) {
@@ -176,13 +179,17 @@ public class UserServiceImpl implements UserService {
         } catch (BookNotShareableOrAvailableException ex) {
             throw new BookNotShareableOrAvailableException("Book Not Shareable Or Available");
         }
+
     }
 
     @Override
     public String returnBook(UUID userId, UUID bookId) {
         try {
+            userRepo.findById(userId).orElseThrow(()-> new UserNotFoundException("User Npt Found"));
             return client.returnBook(userId, bookId);
-        } catch (BookNotFoundException ex) {
+
+        }
+        catch (BookNotFoundException ex) {
             throw new BookNotFoundException("Book Not Found");
         }
     }
@@ -192,8 +199,6 @@ public class UserServiceImpl implements UserService {
         int pageNo = config.pageNo();
         int size = config.size();
         String sort = config.sort();
-
-        System.out.println("page No" + pageNo + " size " + size + " sort " + sort);
 
         return client.getAllBook(pageNo, size, sort);
     }

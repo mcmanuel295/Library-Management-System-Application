@@ -92,7 +92,6 @@ public class UserController {
 
     @GetMapping("/all-books")
     public ResponseEntity<Page<BookDto>> getAllBook() {
-        System.out.println("in the get all books method");
         Page<BookDto> books = userService.getAllBook();
 
         return new ResponseEntity<>(books, HttpStatus.OK);

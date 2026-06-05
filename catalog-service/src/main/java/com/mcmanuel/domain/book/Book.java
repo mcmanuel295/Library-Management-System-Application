@@ -25,6 +25,9 @@ class Book {
     @Column(nullable = false)
     @NotBlank(message = "this field cannot be blank") private String title;
 
+    @Column(nullable = false,length = 6,unique = true)
+    private String code;
+
     private boolean available;
     private boolean shareable;
 

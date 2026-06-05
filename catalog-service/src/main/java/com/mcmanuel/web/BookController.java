@@ -5,6 +5,8 @@ import com.mcmanuel.domain.book.BookDto;
 import com.mcmanuel.domain.book.BookService;
 import com.mcmanuel.exception.BookNotFoundException;
 import jakarta.validation.Valid;
+
+import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,6 +30,17 @@ public class BookController {
     ResponseEntity<BookDto> getBook(@Valid @PathVariable UUID bookId) {
         try {
             return new ResponseEntity<>(bookService.getBook(bookId), HttpStatus.OK);
+        } catch (BookNotFoundException ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/code/{bookId}")
+    ResponseEntity<BookDto> getBookByCode(@Valid @PathVariable String bookId) {
+        try {
+            return new ResponseEntity<>(bookService.getBookByCode(bookId), HttpStatus.OK);
         } catch (BookNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception ex) {
@@ -93,5 +106,10 @@ public class BookController {
             return new ResponseEntity<>("Book " + bookId + " returned", HttpStatus.OK);
         }
         return new ResponseEntity<>("Book " + bookId + " not found", HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<String>> getAllCode(){
+        return new ResponseEntity<>(bookService.getAllCode(),HttpStatus.OK);
     }
 }

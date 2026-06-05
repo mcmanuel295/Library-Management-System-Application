@@ -4,9 +4,13 @@ import com.mcmanuel.configuration.ApplicationConfiguration;
 import com.mcmanuel.exception.BookNotAvailableException;
 import com.mcmanuel.exception.BookNotFoundException;
 import jakarta.transaction.Transactional;
+
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.UUID;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -36,6 +40,12 @@ public class BookServiceImpl implements BookService {
             book.setShareable(true);
             book.setQuantity(1);
             book.setCreatedDate(LocalDateTime.now());
+
+            String code =bookCodeGenerator();
+            while( getAllCode().contains(code)){
+                code=bookCodeGenerator();
+            }
+
             rabbitTemplate.convertAndSend(config.newBookQueue(),config.newBookQueue(),"new Book added");
             return DtoMapper.toDto(bookRepo.save(book));
         }
@@ -45,10 +55,32 @@ public class BookServiceImpl implements BookService {
         return DtoMapper.toDto(book);
     }
 
+    private String bookCodeGenerator(){
+        String charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+        StringBuilder builder = new StringBuilder();
+        Random random = new Random(charset.length());
+        for (int i = 0; i < 6; i++) {
+            builder.append(
+                    charset.charAt(random.nextInt()));
+        }
+        return builder.toString();
+    }
+
+    public List<String> getAllCode (){
+        return bookRepo.getAllCode();
+    }
+
     @Override
     public BookDto getBook(UUID bookId) throws BookNotFoundException {
         return DtoMapper.toDto(bookRepo.findById(bookId)
                 .orElseThrow(() -> new BookNotFoundException("Book with bookId" + bookId + " not found")));
+    }
+
+    @Override
+    public BookDto getBookByCode(String code) throws BookNotFoundException {
+        return DtoMapper.toDto(bookRepo.findByCode(code)
+                .orElseThrow(() -> new BookNotFoundException("Book with bookId" + code + " not found")));
     }
 
     @Override
@@ -89,26 +121,35 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDto borrowBook(UUID userId, UUID bookId) {
         Book book = DtoMapper.toBook(getBook(bookId));
-        if (!book.isAvailable() || !book.isShareable() || book.getQuantity() == 0) {
+        if (!book.isAvailable() || !book.isShareable() || book.getQuantity() <= 0) {
             throw new BookNotAvailableException("Book " + bookId + " not available");
         }
 
-        rabbitTemplate.convertAndSend(config.exchangeName(), config.borrowBookQueue(), "Book borrow request");
+        book.setQuantity(book.getQuantity()-1);
+        rabbitTemplate.convertAndSend(config.exchangeName(), config.borrowBookQueue(), "Borrow Book Request");
         System.out.println("book borrow request by user " + userId);
 
         book.setUser(userId);
+        book.setShareable(book.getQuantity() == 0);
+        book.setAvailable(book.getQuantity()==0);
+
         return DtoMapper.toDto(bookRepo.save(book));
     }
 
     @Override
     public BookDto returnBook(UUID userId, UUID bookId) {
         Book book = DtoMapper.toBook(getBook(bookId));
-        if (!book.isAvailable() || !book.isShareable() || book.getQuantity() == 0) {
+        if (!book.isAvailable() || !book.isShareable() || book.getQuantity() <= 0) {
             throw new BookNotAvailableException("Book " + bookId + " not available");
         }
+        book.setQuantity(book.getQuantity()+1);
 
         rabbitTemplate.convertAndSend(config.exchangeName(), config.borrowBookQueue(), "Book return request");
         System.out.println("book return request by user " + userId);
+
+        book.setUser(userId);
+        book.setShareable(book.getQuantity() == 0);
+        book.setAvailable(book.getQuantity()==0);
 
         book.setUser(null);
         return DtoMapper.toDto(bookRepo.save(book));
