@@ -171,7 +171,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String borrowBook(UUID userId, UUID bookId) {
-        userRepo.findById(userId).orElseThrow(()-> new UserNotFoundException("User Npt Found"));
+        userRepo.findById(userId).orElseThrow(()-> new UserNotFoundException("User Not Found"));
         try {
             return client.borrowBook(userId, bookId);
         } catch (BookNotFoundException ex) {

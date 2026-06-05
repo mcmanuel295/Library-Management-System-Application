@@ -30,10 +30,11 @@ public class BookController {
     ResponseEntity<BookDto> getBook(@Valid @PathVariable UUID bookId) {
         try {
             return new ResponseEntity<>(bookService.getBook(bookId), HttpStatus.OK);
-        } catch (BookNotFoundException ex) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        catch (BookNotFoundException ex) {
+           throw new BookNotFoundException(ex.getMessage());
         } catch (Exception ex) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            throw new RuntimeException(ex.getMessage());
         }
     }
 
@@ -41,10 +42,11 @@ public class BookController {
     ResponseEntity<BookDto> getBookByCode(@Valid @PathVariable String code){
         try {
             return new ResponseEntity<>(bookService.getBookByCode(code), HttpStatus.OK);
-        } catch (BookNotFoundException ex) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        catch (BookNotFoundException ex) {
+            throw new BookNotFoundException(ex.getMessage());
         } catch (Exception ex) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            throw new RuntimeException(ex.getMessage());
         }
     }
 
@@ -60,10 +62,11 @@ public class BookController {
     ResponseEntity<BookDto> updateBook(@Valid @PathVariable UUID bookId, @RequestBody @Valid BookDto book) {
         try {
             return new ResponseEntity<>(bookService.updateBook(bookId, book), HttpStatus.OK);
-        } catch (BookNotFoundException ex) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        catch (BookNotFoundException ex) {
+            throw new BookNotFoundException(ex.getMessage());
         } catch (Exception ex) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            throw new RuntimeException(ex.getMessage());
         }
     }
 
@@ -71,10 +74,11 @@ public class BookController {
     ResponseEntity<String> deleteBook(@Valid @PathVariable UUID bookId) throws BookNotFoundException {
         try {
             return new ResponseEntity<>(bookService.deleteBook(bookId), HttpStatus.OK);
-        } catch (BookNotFoundException ex) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        catch (BookNotFoundException ex) {
+            throw new BookNotFoundException(ex.getMessage());
         } catch (Exception ex) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            throw new RuntimeException(ex.getMessage());
         }
     }
 
@@ -82,10 +86,11 @@ public class BookController {
     ResponseEntity<BookDto> search(@RequestParam @Valid String word) {
         try {
             return new ResponseEntity<>(bookService.search(word), HttpStatus.OK);
-        } catch (BookNotFoundException ex) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        catch (BookNotFoundException ex) {
+            throw new BookNotFoundException(ex.getMessage());
         } catch (Exception ex) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            throw new RuntimeException(ex.getMessage());
         }
     }
 

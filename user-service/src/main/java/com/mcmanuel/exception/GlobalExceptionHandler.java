@@ -1,9 +1,12 @@
 package com.mcmanuel.exception;
 
 import java.time.Instant;
+import java.util.ArrayList;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -51,6 +54,22 @@ public class GlobalExceptionHandler {
     public ProblemDetail bookNotShareableOrAvailableExceptionHandler(BookNotShareableOrAvailableException ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
         problemDetail.setProperty("timeStamp", Instant.now());
+        return problemDetail;
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    private ProblemDetail MethodArgumentNotValidExceptionHandler(MethodArgumentNotValidException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+
+        ArrayList<String> errors = new ArrayList<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            errors.add(error.getDefaultMessage());
+        });
+
+        problemDetail.setTitle("Method argument not valid exception");
+        problemDetail.setProperty("error", errors);
+        problemDetail.setProperty("category", "book service");
+        problemDetail.setProperty("TimeStamp", Instant.now());
         return problemDetail;
     }
 }

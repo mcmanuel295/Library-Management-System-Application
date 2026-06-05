@@ -90,6 +90,9 @@ public class UserController {
         return ResponseEntity.ok("Account activated");
     }
 
+
+//    BOOK SERVICE OPERATIONS
+
     @GetMapping("/all-books")
     public ResponseEntity<Page<BookDto>> getAllBook() {
         Page<BookDto> books = userService.getAllBook();
@@ -98,7 +101,7 @@ public class UserController {
     }
 
     @PostMapping("/{userId}/borrow")
-    public ResponseEntity<String> borrowBook(@RequestParam UUID userId, @RequestParam UUID bookId) {
+    public ResponseEntity<String> borrowBook(@PathVariable UUID userId, @RequestParam UUID bookId) {
         String borrowBook = userService.borrowBook(userId, bookId);
         if (borrowBook == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
