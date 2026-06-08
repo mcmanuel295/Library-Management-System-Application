@@ -11,7 +11,7 @@ public interface BookService {
 
     BookDto addBook(String title);
 
-    BookDto getBook(UUID bookId) throws BookNotFoundException;
+    BookDto getBook(UUID bookId) throws BookNotFoundException, InterruptedException;
 
     BookDto getBookByCode(String code) throws BookNotFoundException;
 
@@ -23,9 +23,9 @@ public interface BookService {
 
     BookDto search(String word);
 
-    BookDto borrowBook(UUID userId, UUID bookId);
+    BookDto borrowBook(UUID userId, UUID bookId) throws InterruptedException;
 
-    BookDto returnBook(UUID userId, UUID bookId);
+    BookDto returnBook(UUID userId, UUID bookId) throws InterruptedException;
 
     List<String> getAllCode();
 }

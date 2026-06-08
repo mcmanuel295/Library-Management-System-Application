@@ -95,7 +95,7 @@ public class BookController {
     }
 
     @PostMapping("/borrow")
-    public ResponseEntity<String> borrowBook(@RequestParam UUID userId, @RequestParam @Valid UUID bookId) {
+    public ResponseEntity<String> borrowBook(@RequestParam UUID userId, @RequestParam @Valid UUID bookId) throws InterruptedException {
         BookDto borrowedBook = bookService.borrowBook(userId, bookId);
         if (borrowedBook != null) {
             return new ResponseEntity<>("Book " + bookId + " borrowed by user " + userId, HttpStatus.OK);
@@ -104,7 +104,7 @@ public class BookController {
     }
 
     @PutMapping("/return")
-    public ResponseEntity<String> returnBook(@RequestParam UUID userId, @RequestParam UUID bookId) {
+    public ResponseEntity<String> returnBook(@RequestParam UUID userId, @RequestParam UUID bookId) throws InterruptedException {
         BookDto borrowedBook = bookService.returnBook(userId, bookId);
 
         if (borrowedBook != null) {

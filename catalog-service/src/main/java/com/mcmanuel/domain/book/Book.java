@@ -28,6 +28,8 @@ class Book {
     @Column(nullable = false,length = 6,unique = true)
     private String code;
 
+//    todo add an arraylist for the quantity
+
     private boolean available;
     private boolean shareable;
 

@@ -70,7 +70,10 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookDto getBook(UUID bookId) throws BookNotFoundException {
+    public BookDto getBook(UUID bookId) throws BookNotFoundException, InterruptedException {
+        System.out.println("wait started");
+        Thread.sleep(10000);
+        System.out.println("wait ended");
         return DtoMapper.toDto(bookRepo.findById(bookId)
                 .orElseThrow(() -> new BookNotFoundException("Book with bookId" + bookId + " not found")));
     }
@@ -117,7 +120,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookDto borrowBook(UUID userId, UUID bookId) {
+    public BookDto borrowBook(UUID userId, UUID bookId) throws InterruptedException {
         Book book = DtoMapper.toBook(getBook(bookId));
         if (!book.isAvailable() || !book.isShareable() || book.getQuantity() <= 0) {
             throw new BookNotAvailableException("Book " + bookId + " not available");
@@ -135,7 +138,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookDto returnBook(UUID userId, UUID bookId) {
+    public BookDto returnBook(UUID userId, UUID bookId) throws InterruptedException {
         Book book = DtoMapper.toBook(getBook(bookId));
         if (!book.isAvailable() || !book.isShareable() || book.getQuantity() <= 0) {
             throw new BookNotAvailableException("Book " + bookId + " not available");
