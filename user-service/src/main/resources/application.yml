@@ -20,7 +20,7 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: update
-    show-sql: true
+#    show-sql: true
 
   mail:
     host: ${MAIL_HOST:smtp.gmail.com}
@@ -75,8 +75,13 @@ resilience4j:
         sliding-window-type: COUNT_BASED
         wait-duration-in-open-state: 15s
 
-
   timelimiter:
     instances:
       catalog:
         timeout-duration: 4s
+
+  retry:
+    instances:
+      catalog:
+        wait-duration: 2s
+        max-attempts: 3

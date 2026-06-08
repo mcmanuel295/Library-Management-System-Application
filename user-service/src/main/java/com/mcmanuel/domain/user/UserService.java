@@ -32,5 +32,5 @@ public interface UserService {
 
     Page<BookDto> getAllBook();
 
-    CompletableFuture<BookDto> getBook(UUID bookId);
+    BookDto getBook(UUID bookId) throws InterruptedException;
 }

@@ -7,10 +7,14 @@ import com.mcmanuel.domain.user.UserService;
 import com.mcmanuel.domain.user.request.LoginRequest;
 import com.mcmanuel.domain.user.request.UserRequest;
 import com.mcmanuel.exception.BookNotFoundException;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
+import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import jakarta.mail.MessagingException;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -96,14 +100,36 @@ public class UserController {
 
 //    BOOK SERVICE OPERATIONS
 
+//    @CircuitBreaker(name="catalog",fallbackMethod = "circuitFallBackMethod")
+    @TimeLimiter(name = "catalog",fallbackMethod = "timelimiterFallBackMethod")
+    @Retry(name = "catalog")
     @GetMapping("/book/{bookId}")
-    public ResponseEntity<CompletableFuture<BookDto>> getBook(@PathVariable UUID bookId){
-        var bookDto =userService.getBook(bookId);
-        if (bookDto != null) {
-            return new ResponseEntity<>(bookDto,HttpStatus.OK);
-        }
-        throw new BookNotFoundException("Book Not Found");
+    public CompletableFuture<BookDto> getBook(@PathVariable UUID bookId) throws InterruptedException {
+        return CompletableFuture.supplyAsync(()->{
+            BookDto bookDto=null;
+            try {
+                bookDto =userService.getBook(bookId);
+                if (bookDto == null) {
+                    throw new BookNotFoundException("Book Not Found");
+                }
+            }
+            catch(InterruptedException ex){System.out.println(ex.getMessage());}
+            catch(BookNotFoundException ex){throw new BookNotFoundException(ex.getMessage());}
+
+            return bookDto;
+        });
     }
+
+
+    private CompletableFuture<BookDto> circuitFallBackMethod(UUID bookId, RuntimeException exception){
+        return CompletableFuture.supplyAsync(()->new BookDto(null,"Oops! error",false,false,0,null,null,null));
+    }
+    private CompletableFuture<BookDto> timelimiterFallBackMethod(UUID bookId, RuntimeException exception){
+        return CompletableFuture.supplyAsync(()-> new BookDto(null,"Oops! something went wrong, please order after sometime",false,false,0,null,null,null));
+    }
+
+
+
 
     @GetMapping("/all-books")
     public ResponseEntity<Page<BookDto>> getAllBook() {

@@ -205,15 +205,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public CompletableFuture<BookDto> getBook(UUID bookId) {
+    public BookDto getBook(UUID bookId) throws InterruptedException {
         try {
             return client.getBook(bookId);
         }
         catch (BookNotFoundException ex){
             throw new BookNotFoundException(ex.getMessage());
-        }
-        catch (InterruptedException e) {
-            throw new RuntimeException(e);
         }
     }
 }
