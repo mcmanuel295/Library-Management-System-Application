@@ -16,6 +16,7 @@ import jakarta.transaction.Transactional;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -201,5 +202,18 @@ public class UserServiceImpl implements UserService {
         String sort = config.sort();
 
         return client.getAllBook(pageNo, size, sort);
+    }
+
+    @Override
+    public CompletableFuture<BookDto> getBook(UUID bookId) {
+        try {
+            return client.getBook(bookId);
+        }
+        catch (BookNotFoundException ex){
+            throw new BookNotFoundException(ex.getMessage());
+        }
+        catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -28,14 +28,11 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain configuration(HttpSecurity http) {
-        return http.authorizeHttpRequests(request -> request.requestMatchers("/api/v1/users/login")
-                        .permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/v1/users", "/api/v1/users/**")
-                        .permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v1/users/", "/api/v1/users/**")
-                        .permitAll()
-                        .anyRequest()
-                        .authenticated())
+        return http.authorizeHttpRequests(request -> request.requestMatchers("/api/v1/users/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/users", "/api/v1/users/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/users/", "/api/v1/users/**").permitAll()
+                        .requestMatchers("/actuator/**").permitAll()
+                        .anyRequest().authenticated())
                 .cors(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable)

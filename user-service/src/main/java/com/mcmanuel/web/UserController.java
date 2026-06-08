@@ -6,8 +6,11 @@ import com.mcmanuel.domain.user.UserDTO;
 import com.mcmanuel.domain.user.UserService;
 import com.mcmanuel.domain.user.request.LoginRequest;
 import com.mcmanuel.domain.user.request.UserRequest;
+import com.mcmanuel.exception.BookNotFoundException;
 import jakarta.mail.MessagingException;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -92,6 +95,15 @@ public class UserController {
 
 
 //    BOOK SERVICE OPERATIONS
+
+    @GetMapping("/book/{bookId}")
+    public ResponseEntity<CompletableFuture<BookDto>> getBook(@PathVariable UUID bookId){
+        var bookDto =userService.getBook(bookId);
+        if (bookDto != null) {
+            return new ResponseEntity<>(bookDto,HttpStatus.OK);
+        }
+        throw new BookNotFoundException("Book Not Found");
+    }
 
     @GetMapping("/all-books")
     public ResponseEntity<Page<BookDto>> getAllBook() {
