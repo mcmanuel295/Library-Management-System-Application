@@ -11,8 +11,7 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: update
-
-    show-sql: true
+#    show-sql: true
 
   rabbitmq:
     host: ${RABBITMQ_HOST:localhost}
