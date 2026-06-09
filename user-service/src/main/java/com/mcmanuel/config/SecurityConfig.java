@@ -5,8 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -28,11 +26,16 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain configuration(HttpSecurity http) {
-        return http.authorizeHttpRequests(request -> request.requestMatchers("/api/v1/users/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/v1/users", "/api/v1/users/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v1/users/", "/api/v1/users/**").permitAll()
-                        .requestMatchers("/actuator/**").permitAll()
-                        .anyRequest().authenticated())
+        return http.authorizeHttpRequests(request -> request.requestMatchers("/api/v1/users/login")
+                        .permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/users", "/api/v1/users/**")
+                        .permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/users/", "/api/v1/users/**")
+                        .permitAll()
+                        .requestMatchers("/actuator/**")
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated())
                 .cors(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable)
@@ -57,9 +60,9 @@ public class SecurityConfig {
         return provider;
     }
 
-//    @Bean
-//    public JavaMailSender mailSender() {
-//        JavaMailSender sender = new JavaMailSenderImpl();
-//        return new JavaMailSenderImpl();
-//    }
+    //    @Bean
+    //    public JavaMailSender mailSender() {
+    //        JavaMailSender sender = new JavaMailSenderImpl();
+    //        return new JavaMailSenderImpl();
+    //    }
 }

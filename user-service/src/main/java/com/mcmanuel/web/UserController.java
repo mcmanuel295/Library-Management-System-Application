@@ -13,13 +13,10 @@ import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import jakarta.mail.MessagingException;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -34,7 +31,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<UserDTO> getUser(@PathVariable UUID userId) throws MessagingException {
         UserDTO dto = userService.getUser(userId);
         if (dto == null) {
@@ -61,7 +58,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     ResponseEntity<String> deleteUser(@PathVariable UUID userId) {
         String savedUser = userService.deleteUser(userId);
         if (savedUser == null) {
@@ -80,7 +77,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}/role")
-//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     ResponseEntity<UserDTO> updateUserRole(@PathVariable UUID userId, @RequestBody Role role) {
         UserDTO savedUser = userService.updateRole(userId, role);
         if (savedUser == null) {
@@ -97,39 +94,34 @@ public class UserController {
         return ResponseEntity.ok("Account activated");
     }
 
+    //    BOOK SERVICE OPERATIONS
 
-//    BOOK SERVICE OPERATIONS
-
-//    @CircuitBreaker(name="catalog",fallbackMethod = "circuitFallBackMethod")
-    @TimeLimiter(name = "catalog",fallbackMethod = "timelimiterFallBackMethod")
-    @Retry(name = "catalog")
+    @Retry(name = "catalog", fallbackMethod = "fallBackMethod")
+    @CircuitBreaker(name = "catalog")
+    @TimeLimiter(name = "catalog")
     @GetMapping("/book/{bookId}")
     public CompletableFuture<BookDto> getBook(@PathVariable UUID bookId) throws InterruptedException {
-        return CompletableFuture.supplyAsync(()->{
-            BookDto bookDto=null;
+        return CompletableFuture.supplyAsync(() -> {
+            BookDto bookDto = null;
             try {
-                bookDto =userService.getBook(bookId);
+                bookDto = userService.getBook(bookId);
                 if (bookDto == null) {
                     throw new BookNotFoundException("Book Not Found");
                 }
+            } catch (InterruptedException ex) {
+                System.out.println(ex.getMessage());
+            } catch (BookNotFoundException ex) {
+                throw new BookNotFoundException(ex.getMessage());
             }
-            catch(InterruptedException ex){System.out.println(ex.getMessage());}
-            catch(BookNotFoundException ex){throw new BookNotFoundException(ex.getMessage());}
 
             return bookDto;
         });
     }
 
-
-    private CompletableFuture<BookDto> circuitFallBackMethod(UUID bookId, RuntimeException exception){
-        return CompletableFuture.supplyAsync(()->new BookDto(null,"Oops! error",false,false,0,null,null,null));
+    private CompletableFuture<BookDto> fallBackMethod(UUID bookId, RuntimeException exception) {
+        return CompletableFuture.supplyAsync(
+                () -> new BookDto(null, "Oops! Retry after sometime", false, false, 0, null, null, null));
     }
-    private CompletableFuture<BookDto> timelimiterFallBackMethod(UUID bookId, RuntimeException exception){
-        return CompletableFuture.supplyAsync(()-> new BookDto(null,"Oops! something went wrong, please order after sometime",false,false,0,null,null,null));
-    }
-
-
-
 
     @GetMapping("/all-books")
     public ResponseEntity<Page<BookDto>> getAllBook() {

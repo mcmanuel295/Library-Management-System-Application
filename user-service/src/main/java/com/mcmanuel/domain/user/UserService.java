@@ -4,8 +4,6 @@ import com.mcmanuel.book.BookDto;
 import com.mcmanuel.domain.user.request.UserRequest;
 import jakarta.mail.MessagingException;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-
 import org.springframework.data.domain.Page;
 
 public interface UserService {

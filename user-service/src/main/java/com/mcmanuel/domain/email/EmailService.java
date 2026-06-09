@@ -7,8 +7,6 @@ import jakarta.mail.internet.MimeMessage;
 import java.util.HashMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -20,15 +18,16 @@ import org.thymeleaf.context.Context;
 @RequiredArgsConstructor
 @Slf4j
 public class EmailService {
-     private final JavaMailSender mailSender;
+    private final JavaMailSender mailSender;
     private final TemplateEngine engine;
 
     @Async
     public void sendEmail(String email, String name, String templateName, String code, String subject, String url)
             throws MessagingException {
-        try{
+        try {
             MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED, UTF_8.name());
+            MimeMessageHelper helper =
+                    new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED, UTF_8.name());
 
             Context context = new Context();
 
@@ -48,8 +47,7 @@ public class EmailService {
             helper.setText(template, true);
 
             mailSender.send(message);
-        }
-        catch (MessagingException ex){
+        } catch (MessagingException ex) {
             log.error(ex.getMessage());
             throw new MessagingException(ex.getMessage());
         }

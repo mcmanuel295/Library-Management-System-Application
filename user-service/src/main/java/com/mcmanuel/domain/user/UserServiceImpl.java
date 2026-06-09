@@ -16,7 +16,6 @@ import jakarta.transaction.Transactional;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -61,7 +60,7 @@ public class UserServiceImpl implements UserService {
         user.setEnabled(true);
         user.setAccountLocked(true);
 
-//        sendValidationEmail(user);
+        //        sendValidationEmail(user);
         return UserMapper.ToDTO(userRepo.save(user));
     }
 
@@ -149,7 +148,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO updateRole(UUID userId, Role role) {
-        userRepo.findById(userId).orElseThrow(()-> new UserNotFoundException("User Npt Found"));
+        userRepo.findById(userId).orElseThrow(() -> new UserNotFoundException("User Npt Found"));
 
         if (accountLocked(userId)) throw new AccountLockedException("Account Is Not Unlocked");
         User user = userRepo.findById(userId).orElseThrow();
@@ -172,7 +171,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String borrowBook(UUID userId, UUID bookId) {
-        userRepo.findById(userId).orElseThrow(()-> new UserNotFoundException("User Not Found"));
+        userRepo.findById(userId).orElseThrow(() -> new UserNotFoundException("User Not Found"));
         try {
             return client.borrowBook(userId, bookId);
         } catch (BookNotFoundException ex) {
@@ -180,17 +179,15 @@ public class UserServiceImpl implements UserService {
         } catch (BookNotShareableOrAvailableException ex) {
             throw new BookNotShareableOrAvailableException("Book Not Shareable Or Available");
         }
-
     }
 
     @Override
     public String returnBook(UUID userId, UUID bookId) {
         try {
-            userRepo.findById(userId).orElseThrow(()-> new UserNotFoundException("User Npt Found"));
+            userRepo.findById(userId).orElseThrow(() -> new UserNotFoundException("User Npt Found"));
             return client.returnBook(userId, bookId);
 
-        }
-        catch (BookNotFoundException ex) {
+        } catch (BookNotFoundException ex) {
             throw new BookNotFoundException("Book Not Found");
         }
     }
@@ -208,8 +205,7 @@ public class UserServiceImpl implements UserService {
     public BookDto getBook(UUID bookId) throws InterruptedException {
         try {
             return client.getBook(bookId);
-        }
-        catch (BookNotFoundException ex){
+        } catch (BookNotFoundException ex) {
             throw new BookNotFoundException(ex.getMessage());
         }
     }

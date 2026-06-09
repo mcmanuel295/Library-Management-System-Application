@@ -51,7 +51,6 @@ class User {
         this.fullName = this.lastname + " " + this.firstname;
     }
 
-
     public void setLastname(String lastname) {
         this.lastname = lastname;
         setFullName();

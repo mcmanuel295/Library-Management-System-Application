@@ -10,20 +10,17 @@ import org.springframework.stereotype.Service;
 public class RabbitService {
 
     @RabbitListener(queuesToDeclare = @Queue("new-book-queue"))
-    public void newBookListener(String message){
-       log.info( message.isEmpty()? "nothing":message);
+    public void newBookListener(String message) {
+        log.info(message.isEmpty() ? "nothing" : message);
     }
 
-
     @RabbitListener(queuesToDeclare = @Queue("borrowed-book-queue"))
-    public void borrowBookListener(String message){
-       log.info( message.isEmpty()? "nothing":message);
+    public void borrowBookListener(String message) {
+        log.info(message.isEmpty() ? "nothing" : message);
     }
 
     @RabbitListener(queuesToDeclare = @Queue("returned-book-queue"))
-    public void returnBookListener(String message){
-       log.info( message.isEmpty()? "nothing":message);
+    public void returnBookListener(String message) {
+        log.info(message.isEmpty() ? "nothing" : message);
     }
-
-
 }

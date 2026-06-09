@@ -2,7 +2,6 @@ package com.mcmanuel.book;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import lombok.With;
 
 public record BookDto(
