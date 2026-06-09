@@ -10,5 +10,4 @@ public record ApplicationConfiguration(
         String exchangeName,
         String borrowBookQueue,
         String returnedBookQueue,
-        String newBookQueue
-        ) {}
+        String newBookQueue) {}

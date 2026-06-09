@@ -5,7 +5,6 @@ import com.mcmanuel.domain.book.BookDto;
 import com.mcmanuel.domain.book.BookService;
 import com.mcmanuel.exception.BookNotFoundException;
 import jakarta.validation.Valid;
-
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -30,20 +29,18 @@ public class BookController {
     ResponseEntity<BookDto> getBook(@Valid @PathVariable UUID bookId) {
         try {
             return new ResponseEntity<>(bookService.getBook(bookId), HttpStatus.OK);
-        }
-        catch (BookNotFoundException ex) {
-           throw new BookNotFoundException(ex.getMessage());
+        } catch (BookNotFoundException ex) {
+            throw new BookNotFoundException(ex.getMessage());
         } catch (Exception ex) {
             throw new RuntimeException(ex.getMessage());
         }
     }
 
     @GetMapping("/code/{code}")
-    ResponseEntity<BookDto> getBookByCode(@Valid @PathVariable String code){
+    ResponseEntity<BookDto> getBookByCode(@Valid @PathVariable String code) {
         try {
             return new ResponseEntity<>(bookService.getBookByCode(code), HttpStatus.OK);
-        }
-        catch (BookNotFoundException ex) {
+        } catch (BookNotFoundException ex) {
             throw new BookNotFoundException(ex.getMessage());
         } catch (Exception ex) {
             throw new RuntimeException(ex.getMessage());
@@ -55,15 +52,14 @@ public class BookController {
             @Valid @RequestParam(defaultValue = "0", required = false) int pageNo,
             @Valid @RequestParam(defaultValue = "10", required = false) int size,
             @Valid @RequestParam(required = false, defaultValue = "title") String sort) {
-        return new ResponseEntity<>(bookService.getAllBook(pageNo, size, sort),HttpStatus.OK);
+        return new ResponseEntity<>(bookService.getAllBook(pageNo, size, sort), HttpStatus.OK);
     }
 
     @PutMapping("/{bookId}")
     ResponseEntity<BookDto> updateBook(@Valid @PathVariable UUID bookId, @RequestBody @Valid BookDto book) {
         try {
             return new ResponseEntity<>(bookService.updateBook(bookId, book), HttpStatus.OK);
-        }
-        catch (BookNotFoundException ex) {
+        } catch (BookNotFoundException ex) {
             throw new BookNotFoundException(ex.getMessage());
         } catch (Exception ex) {
             throw new RuntimeException(ex.getMessage());
@@ -74,8 +70,7 @@ public class BookController {
     ResponseEntity<String> deleteBook(@Valid @PathVariable UUID bookId) throws BookNotFoundException {
         try {
             return new ResponseEntity<>(bookService.deleteBook(bookId), HttpStatus.OK);
-        }
-        catch (BookNotFoundException ex) {
+        } catch (BookNotFoundException ex) {
             throw new BookNotFoundException(ex.getMessage());
         } catch (Exception ex) {
             throw new RuntimeException(ex.getMessage());
@@ -86,8 +81,7 @@ public class BookController {
     ResponseEntity<BookDto> search(@RequestParam @Valid String word) {
         try {
             return new ResponseEntity<>(bookService.search(word), HttpStatus.OK);
-        }
-        catch (BookNotFoundException ex) {
+        } catch (BookNotFoundException ex) {
             throw new BookNotFoundException(ex.getMessage());
         } catch (Exception ex) {
             throw new RuntimeException(ex.getMessage());
@@ -95,7 +89,8 @@ public class BookController {
     }
 
     @PostMapping("/borrow")
-    public ResponseEntity<String> borrowBook(@RequestParam UUID userId, @RequestParam @Valid UUID bookId) throws InterruptedException {
+    public ResponseEntity<String> borrowBook(@RequestParam UUID userId, @RequestParam @Valid UUID bookId)
+            throws InterruptedException {
         BookDto borrowedBook = bookService.borrowBook(userId, bookId);
         if (borrowedBook != null) {
             return new ResponseEntity<>("Book " + bookId + " borrowed by user " + userId, HttpStatus.OK);
@@ -104,7 +99,8 @@ public class BookController {
     }
 
     @PutMapping("/return")
-    public ResponseEntity<String> returnBook(@RequestParam UUID userId, @RequestParam UUID bookId) throws InterruptedException {
+    public ResponseEntity<String> returnBook(@RequestParam UUID userId, @RequestParam UUID bookId)
+            throws InterruptedException {
         BookDto borrowedBook = bookService.returnBook(userId, bookId);
 
         if (borrowedBook != null) {
@@ -114,7 +110,7 @@ public class BookController {
     }
 
     @GetMapping("/all-codes")
-    public ResponseEntity<List<String>> getAllCode(){
-        return new ResponseEntity<>(bookService.getAllCode(),HttpStatus.OK);
+    public ResponseEntity<List<String>> getAllCode() {
+        return new ResponseEntity<>(bookService.getAllCode(), HttpStatus.OK);
     }
 }

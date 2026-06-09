@@ -19,13 +19,12 @@ public class RabbitConfig {
     }
 
     @Bean
-    Queue newBookQueue(){
-        return QueueBuilder.durable(appConfig.newBookQueue())
-                .build();
+    Queue newBookQueue() {
+        return QueueBuilder.durable(appConfig.newBookQueue()).build();
     }
 
     @Bean
-    Binding newBookQueuBinding(){
+    Binding newBookQueuBinding() {
         return BindingBuilder.bind(newBookQueue()).to(exchange()).with(appConfig.newBookQueue());
     }
 

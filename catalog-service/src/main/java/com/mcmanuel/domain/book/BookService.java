@@ -1,11 +1,9 @@
 package com.mcmanuel.domain.book;
 
 import com.mcmanuel.exception.BookNotFoundException;
-
 import java.util.List;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
 
 public interface BookService {
 
