@@ -14,7 +14,6 @@ services:
     depends_on:
       - rabbitmq
 
-
   user-db:
     container_name: user-db
     image: mysql:latest
@@ -45,7 +44,6 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: admin
       RABBITMQ_DEFAULT_PASS: Oea75357@
-
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
     healthcheck:
@@ -53,7 +51,16 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
-
+      
+  
+  redis:
+    image: redis:7-alpine
+    container_name: redis_demo
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
 
 volumes:
   catalog_final_data:
@@ -61,6 +68,7 @@ volumes:
   user_final_data:
     driver: local
   rabbitmq_data:
+  redis_data:
 
 networks:
   catalog_network:
