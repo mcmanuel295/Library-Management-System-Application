@@ -19,6 +19,7 @@ import java.util.*;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -109,8 +110,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+//    @Cacheable
     public Page<UserDTO> getAllUser(int pageNo, int size) {
-        Pageable pageable = PageRequest.of(pageNo, size);
+        Pageable pageable = PageRequest.of(pageNo <=0 ?0:pageNo-1, size);
         return userRepo.findAll(pageable).map(UserMapper::ToDTO);
     }
 
