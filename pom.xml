@@ -17,7 +17,8 @@
 	<modules>
 		<module>user-service</module>
 		<module>catalog-service</module>
-	</modules>
+        <module>shared</module>
+    </modules>
 
 	<properties>
 		<java.version>21</java.version>
