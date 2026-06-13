@@ -17,7 +17,6 @@
 	<modules>
 		<module>user-service</module>
 		<module>catalog-service</module>
-        <module>shared</module>
     </modules>
 
 	<properties>
