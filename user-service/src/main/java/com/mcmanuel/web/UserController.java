@@ -30,10 +30,9 @@ public class UserController {
         return new ResponseEntity<>(userService.createUser(request), HttpStatus.CREATED);
     }
 
-    @GetMapping("/{stringId}")
+    @GetMapping("/{userId}")
     //    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<UserDTO> getUser(@PathVariable String stringId) throws MessagingException {
-        UUID userId =UUID.fromString(stringId);
+    public ResponseEntity<UserDTO> getUser(@PathVariable UUID userId) throws MessagingException {
         UserDTO dto = userService.getUser(userId);
         if (dto == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -49,9 +48,8 @@ public class UserController {
         return ResponseEntity.ok(userService.getAllUser(pageNo, size));
     }
 
-    @PutMapping("/{stringId}")
-    ResponseEntity<UserDTO> updateUser(@PathVariable String stringId, @RequestBody UserDTO updatedUser) {
-        UUID userId =UUID.fromString(stringId);
+    @PutMapping("/{userId}")
+    ResponseEntity<UserDTO> updateUser(@PathVariable UUID userId, @RequestBody UserDTO updatedUser) {
         UserDTO savedUser = userService.updateUser(userId, updatedUser);
         if (savedUser == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -59,10 +57,9 @@ public class UserController {
         return new ResponseEntity<>(savedUser, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{stringId}")
+    @DeleteMapping("/{userId}")
     //    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    ResponseEntity<String> deleteUser(@PathVariable String stringId) {
-        UUID userId =UUID.fromString(stringId);
+    ResponseEntity<String> deleteUser(@PathVariable UUID userId) {
         String savedUser = userService.deleteUser(userId);
         if (savedUser == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -79,10 +76,9 @@ public class UserController {
         return new ResponseEntity<>(login, HttpStatus.OK);
     }
 
-    @PutMapping("/{stringId}/role")
+    @PutMapping("/{userId}/role")
     //    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    ResponseEntity<UserDTO> updateUserRole(@PathVariable String stringId, @RequestBody Role role) {
-        UUID userId =UUID.fromString(stringId);
+    ResponseEntity<UserDTO> updateUserRole(@PathVariable UUID userId, @RequestBody Role role) {
         UserDTO savedUser = userService.updateRole(userId, role);
         if (savedUser == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
