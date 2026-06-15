@@ -19,6 +19,7 @@ import java.util.*;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -103,6 +104,7 @@ public class UserServiceImpl implements UserService {
     };
 
     @Override
+//    @Cacheable(value = "books", key = "#userId")
     public UserDTO getUser(UUID userId) {
         if (accountLocked(userId)) throw new AccountLockedException("Account Is Not Unlocked");
         return UserMapper.ToDTO(userRepo.findById(userId)
@@ -110,13 +112,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-//    @Cacheable
+//    @Cacheable(value = "books" )
     public Page<UserDTO> getAllUser(int pageNo, int size) {
         Pageable pageable = PageRequest.of(pageNo <=0 ?0:pageNo-1, size);
         return userRepo.findAll(pageable).map(UserMapper::ToDTO);
     }
 
     @Override
+//    @CachePut(value = "books")
     public UserDTO updateUser(UUID userId, UserDTO updatedUser) {
         UserMapper.ToDTO(userRepo.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User with userId" + userId + " not found")));
