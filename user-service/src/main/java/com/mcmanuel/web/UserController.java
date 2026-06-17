@@ -14,6 +14,7 @@ import jakarta.mail.MessagingException;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import lombok.RequiredArgsConstructor;
+import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class UserController {
 
     @GetMapping("/{userId}")
     //    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    @Sched
+    @SchedulerLock(name = "getUser", lockAtLeastFor = "14m", lockAtMostFor = "14m")
     public ResponseEntity<UserDTO> getUser(@PathVariable UUID userId) throws MessagingException {
         UserDTO dto = userService.getUser(userId);
         if (dto == null) {
