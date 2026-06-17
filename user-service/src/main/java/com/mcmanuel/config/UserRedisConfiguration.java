@@ -10,9 +10,11 @@ import org.springframework.data.redis.serializer.GenericJacksonJsonRedisSerializ
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import tools.jackson.databind.DefaultTyping;
+import tools.jackson.databind.JacksonModule;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
+import tools.jackson.databind.module.SimpleModule;
 
 import java.time.Duration;
 
@@ -38,4 +40,6 @@ public class UserRedisConfiguration {
 
          return RedisCacheManager.builder(factory).cacheDefaults(config).build();
     }
+
+
 }
