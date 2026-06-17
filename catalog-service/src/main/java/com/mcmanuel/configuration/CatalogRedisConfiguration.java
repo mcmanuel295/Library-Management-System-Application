@@ -1,5 +1,6 @@
 package com.mcmanuel.configuration;
 
+import java.time.Duration;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,13 +15,11 @@ import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
 
-import java.time.Duration;
-
 @Configuration
 public class CatalogRedisConfiguration {
 
     @Bean
-    public CacheManager cacheManager(RedisConnectionFactory factory){
+    public CacheManager cacheManager(RedisConnectionFactory factory) {
         BasicPolymorphicTypeValidator validator = BasicPolymorphicTypeValidator.builder()
                 .allowIfBaseType("com.mcmanuel")
                 .allowIfBaseType("java.util")
@@ -28,14 +27,16 @@ public class CatalogRedisConfiguration {
                 .build();
 
         ObjectMapper mapper = JsonMapper.builder()
-                .activateDefaultTyping(validator,DefaultTyping.NON_FINAL).build();
+                .activateDefaultTyping(validator, DefaultTyping.NON_FINAL)
+                .build();
 
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
                 .entryTtl(Duration.ofMinutes(6))
-                .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer( new StringRedisSerializer()))
-                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer( new GenericJacksonJsonRedisSerializer(mapper)))
-                ;
+                .serializeKeysWith(
+                        RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(
+                        new GenericJacksonJsonRedisSerializer(mapper)));
 
-         return RedisCacheManager.builder(factory).cacheDefaults(config).build();
+        return RedisCacheManager.builder(factory).cacheDefaults(config).build();
     }
 }
