@@ -115,6 +115,7 @@ public class UserServiceImpl implements UserService {
     @Cacheable(value = "books" )
     public Page<UserDTO> getAllUser(int pageNo, int size) {
         Pageable pageable = PageRequest.of(pageNo <=0 ?0:pageNo-1, size);
+        log.info("accessing database,size {}",pageable.getPageSize());
         return userRepo.findAll(pageable).map(UserMapper::ToDTO);
     }
 

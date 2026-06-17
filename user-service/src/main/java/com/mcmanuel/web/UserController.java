@@ -32,6 +32,7 @@ public class UserController {
 
     @GetMapping("/{userId}")
     //    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @Sched
     public ResponseEntity<UserDTO> getUser(@PathVariable UUID userId) throws MessagingException {
         UserDTO dto = userService.getUser(userId);
         if (dto == null) {
