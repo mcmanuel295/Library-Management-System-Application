@@ -1,6 +1,8 @@
 package com.mcmanuel.domain.user;
 
-class UserMapper {
+import java.io.Serializable;
+
+class UserMapper implements Serializable {
 
     public static UserDTO ToDTO(User user) {
         return UserDTO.builder()
