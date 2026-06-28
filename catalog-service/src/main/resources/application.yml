@@ -4,7 +4,7 @@ spring:
   datasource:
     username: root
     password: Oea75357@
-    url: jdbc:mysql://localhost:3307/catalog?createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3306/librarymanagementsystemapplicatin?createDatabaseIfNotExist=true
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
