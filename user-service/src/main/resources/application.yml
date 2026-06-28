@@ -7,7 +7,7 @@ spring:
   datasource:
     username: root
     password: Oea75357@
-    url: jdbc:mysql://localhost:3308/user?createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3306/librarymanagementsystemapplication?createDatabaseIfNotExist=true
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   rabbitmq:
